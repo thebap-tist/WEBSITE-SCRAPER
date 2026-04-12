@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oglasni Radar — Nikoli več ne zamudite oglasa</title>
+  <meta name="description" content="Avtomatizirano spremljanje Bolhe, Facebook Marketplace, Nepremičnine.net, Avto.net in Willhaben.at. Telegram obvestilo v nekaj sekundah po objavi oglasa." />
+  <meta name="theme-color" content="#F5EEE0" />
+  <meta property="og:title" content="Oglasni Radar — Nikoli več ne zamudite oglasa" />
+  <meta property="og:description" content="Spremljamo tržnice 24/7. Novi oglasi pridejo k vam na Telegram v nekaj sekundah." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="sl_SI" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#F5EEE0',
+            'cream-alt': '#EFE6D3',
+            'cream-surface': '#FBF6EA',
+            ink: '#1F1A14',
+            'ink-muted': '#5C5346',
+            'ink-faint': '#8A8070',
+            forest: '#2D5F3F',
+            'forest-hover': '#3A7B52',
+            terracotta: '#C85C3C',
+            bolha: '#C53030',
+            fb: '#3A5998',
+            nepremic: '#D69E2E',
+            avto: '#4A5568',
+            willhaben: '#38A169',
+          },
+          fontFamily: {
+            display: ['Fraunces', 'Georgia', 'serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    body {
+      background: #F5EEE0;
+      color: #1F1A14;
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.7;
+      letter-spacing: -0.005em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .font-display {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "opsz" 144, "SOFT" 30;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+    h1 { letter-spacing: -0.04em; }
+
+    /* =========================================
+       CINEMATIC SCROLL — pin-based sections
+       ========================================= */
+
+    /* Nav */
+    .nav-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(245, 238, 224, 0.82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(42, 34, 24, 0.08);
+    }
+
+    /* Pulse dot */
+    @keyframes pulse-ring {
+      0%   { transform: scale(1);   opacity: 0.55; }
+      80%  { transform: scale(2.4); opacity: 0; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+    .pulse-dot { position: relative; display: inline-block; }
+    .pulse-dot::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      background: currentColor;
+      animation: pulse-ring 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    /* Phone float */
+    @keyframes float-phone {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+    .float-phone { animation: float-phone 6s ease-in-out infinite; }
+
+    /* Eyebrow */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #2D5F3F;
+    }
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 1px;
+      background: #2D5F3F;
+    }
+
+    /* Focus ring */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid #2D5F3F;
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+
+    /* Nav link underline */
+    .nav-link { position: relative; padding: 4px 0; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 1px;
+      background: #1F1A14;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 380ms cubic-bezier(0.2, 0.85, 0.3, 1.05);
+    }
+    .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    /* Buttons */
+    .btn-primary {
+      background: #2D5F3F;
+      color: #F5EEE0;
+      padding: 15px 28px;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 15px;
+      letter-spacing: -0.005em;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 12px 24px -12px rgba(45,95,63,0.55), 0 4px 8px -4px rgba(31,26,20,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+      transition: transform 300ms cubic-bezier(0.2, 0.85, 0.3, 1.05), background-color 260ms, box-shadow 300ms;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: #3A7B52;
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 18px 32px -12px rgba(45,95,63,0.6), 0 6px 12px -4px rgba(31,26,20,0.16), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .btn-primary:active { transform: translateY(0) scale(0.98); }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.3);
+      color: #1F1A14;
+      padding: 15px 24px;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 15px;
+      border: 1px solid rgba(42, 34, 24, 0.16);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 300ms cubic-bezier(0.2, 0.85, 0.3, 1.05), border-color 260ms, background-color 260ms;
+    }
+    .btn-ghost:hover {
+      border-color: rgba(42, 34, 24, 0.35);
+      background: rgba(255,255,255,0.55);
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    /* ---- Pillar card (stacks on hero) ---- */
+    .pillar-card {
+      background: #FBF6EA;
+      border: 1px solid rgba(42, 34, 24, 0.08);
+      border-radius: 24px;
+      padding: 48px 44px;
+      box-shadow: 0 32px 64px -24px rgba(31,26,20,0.22), 0 12px 24px -8px rgba(45,95,63,0.1);
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* Step number */
+    .step-num {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "opsz" 144;
+      font-weight: 300;
+      font-size: 96px;
+      line-height: 0.85;
+      color: #2D5F3F;
+      letter-spacing: -0.04em;
+    }
+
+    /* Marketplace card */
+    .market-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(42, 34, 24, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 400ms cubic-bezier(0.2, 0.85, 0.3, 1.05), box-shadow 400ms;
+      position: relative;
+    }
+    .market-card::after {
+      content: '';
+      position: absolute;
+      left: 20px; right: 20px; bottom: 0;
+      height: 2px;
+      background: var(--accent, #2D5F3F);
+      border-radius: 1px 1px 0 0;
+    }
+    .market-card:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 16px 36px -10px rgba(31,26,20,0.16);
+    }
+    .market-card .badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--accent, #2D5F3F);
+      color: #FFFFFF;
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 19px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 10px -3px rgba(0,0,0,0.18);
+    }
+    .market-card[data-site="bolha"]     { --accent: #C53030; }
+    .market-card[data-site="fb"]        { --accent: #3A5998; }
+    .market-card[data-site="nepremic"]  { --accent: #D69E2E; }
+    .market-card[data-site="avto"]      { --accent: #4A5568; }
+    .market-card[data-site="willhaben"] { --accent: #38A169; }
+
+    /* Feature card */
+    .feature-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(42, 34, 24, 0.06);
+      border-radius: 16px;
+      padding: 24px 22px;
+      transition: transform 400ms cubic-bezier(0.2, 0.85, 0.3, 1.05), box-shadow 400ms;
+    }
+    .feature-card:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 16px 36px -10px rgba(31,26,20,0.14);
+    }
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(45, 95, 63, 0.10);
+      color: #2D5F3F;
+      display: grid;
+      place-items: center;
+      margin-bottom: 14px;
+    }
+
+    /* ---- Telegram phone mockup ---- */
+    .phone-frame {
+      width: 320px;
+      background: #0B0F14;
+      border-radius: 44px;
+      padding: 12px 12px 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 40px 80px -24px rgba(31,26,20,0.42), 0 16px 32px -8px rgba(45,95,63,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
+      position: relative;
+    }
+    .phone-frame::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 108px;
+      height: 26px;
+      background: #000;
+      border-radius: 16px;
+      z-index: 2;
+    }
+    .phone-screen { background: #0E1621; border-radius: 32px; overflow: hidden; position: relative; }
+    .status-bar { background: #17212B; height: 44px; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 22px 8px; font-family: 'Inter', sans-serif; color: #FFF; font-size: 12px; font-weight: 600; }
+    .tg-header { background: #17212B; padding: 8px 14px 12px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .tg-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #2D5F3F, #62E187); color: #fff; display: grid; place-items: center; font-family: 'Fraunces', serif; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+    .tg-title { color: #FFF; font-size: 14px; font-weight: 600; font-family: 'Inter', sans-serif; line-height: 1.2; }
+    .tg-subtitle { color: #62E187; font-size: 11px; font-weight: 500; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 5px; }
+    .tg-messages { background-color: #0E1621; background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.025) 1.5px, transparent 2px), radial-gradient(circle at 60% 70%, rgba(255,255,255,0.02) 2px, transparent 2.5px); background-size: 120px 120px, 160px 160px; padding: 14px 10px; display: flex; flex-direction: column; gap: 12px; }
+    .tg-bubble { background: #182533; border-radius: 14px 14px 14px 4px; padding: 6px; max-width: 92%; box-shadow: 0 1px 0 rgba(0,0,0,0.15); }
+    .tg-photo { border-radius: 10px; display: block; width: 100%; aspect-ratio: 4/3; background-size: cover; background-position: center; }
+    .tg-body { padding: 10px 6px 4px; color: #E6EDF3; font-family: 'Inter', sans-serif; font-size: 12.5px; line-height: 1.5; }
+    .tg-body .label { color: #FFF; font-weight: 600; }
+    .tg-body .dots { color: #FFF; font-weight: 600; letter-spacing: 1px; }
+    .tg-link { color: #62E187; text-decoration: underline; text-underline-offset: 2px; word-break: break-all; }
+    .tg-time { display: flex; justify-content: flex-end; align-items: center; gap: 4px; color: #6B7C8E; font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 0 6px 4px; }
+    .tg-check { color: #62E187; font-size: 11px; }
+    .tg-live { width: 6px; height: 6px; background: #62E187; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px rgba(98,225,135,0.6); }
+
+    /* Hairline */
+    .hair-top { border-top: 1px solid rgba(42, 34, 24, 0.12); }
+
+    /* Progress bar */
+    .scroll-progress {
+      position: fixed;
+      top: 72px;
+      left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #2D5F3F, #62E187);
+      z-index: 99;
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+
+    /* Pinned hero backdrop dimmer */
+    .hero-dim {
+      position: absolute;
+      inset: 0;
+      background: rgba(31, 26, 20, 0);
+      pointer-events: none;
+      transition: background 600ms;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 44px !important; }
+      .step-num { font-size: 64px; }
+      .pillar-card { padding: 32px 24px; }
+      .phone-frame { width: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAV ========== -->
+  <header class="nav-bar">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-10 h-[72px] flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <span class="pulse-dot text-forest w-2 h-2 rounded-full" style="background: #2D5F3F;"></span>
+        <span class="font-display text-xl font-semibold tracking-tight text-ink">Oglasni Radar</span>
+      </a>
+      <div class="hidden md:flex items-center gap-10 text-sm font-medium text-ink">
+        <a class="nav-link" href="#kako-deluje">Kako deluje</a>
+        <a class="nav-link" href="#portali">Portali</a>
+        <a class="nav-link" href="#zakaj">Zakaj</a>
+        <a class="nav-link" href="#kontakt">Kontakt</a>
+      </div>
+      <a href="mailto:toby.jan@gmail.com?subject=Zanima%20me%20Oglasni%20Radar" class="btn-primary text-[14px] py-3 px-5">
+        Pišite nam
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12m0 0-5-5m5 5-5 5"/></svg>
+      </a>
+    </nav>
+  </header>
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" id="progress-bar"></div>
+
+  <!-- ==========================================================
+       HERO — Pinned in place. Fades into bg as pillars stack over it.
+       ========================================================== -->
+  <section id="hero-pin-wrapper" style="position: relative;">
+    <div id="hero" class="relative flex items-center justify-center overflow-hidden" style="height: 100vh; padding-top: 72px;">
+      <!-- Ambient gradients -->
+      <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 55% 65% at 75% 25%, rgba(200,92,60,0.16), transparent 60%), radial-gradient(ellipse 50% 55% at 20% 80%, rgba(45,95,63,0.10), transparent 60%);"></div>
+
+      <!-- Dimmer overlay — GSAP will animate this -->
+      <div class="hero-dim" id="hero-dim"></div>
+
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 relative z-10 w-full">
+        <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+
+          <!-- LEFT copy -->
+          <div class="lg:col-span-7" id="hero-text">
+            <div class="eyebrow mb-8 hero-el">Za tiste, ki ne marajo čakati</div>
+            <h1 class="hero-el text-[52px] md:text-[76px] lg:text-[100px] font-display font-normal text-ink mb-8 leading-[0.95]" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
+              Nikoli več <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">ne&nbsp;zamudite</em><br />
+              oglasa.
+            </h1>
+            <p class="hero-el text-lg md:text-xl text-ink-muted max-w-xl mb-10 leading-[1.65]">
+              Oglasni Radar 24/7 spremlja <span class="text-ink font-medium">Bolho</span>, <span class="text-ink font-medium">Facebook Marketplace</span>, <span class="text-ink font-medium">Nepremičnine.net</span>, <span class="text-ink font-medium">Avto.net</span> in <span class="text-ink font-medium">Willhaben</span>. Ko se pojavi oglas po vaših kriterijih, pride na Telegram v nekaj sekundah.
+            </p>
+            <div class="hero-el flex flex-wrap items-center gap-4 mb-10">
+              <a href="mailto:toby.jan@gmail.com?subject=Zanima%20me%20Oglasni%20Radar" class="btn-primary">
+                Pišite nam
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12m0 0-5-5m5 5-5 5"/></svg>
+              </a>
+              <a href="#kako-deluje" class="btn-ghost">Kako deluje</a>
+            </div>
+            <div class="hero-el flex items-center gap-6 text-[13px] text-ink-faint">
+              <span class="flex items-center gap-2">
+                <span class="pulse-dot w-1.5 h-1.5 rounded-full" style="background: #2D5F3F;"></span>
+                <span class="font-mono">Radar aktiven · 5 portalov</span>
+              </span>
+              <span class="hidden sm:inline font-mono">07:00 – 23:59</span>
+            </div>
+          </div>
+
+          <!-- RIGHT phone -->
+          <div class="lg:col-span-5 flex justify-center lg:justify-end" id="hero-phone-wrap">
+            <div class="float-phone relative">
+              <div class="phone-frame">
+                <div class="phone-screen">
+                  <div class="status-bar"><span>14:32</span><span class="flex items-center gap-1.5"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M0 10h2v-4H0v4zm4 0h2V4H4v6zm4 0h2V2H8v8zm4 0h2V0h-2v10z" fill="#fff"/></svg><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M7 0C4 0 1.5 1 0 3l1.5 1.5C2.8 3 4.7 2 7 2s4.2 1 5.5 2.5L14 3C12.5 1 10 0 7 0zM7 4C5 4 3 5 2 6l1.5 1.5C4.3 6.5 5.5 6 7 6s2.7.5 3.5 1.5L12 6c-1-1-3-2-5-2zm0 3a2 2 0 1 0 0 3 2 2 0 0 0 0-3z" fill="#fff"/></svg><svg width="20" height="10" viewBox="0 0 20 10" fill="none"><rect x=".5" y=".5" width="16" height="9" rx="2" stroke="#fff"/><rect x="2" y="2" width="12" height="6" rx="1" fill="#62E187"/><rect x="17" y="3.5" width="1.5" height="3" rx=".5" fill="#fff"/></svg></span></div>
+                  <div class="tg-header">
+                    <div class="tg-avatar">OR</div>
+                    <div class="flex-1 min-w-0">
+                      <div class="tg-title">Oglasni Radar</div>
+                      <div class="tg-subtitle"><span class="tg-live"></span> v spletu · zaznava oglase</div>
+                    </div>
+                  </div>
+                  <div class="tg-messages" style="min-height: 320px;">
+                    <div class="tg-bubble" style="max-width: 100%;">
+                      <div class="tg-photo" style="background-image: linear-gradient(135deg, rgba(0,0,0,0.15), rgba(0,0,0,0.35)), url('https://placehold.co/480x320/38A169/FFFFFF/png?text=WOOM+4+Fahrrad');"></div>
+                      <div class="tg-body">
+                        <div class="dots mb-1.5" style="color: #62E187;">🟢🟢🟢 NOV WILLHABEN OGLAS! 🟢🟢🟢</div>
+                        <div class="mb-0.5"><span class="label">Naziv:</span> Woom 4 Fahrrad — top Zustand</div>
+                        <div class="mb-0.5"><span class="label">💲 Cena:</span> <span class="font-mono">€ 329</span></div>
+                        <div class="mb-0.5"><span class="label">📍 Lokacija:</span> Graz, Steiermark</div>
+                        <div class="mb-1.5"><span class="label">🕒 Objavljeno:</span> 14:30 — 12.04.2026</div>
+                        <div>🟢 <a href="#" class="tg-link">willhaben.at/iad/...</a></div>
+                      </div>
+                      <div class="tg-time">14:32 <span class="tg-check">✓✓</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================================
+         PILLAR CARDS — Stack on top of pinned hero
+         ========================================================== -->
+
+    <!-- PILLAR 1: Kako deluje -->
+    <div class="pillar-wrapper relative z-20" id="kako-deluje">
+      <div class="flex items-center justify-center px-6" style="min-height: 100vh; padding-top: 72px;">
+        <div class="pillar-card">
+          <div class="eyebrow mb-6">01 · Kako deluje</div>
+          <h2 class="text-[40px] md:text-[52px] font-display text-ink leading-[1] mb-14" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
+            Trije koraki do <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">prvega oglasa</em>.
+          </h2>
+
+          <div class="grid md:grid-cols-3 gap-10">
+            <div>
+              <div class="step-num mb-4">01</div>
+              <h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Povejte, kaj iščete</h3>
+              <p class="text-ink-muted text-[14px] leading-[1.7]">Sporočite nam portal, ključne besede, lokacijo in cenovni razpon. Primer: <em class="text-ink">"Woom kolo na Bolhi pod 250 €."</em></p>
+            </div>
+            <div>
+              <div class="step-num mb-4">02</div>
+              <h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Nastavimo vaš radar</h3>
+              <p class="text-ink-muted text-[14px] leading-[1.7]">Konfiguriramo sistem po vaših kriterijih. Spremljanje se zažene v nekaj minutah.</p>
+            </div>
+            <div>
+              <div class="step-num mb-4">03</div>
+              <h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Prejmete obvestilo</h3>
+              <p class="text-ink-muted text-[14px] leading-[1.7]">Ob novem zadetku pride Telegram sporočilo s fotografijo, ceno, lokacijo in direktno povezavo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PILLAR 2: Podprti portali -->
+    <div class="pillar-wrapper relative z-30" id="portali">
+      <div class="flex items-center justify-center px-6" style="min-height: 100vh; padding-top: 72px;">
+        <div class="pillar-card">
+          <div class="eyebrow mb-6">02 · Podprti portali</div>
+          <h2 class="text-[40px] md:text-[52px] font-display text-ink leading-[1] mb-4" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
+            Pet portalov. <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">Ena&nbsp;Telegram nit.</em>
+          </h2>
+          <p class="text-ink-muted text-[15px] max-w-lg mb-10">Spremljamo največje slovenske in avstrijske tržnice — brez duplikatov.</p>
+
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div class="market-card" data-site="bolha"><div class="flex items-center gap-3"><div class="badge">B</div><div class="text-[11px] font-mono text-ink-faint uppercase tracking-[0.1em]">🇸🇮</div></div><div><h3 class="font-display text-[16px] text-ink leading-tight mb-0.5" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Bolha.com</h3><p class="text-[12px] text-ink-muted leading-snug">Splošni oglasi</p></div></div>
+            <div class="market-card" data-site="fb"><div class="flex items-center gap-3"><div class="badge">f</div><div class="text-[11px] font-mono text-ink-faint uppercase tracking-[0.1em]">🇸🇮</div></div><div><h3 class="font-display text-[16px] text-ink leading-tight mb-0.5" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Facebook</h3><p class="text-[12px] text-ink-muted leading-snug">Marketplace</p></div></div>
+            <div class="market-card" data-site="nepremic"><div class="flex items-center gap-3"><div class="badge">N</div><div class="text-[11px] font-mono text-ink-faint uppercase tracking-[0.1em]">🇸🇮</div></div><div><h3 class="font-display text-[16px] text-ink leading-tight mb-0.5" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Nepremičnine</h3><p class="text-[12px] text-ink-muted leading-snug">Nepremičnine</p></div></div>
+            <div class="market-card" data-site="avto"><div class="flex items-center gap-3"><div class="badge">A</div><div class="text-[11px] font-mono text-ink-faint uppercase tracking-[0.1em]">🇸🇮</div></div><div><h3 class="font-display text-[16px] text-ink leading-tight mb-0.5" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Avto.net</h3><p class="text-[12px] text-ink-muted leading-snug">Vozila</p></div></div>
+            <div class="market-card" data-site="willhaben"><div class="flex items-center gap-3"><div class="badge">W</div><div class="text-[11px] font-mono text-ink-faint uppercase tracking-[0.1em]">🇦🇹</div></div><div><h3 class="font-display text-[16px] text-ink leading-tight mb-0.5" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Willhaben</h3><p class="text-[12px] text-ink-muted leading-snug">Avstrijski trg</p></div></div>
+          </div>
+          <p class="mt-8 text-[13px] text-ink-muted">Iščete na drugem portalu? <a href="mailto:toby.jan@gmail.com?subject=Nov%20portal" class="text-forest underline underline-offset-4 decoration-forest/40 hover:decoration-forest">Pišite nam</a> — sistem je razširljiv.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PILLAR 3: Telegram obvestila -->
+    <div class="pillar-wrapper relative z-40" id="obvestila">
+      <div class="flex items-center justify-center px-6" style="min-height: 100vh; padding-top: 72px;">
+        <div class="pillar-card">
+          <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div class="eyebrow mb-6">03 · Telegram obvestila</div>
+              <h2 class="text-[36px] md:text-[48px] font-display text-ink leading-[1] mb-6" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
+                Oglasi pridejo <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">k&nbsp;vam</em>.
+              </h2>
+              <p class="text-ink-muted text-[15px] leading-[1.7] mb-8">Vsako obvestilo vsebuje fotografijo, naziv, ceno, lokacijo, čas objave in direktno povezavo.</p>
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3"><svg class="mt-1 flex-shrink-0 text-forest" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg><span class="text-ink text-[14px]">Fotografija, cena, lokacija v enem sporočilu</span></li>
+                <li class="flex items-start gap-3"><svg class="mt-1 flex-shrink-0 text-forest" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg><span class="text-ink text-[14px]">Direktna povezava do izvirnega oglasa</span></li>
+                <li class="flex items-start gap-3"><svg class="mt-1 flex-shrink-0 text-forest" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg><span class="text-ink text-[14px]">Barvno označen portal za hitro prepoznavo</span></li>
+                <li class="flex items-start gap-3"><svg class="mt-1 flex-shrink-0 text-forest" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg><span class="text-ink text-[14px]">Brez duplikatov — nikoli istega oglasa dvakrat</span></li>
+              </ul>
+            </div>
+            <div class="flex justify-center">
+              <div class="phone-frame" style="width: 300px;">
+                <div class="phone-screen">
+                  <div class="status-bar"><span>14:41</span><span class="flex items-center gap-1.5"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M0 10h2v-4H0v4zm4 0h2V4H4v6zm4 0h2V2H8v8zm4 0h2V0h-2v10z" fill="#fff"/></svg><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M7 0C4 0 1.5 1 0 3l1.5 1.5C2.8 3 4.7 2 7 2s4.2 1 5.5 2.5L14 3C12.5 1 10 0 7 0zM7 4C5 4 3 5 2 6l1.5 1.5C4.3 6.5 5.5 6 7 6s2.7.5 3.5 1.5L12 6c-1-1-3-2-5-2zm0 3a2 2 0 1 0 0 3 2 2 0 0 0 0-3z" fill="#fff"/></svg><svg width="20" height="10" viewBox="0 0 20 10" fill="none"><rect x=".5" y=".5" width="16" height="9" rx="2" stroke="#fff"/><rect x="2" y="2" width="12" height="6" rx="1" fill="#62E187"/><rect x="17" y="3.5" width="1.5" height="3" rx=".5" fill="#fff"/></svg></span></div>
+                  <div class="tg-header"><div class="tg-avatar">OR</div><div class="flex-1 min-w-0"><div class="tg-title">Oglasni Radar</div><div class="tg-subtitle"><span class="tg-live"></span> v spletu</div></div></div>
+                  <div class="tg-messages">
+                    <div class="tg-bubble">
+                      <div class="tg-photo" style="background-image: linear-gradient(135deg, rgba(0,0,0,0.2), rgba(0,0,0,0.45)), url('https://placehold.co/480x360/C53030/FFFFFF/png?text=WOOM+4');"></div>
+                      <div class="tg-body"><div class="dots mb-1" style="color: #FF6B6B;">🔴🔴🔴 NOV BOLHA OGLAS! 🔴🔴🔴</div><div class="mb-0.5"><span class="label">Naziv:</span> Woom 4 otroški kolesar 20"</div><div class="mb-0.5"><span class="label">💲 Cena:</span> <span class="font-mono">189 €</span></div><div class="mb-0.5"><span class="label">📍</span> Ljubljana</div><div>🔴 <a href="#" class="tg-link">bolha.com/...</a></div></div>
+                      <div class="tg-time">14:33 <span class="tg-check">✓✓</span></div>
+                    </div>
+                    <div class="tg-bubble">
+                      <div class="tg-photo" style="background-image: linear-gradient(135deg, rgba(0,0,0,0.2), rgba(0,0,0,0.45)), url('https://placehold.co/480x360/38A169/FFFFFF/png?text=WOOM+Fahrrad');"></div>
+                      <div class="tg-body"><div class="dots mb-1" style="color: #62E187;">🟢🟢🟢 NOV WILLHABEN OGLAS! 🟢🟢🟢</div><div class="mb-0.5"><span class="label">Naziv:</span> Woom 4 — top Zustand</div><div class="mb-0.5"><span class="label">💲 Cena:</span> <span class="font-mono">€ 329</span></div><div class="mb-0.5"><span class="label">📍</span> Graz</div><div>🟢 <a href="#" class="tg-link">willhaben.at/...</a></div></div>
+                      <div class="tg-time">14:37 <span class="tg-check">✓✓</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       BELOW THE FOLD — Normal scroll (unpinned)
+       ========================================================== -->
+
+  <!-- ZAKAJ -->
+  <section id="zakaj" class="py-24 lg:py-32" style="background: #EFE6D3;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="max-w-2xl mb-14">
+        <div class="eyebrow mb-6">Zakaj Oglasni Radar</div>
+        <h2 class="text-[40px] md:text-[52px] font-display text-ink leading-[1]" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
+          Zgrajeno za ljudi, ki <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">ne&nbsp;marajo čakati</em>.
+        </h2>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3 4 12h5l-1 5 7-9h-5l1-5z"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Hitrost</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Novi oglasi zaznani v nekaj sekundah, ne urah. Prvi v vrsti pri vsakem zadetku.</p></div>
+        <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="7"/><path d="M10 5v5l3 2" stroke-linecap="round"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">24/7 nadzor</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Radar dela od 7:00 do 23:59, vsak dan v tednu.</p></div>
+        <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="10" rx="2"/><path d="M3 9h14M7 5v-2M13 5v-2"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Več portalov, en kanal</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Bolha, Facebook, Nepremičnine, Avto.net in Willhaben — vse v eni Telegram niti.</p></div>
+        <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4 4 10l4 2 2 4 6-12z"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Instant obvestila</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Telegram sporočila na vaš telefon. Brez namestitve, brez osveževanja.</p></div>
+        <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a4 4 0 0 1 4-4h1l3 3h4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z"/><path d="m8 12 2 2 4-4"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Brez duplikatov</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Pametno zaznavanje duplikatov. Istega oglasa nikoli ne boste videli dvakrat.</p></div>
+        <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h14M6 10h8M8 14h4"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Prilagojeno iskanje</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Vsak radar je nastavljen posebej za vas — ključne besede, lokacija, cenovni razpon.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="kontakt" class="py-24 lg:py-32 relative">
+    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(200,92,60,0.12), transparent 65%);"></div>
+    <div class="max-w-3xl mx-auto px-6 text-center relative">
+      <div class="eyebrow mb-8 justify-center" style="display: inline-flex;">Pripravljeni za lov</div>
+      <h2 class="text-[40px] md:text-[56px] font-display text-ink leading-[1.02] mb-6" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
+        Pripravljeni, da ujamete <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">naslednji&nbsp;oglas</em>?
+      </h2>
+      <p class="text-ink-muted text-[16px] leading-[1.7] mb-10 max-w-lg mx-auto">Napišite mi, kaj iščete, in skupaj nastaviva vaš radar. Odgovorim osebno, v istem dnevu.</p>
+      <a href="mailto:toby.jan@gmail.com?subject=Zanima%20me%20Oglasni%20Radar&body=Pozdravljeni%2C%20zanima%20me%20Oglasni%20Radar.%20I%C5%A1%C4%8Dem..." class="btn-primary text-[16px] px-8 py-4">
+        Pišite nam <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12m0 0-5-5m5 5-5 5"/></svg>
+      </a>
+      <div class="mt-6 font-mono text-[13px] text-ink-faint"><a href="mailto:toby.jan@gmail.com" class="hover:text-ink underline-offset-4 hover:underline">toby.jan@gmail.com</a></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="hair-top py-14 lg:py-16">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-[12px] text-ink-faint">
+        <div class="flex items-center gap-3">
+          <span class="pulse-dot text-forest w-1.5 h-1.5 rounded-full" style="background: #2D5F3F;"></span>
+          <span class="font-display text-sm text-ink font-semibold">Oglasni Radar</span>
+        </div>
+        <div class="font-mono">© 2026 Oglasni Radar · Zgrajeno v Sloveniji</div>
+        <a href="mailto:toby.jan@gmail.com" class="font-mono hover:text-ink">toby.jan@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================
+       GSAP — Cinematic Scroll (progressive enhancement)
+       ========================================================== -->
+  <script>
+    if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // ── Progress bar ──
+      const bar = document.getElementById("progress-bar");
+      if (bar) {
+        gsap.to(bar, {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: document.body,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.3,
+          }
+        });
+      }
+
+      // ── Hero entrance ──
+      const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      heroTl
+        .from(".hero-el", { y: 30, opacity: 0, duration: 1, stagger: 0.12 })
+        .from("#hero-phone-wrap", {
+          y: 60, opacity: 0, scale: 0.9, duration: 1.3, ease: "back.out(1.4)"
+        }, "-=0.7");
+
+      // ── Pin the hero while pillars scroll over ──
+      const pillars = gsap.utils.toArray(".pillar-wrapper");
+      const totalPinDistance = pillars.length * window.innerHeight;
+
+      ScrollTrigger.create({
+        trigger: "#hero-pin-wrapper",
+        start: "top top",
+        end: () => `+=${totalPinDistance + window.innerHeight}`,
+        pin: "#hero",
+        pinSpacing: false,
+      });
+
+      // ── Dim hero as first pillar arrives ──
+      gsap.to("#hero-dim", {
+        background: "rgba(31, 26, 20, 0.45)",
+        scrollTrigger: {
+          trigger: pillars[0],
+          start: "top 90%",
+          end: "top 30%",
+          scrub: true,
+        }
+      });
+
+      // ── Fade out hero text + phone as pillars arrive ──
+      gsap.to("#hero-text", {
+        y: -60, opacity: 0,
+        scrollTrigger: {
+          trigger: pillars[0],
+          start: "top 95%",
+          end: "top 40%",
+          scrub: true,
+        }
+      });
+      gsap.to("#hero-phone-wrap", {
+        y: -40, opacity: 0, scale: 0.92,
+        scrollTrigger: {
+          trigger: pillars[0],
+          start: "top 90%",
+          end: "top 35%",
+          scrub: true,
+        }
+      });
+
+      // ── Pillar card entrance animations ──
+      pillars.forEach((pw, i) => {
+        const card = pw.querySelector(".pillar-card");
+        gsap.from(card, {
+          y: 120,
+          opacity: 0,
+          scale: 0.95,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: pw,
+            start: "top 70%",
+            toggleActions: "play none none none"
+          }
+        });
+      });
+
+      // ── Step numbers pop ──
+      document.querySelectorAll(".step-num").forEach(num => {
+        gsap.from(num, {
+          scrollTrigger: { trigger: num, start: "top 85%" },
+          scale: 1.3, opacity: 0, duration: 0.7, ease: "back.out(1.8)"
+        });
+      });
+
+      // ── Market cards stagger ──
+      gsap.from(".market-card", {
+        scrollTrigger: {
+          trigger: ".market-card",
+          start: "top 80%",
+          toggleActions: "play none none none"
+        },
+        y: 20, opacity: 0, scale: 0.96, duration: 0.7, stagger: 0.08, ease: "power3.out"
+      });
+
+      // ── Feature cards stagger ──
+      const staggerGroups = {};
+      document.querySelectorAll("[data-scroll-stagger]").forEach(el => {
+        const group = el.dataset.scrollStagger;
+        if (!staggerGroups[group]) staggerGroups[group] = [];
+        staggerGroups[group].push(el);
+      });
+      Object.entries(staggerGroups).forEach(([group, els]) => {
+        gsap.from(els, {
+          scrollTrigger: {
+            trigger: els[0].parentElement || els[0],
+            start: "top 82%",
+            toggleActions: "play none none none"
+          },
+          y: 24, opacity: 0, scale: 0.96, duration: 0.8,
+          stagger: 0.1, ease: "power3.out"
+        });
+      });
+
+      // ── Feature icons pop ──
+      document.querySelectorAll(".feature-icon").forEach(icon => {
+        gsap.from(icon, {
+          scrollTrigger: { trigger: icon, start: "top 88%" },
+          scale: 0, opacity: 0, duration: 0.5, ease: "back.out(2.5)"
+        });
+      });
+
+      // ── Section headings ──
+      document.querySelectorAll("#zakaj h2, #kontakt h2").forEach(h2 => {
+        gsap.from(h2, {
+          scrollTrigger: { trigger: h2, start: "top 85%", toggleActions: "play none none none" },
+          y: 30, opacity: 0, duration: 0.9, ease: "power3.out"
+        });
+      });
+    }
+  </script>
+</body>
+</html>
