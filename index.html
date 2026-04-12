@@ -343,11 +343,29 @@
       transition: background 600ms;
     }
 
+    /* Pillar wrapper — controls vertical gap between pillar cards */
+    .pillar-wrapper > .flex {
+      min-height: 62vh !important;
+      padding-top: 48px !important;
+    }
+
     @media (max-width: 768px) {
-      h1 { font-size: 44px !important; }
+      h1 { font-size: 42px !important; }
       .step-num { font-size: 64px; }
-      .pillar-card { padding: 32px 24px; }
-      .phone-frame { width: 280px; }
+      .pillar-card { padding: 32px 22px; }
+      .phone-frame { width: 260px; }
+      #hero {
+        height: auto !important;
+        min-height: 100vh;
+        align-items: flex-start !important;
+        padding-top: 96px !important;
+        padding-bottom: 40px !important;
+      }
+      .pillar-wrapper > .flex {
+        min-height: auto !important;
+        padding-top: 40px !important;
+        padding-bottom: 40px !important;
+      }
     }
   </style>
 </head>
@@ -423,13 +441,6 @@
             <p class="hero-el text-lg md:text-xl text-ink-muted max-w-xl mb-10 leading-[1.65]">
               Oglasni Radar 24/7 spremlja <span class="text-ink font-medium">Bolho</span>, <span class="text-ink font-medium">Facebook Marketplace</span>, <span class="text-ink font-medium">Nepremičnine.net</span>, <span class="text-ink font-medium">Avto.net</span> in <span class="text-ink font-medium">Willhaben</span>. Ko se pojavi oglas po vaših kriterijih, pride na Telegram v nekaj sekundah.
             </p>
-            <div class="hero-el flex flex-wrap items-center gap-4 mb-10">
-              <a href="mailto:toby.jan@gmail.com?subject=Zanima%20me%20Oglasni%20Radar" class="btn-primary">
-                Pišite nam
-                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12m0 0-5-5m5 5-5 5"/></svg>
-              </a>
-              <a href="#kako-deluje" class="btn-ghost">Kako deluje</a>
-            </div>
             <div class="hero-el flex items-center gap-6 text-[13px] text-ink-faint">
               <span class="flex items-center gap-2">
                 <span class="pulse-dot w-1.5 h-1.5 rounded-full" style="background: #2D5F3F;"></span>
@@ -480,7 +491,7 @@
 
     <!-- PILLAR 1: Kako deluje -->
     <div class="pillar-wrapper relative z-20" id="kako-deluje">
-      <div class="flex items-center justify-center px-6" style="min-height: 100vh; padding-top: 72px;">
+      <div class="flex items-center justify-center px-6">
         <div class="pillar-card">
           <div class="eyebrow mb-6">01 · Kako deluje</div>
           <h2 class="text-[40px] md:text-[52px] font-display text-ink leading-[1] mb-14" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
@@ -510,7 +521,7 @@
 
     <!-- PILLAR 2: Podprti portali -->
     <div class="pillar-wrapper relative z-30" id="portali">
-      <div class="flex items-center justify-center px-6" style="min-height: 100vh; padding-top: 72px;">
+      <div class="flex items-center justify-center px-6">
         <div class="pillar-card">
           <div class="eyebrow mb-6">02 · Podprti portali</div>
           <h2 class="text-[40px] md:text-[52px] font-display text-ink leading-[1] mb-4" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
@@ -532,7 +543,7 @@
 
     <!-- PILLAR 3: Telegram obvestila -->
     <div class="pillar-wrapper relative z-40" id="obvestila">
-      <div class="flex items-center justify-center px-6" style="min-height: 100vh; padding-top: 72px;">
+      <div class="flex items-center justify-center px-6">
         <div class="pillar-card">
           <div class="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -580,35 +591,36 @@
 
   <!-- ZAKAJ -->
   <section id="zakaj" class="py-24 lg:py-32 relative" style="background: #EFE6D3; z-index: 50;">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="max-w-2xl mb-14">
+    <div class="flex items-center justify-center px-6">
+      <div class="pillar-card zakaj-pillar" style="max-width: 1100px;">
         <div class="eyebrow mb-6">Zakaj Oglasni Radar</div>
-        <h2 class="text-[40px] md:text-[52px] font-display text-ink leading-[1]" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
+        <h2 class="text-[40px] md:text-[52px] font-display text-ink leading-[1] mb-14" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
           Zgrajeno za ljudi, ki <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">ne&nbsp;marajo čakati</em>.
         </h2>
-      </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3 4 12h5l-1 5 7-9h-5l1-5z"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Hitrost</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Novi oglasi zaznani v nekaj sekundah, ne urah. Prvi v vrsti pri vsakem zadetku.</p></div>
         <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="7"/><path d="M10 5v5l3 2" stroke-linecap="round"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">24/7 nadzor</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Radar dela od 7:00 do 23:59, vsak dan v tednu.</p></div>
         <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="10" rx="2"/><path d="M3 9h14M7 5v-2M13 5v-2"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Več portalov, en kanal</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Bolha, Facebook, Nepremičnine, Avto.net in Willhaben — vse v eni Telegram niti.</p></div>
         <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4 4 10l4 2 2 4 6-12z"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Instant obvestila</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Telegram sporočila na vaš telefon. Brez namestitve, brez osveževanja.</p></div>
         <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a4 4 0 0 1 4-4h1l3 3h4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z"/><path d="m8 12 2 2 4-4"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Brez duplikatov</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Pametno zaznavanje duplikatov. Istega oglasa nikoli ne boste videli dvakrat.</p></div>
         <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h14M6 10h8M8 14h4"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Prilagojeno iskanje</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Vsak radar je nastavljen posebej za vas — ključne besede, lokacija, cenovni razpon.</p></div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- CENIK -->
   <section id="cenik" class="py-24 lg:py-32 relative" style="z-index: 50;">
-    <div class="max-w-5xl mx-auto px-6 lg:px-10">
-      <div class="text-center max-w-2xl mx-auto mb-14">
-        <div class="eyebrow mb-6 justify-center" style="display: inline-flex;">Cenik</div>
-        <h2 class="text-[40px] md:text-[52px] font-display text-ink leading-[1]" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
-          Paket za <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">vsako potrebo</em>.
-        </h2>
-      </div>
+    <div class="flex items-center justify-center px-6">
+      <div class="pillar-card cenik-pillar" style="max-width: 1100px;">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+          <div class="eyebrow mb-6 justify-center" style="display: inline-flex;">Cenik</div>
+          <h2 class="text-[40px] md:text-[52px] font-display text-ink leading-[1]" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
+            Paket za <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">vsako potrebo</em>.
+          </h2>
+        </div>
 
-      <div class="grid md:grid-cols-3 gap-4">
+        <div class="grid md:grid-cols-3 gap-4">
         <!-- FREE TRIAL -->
         <div class="pricing-card bg-white border border-ink/8 rounded-2xl p-7 flex flex-col" style="box-shadow: 0 4px 16px -6px rgba(31,26,20,0.08);">
           <div class="mb-6">
@@ -678,6 +690,7 @@
               <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Prilagojeni filtri</li>
             </ul>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -777,48 +790,44 @@
           y: 60, opacity: 0, scale: 0.9, duration: 1.3, ease: "back.out(1.4)"
         }, "-=0.7");
 
-      // ── Pin the hero while pillars scroll over ──
+      // ── Pin the hero while pillars scroll over ── (desktop only)
       const pillars = gsap.utils.toArray(".pillar-wrapper");
-      const totalPinDistance = pillars.length * window.innerHeight;
+      const isDesktop = window.innerWidth >= 768;
 
-      ScrollTrigger.create({
-        trigger: "#hero-pin-wrapper",
-        start: "top top",
-        end: () => `+=${totalPinDistance + window.innerHeight}`,
-        pin: "#hero",
-        pinSpacing: false,
-      });
+      if (isDesktop) {
+        const totalPinDistance = pillars.reduce((sum, p) => sum + p.offsetHeight, 0);
 
-      // ── Dim hero as first pillar arrives ──
-      gsap.to("#hero-dim", {
-        background: "rgba(31, 26, 20, 0.45)",
-        scrollTrigger: {
+        ScrollTrigger.create({
+          trigger: "#hero-pin-wrapper",
+          start: "top top",
+          end: () => `+=${totalPinDistance}`,
+          pin: "#hero",
+          pinSpacing: false,
+        });
+
+        // ── Dim hero as first pillar arrives ──
+        ScrollTrigger.create({
           trigger: pillars[0],
           start: "top 90%",
           end: "top 30%",
-          scrub: true,
-        }
-      });
+          onEnter: () => gsap.to("#hero-dim", { background: "rgba(31, 26, 20, 0.45)", duration: 0.6 }),
+          onLeaveBack: () => gsap.to("#hero-dim", { background: "rgba(31, 26, 20, 0)", duration: 0.6 }),
+        });
 
-      // ── Fade out hero text + phone as pillars arrive ──
-      gsap.to("#hero-text", {
-        y: -60, opacity: 0,
-        scrollTrigger: {
+        // ── Fade out hero text + phone as pillars arrive (toggle, not scrub) ──
+        ScrollTrigger.create({
           trigger: pillars[0],
-          start: "top 95%",
-          end: "top 40%",
-          scrub: true,
-        }
-      });
-      gsap.to("#hero-phone-wrap", {
-        y: -40, opacity: 0, scale: 0.92,
-        scrollTrigger: {
-          trigger: pillars[0],
-          start: "top 90%",
-          end: "top 35%",
-          scrub: true,
-        }
-      });
+          start: "top 80%",
+          onEnter: () => {
+            gsap.to("#hero-text", { y: -60, opacity: 0, duration: 0.7, ease: "power2.out" });
+            gsap.to("#hero-phone-wrap", { y: -40, opacity: 0, scale: 0.92, duration: 0.7, ease: "power2.out" });
+          },
+          onLeaveBack: () => {
+            gsap.to("#hero-text", { y: 0, opacity: 1, duration: 0.7, ease: "power2.out" });
+            gsap.to("#hero-phone-wrap", { y: 0, opacity: 1, scale: 1, duration: 0.7, ease: "power2.out" });
+          },
+        });
+      }
 
       // ── Pillar card entrance animations ──
       pillars.forEach((pw, i) => {
@@ -882,8 +891,34 @@
         });
       });
 
+      // ── Zakaj + Cenik pillar card entrance ──
+      document.querySelectorAll(".zakaj-pillar, .cenik-pillar").forEach(card => {
+        gsap.from(card, {
+          y: 120,
+          opacity: 0,
+          scale: 0.95,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 80%",
+            toggleActions: "play none none none"
+          }
+        });
+      });
+
+      // ── Pricing cards stagger ──
+      gsap.from(".pricing-card", {
+        scrollTrigger: {
+          trigger: ".cenik-pillar",
+          start: "top 75%",
+          toggleActions: "play none none none"
+        },
+        y: 30, opacity: 0, scale: 0.96, duration: 0.8, stagger: 0.12, ease: "power3.out"
+      });
+
       // ── Section headings ──
-      document.querySelectorAll("#zakaj h2, #kontakt h2").forEach(h2 => {
+      document.querySelectorAll("#kontakt h2").forEach(h2 => {
         gsap.from(h2, {
           scrollTrigger: { trigger: h2, start: "top 85%", toggleActions: "play none none none" },
           y: 30, opacity: 0, duration: 0.9, ease: "power3.out"
