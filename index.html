@@ -364,13 +364,36 @@
         <a class="nav-link" href="#kako-deluje">Kako deluje</a>
         <a class="nav-link" href="#portali">Portali</a>
         <a class="nav-link" href="#zakaj">Zakaj</a>
+        <a class="nav-link" href="#cenik">Cenik</a>
         <a class="nav-link" href="#kontakt">Kontakt</a>
       </div>
-      <a href="mailto:toby.jan@gmail.com?subject=Zanima%20me%20Oglasni%20Radar" class="btn-primary text-[14px] py-3 px-5">
-        Pišite nam
-        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12m0 0-5-5m5 5-5 5"/></svg>
-      </a>
+      <div class="flex items-center gap-3">
+        <a href="mailto:toby.jan@gmail.com?subject=Zanima%20me%20Oglasni%20Radar" class="btn-primary text-[14px] py-3 px-5 hidden sm:inline-flex">
+          Pišite nam
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12m0 0-5-5m5 5-5 5"/></svg>
+        </a>
+        <!-- Mobile hamburger -->
+        <button class="md:hidden flex flex-col gap-[5px] p-2" id="menu-toggle" aria-label="Odpri meni">
+          <span class="block w-5 h-[2px] bg-ink transition-transform duration-300" id="ham-top"></span>
+          <span class="block w-5 h-[2px] bg-ink transition-opacity duration-300" id="ham-mid"></span>
+          <span class="block w-5 h-[2px] bg-ink transition-transform duration-300" id="ham-bot"></span>
+        </button>
+      </div>
     </nav>
+    <!-- Mobile menu -->
+    <div class="md:hidden overflow-hidden transition-all duration-400" id="mobile-menu" style="max-height: 0; visibility: hidden;">
+      <div class="px-6 pb-5 pt-2 flex flex-col gap-4 text-sm font-medium text-ink">
+        <a href="#kako-deluje" class="py-2" onclick="closeMobileMenu()">Kako deluje</a>
+        <a href="#portali" class="py-2" onclick="closeMobileMenu()">Portali</a>
+        <a href="#zakaj" class="py-2" onclick="closeMobileMenu()">Zakaj</a>
+        <a href="#cenik" class="py-2" onclick="closeMobileMenu()">Cenik</a>
+        <a href="#kontakt" class="py-2" onclick="closeMobileMenu()">Kontakt</a>
+        <a href="mailto:toby.jan@gmail.com?subject=Zanima%20me%20Oglasni%20Radar" class="btn-primary text-[14px] py-3 px-5 justify-center sm:hidden">
+          Pišite nam
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12m0 0-5-5m5 5-5 5"/></svg>
+        </a>
+      </div>
+    </div>
   </header>
 
   <!-- Scroll progress bar -->
@@ -464,7 +487,7 @@
             Trije koraki do <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">prvega oglasa</em>.
           </h2>
 
-          <div class="grid md:grid-cols-3 gap-10">
+          <div class="grid md:grid-cols-3 gap-6">
             <div>
               <div class="step-num mb-4">01</div>
               <h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Povejte, kaj iščete</h3>
@@ -556,7 +579,7 @@
        ========================================================== -->
 
   <!-- ZAKAJ -->
-  <section id="zakaj" class="py-24 lg:py-32" style="background: #EFE6D3;">
+  <section id="zakaj" class="py-24 lg:py-32 relative" style="background: #EFE6D3; z-index: 50;">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <div class="max-w-2xl mb-14">
         <div class="eyebrow mb-6">Zakaj Oglasni Radar</div>
@@ -564,7 +587,7 @@
           Zgrajeno za ljudi, ki <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">ne&nbsp;marajo čakati</em>.
         </h2>
       </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3 4 12h5l-1 5 7-9h-5l1-5z"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Hitrost</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Novi oglasi zaznani v nekaj sekundah, ne urah. Prvi v vrsti pri vsakem zadetku.</p></div>
         <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="7"/><path d="M10 5v5l3 2" stroke-linecap="round"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">24/7 nadzor</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Radar dela od 7:00 do 23:59, vsak dan v tednu.</p></div>
         <div class="feature-card" data-scroll-stagger="features"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="10" rx="2"/><path d="M3 9h14M7 5v-2M13 5v-2"/></svg></div><h3 class="font-display text-xl text-ink mb-2" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Več portalov, en kanal</h3><p class="text-ink-muted text-[14px] leading-[1.7]">Bolha, Facebook, Nepremičnine, Avto.net in Willhaben — vse v eni Telegram niti.</p></div>
@@ -575,8 +598,93 @@
     </div>
   </section>
 
+  <!-- CENIK -->
+  <section id="cenik" class="py-24 lg:py-32 relative" style="z-index: 50;">
+    <div class="max-w-5xl mx-auto px-6 lg:px-10">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <div class="eyebrow mb-6 justify-center" style="display: inline-flex;">Cenik</div>
+        <h2 class="text-[40px] md:text-[52px] font-display text-ink leading-[1]" style="font-variation-settings: 'opsz' 144, 'SOFT' 40, 'wght' 400;">
+          Paket za <em class="italic text-forest" style="font-variation-settings: 'opsz' 144, 'SOFT' 80, 'wght' 400;">vsako potrebo</em>.
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4">
+        <!-- FREE TRIAL -->
+        <div class="pricing-card bg-white border border-ink/8 rounded-2xl p-7 flex flex-col" style="box-shadow: 0 4px 16px -6px rgba(31,26,20,0.08);">
+          <div class="mb-6">
+            <h3 class="font-display text-lg text-ink mb-1" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Preizkus</h3>
+            <p class="text-[13px] text-ink-faint">14-dnevni brezplačni preizkus</p>
+          </div>
+          <div class="mb-6">
+            <span class="font-display text-[48px] text-ink leading-none" style="font-variation-settings: 'opsz' 144, 'wght' 700; letter-spacing: -0.03em;">€0</span>
+            <span class="text-ink-muted text-sm ml-1">/ 14 dni</span>
+          </div>
+          <a href="mailto:toby.jan@gmail.com?subject=Preizkus%20Oglasni%20Radar&body=Pozdravljeni%2C%20želim%20preizkusiti%20Oglasni%20Radar%20(14%20dni%20brezplačno)." class="btn-ghost justify-center w-full mb-8">Začni preizkus</a>
+          <div class="border-t border-ink/8 pt-5">
+            <p class="text-[12px] font-semibold text-ink uppercase tracking-wider mb-3">VKLJUČENO</p>
+            <ul class="space-y-2.5 text-[13px] text-ink-muted">
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>1 portal po izbiri</li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Do 3 ključne besede</li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Telegram obvestila</li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-ink-faint/40" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l8 8M14 6l-8 8"/></svg><span class="text-ink-faint">Omejen na 14 dni</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- MONTHLY — highlighted -->
+        <div class="pricing-card bg-white border-2 border-forest rounded-2xl p-7 flex flex-col relative" style="box-shadow: 0 12px 32px -8px rgba(45,95,63,0.22), 0 4px 12px -4px rgba(31,26,20,0.08);">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-forest text-cream text-[11px] font-semibold uppercase tracking-wider px-4 py-1 rounded-full">Najbolj priljubljen</div>
+          <div class="mb-6">
+            <h3 class="font-display text-lg text-ink mb-1" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Mesečni</h3>
+            <p class="text-[13px] text-ink-faint">Polni dostop, brez vezave</p>
+          </div>
+          <div class="mb-6">
+            <span class="font-display text-[48px] text-ink leading-none" style="font-variation-settings: 'opsz' 144, 'wght' 700; letter-spacing: -0.03em;">€35</span>
+            <span class="text-ink-muted text-sm ml-1">/ mesec</span>
+          </div>
+          <a href="mailto:toby.jan@gmail.com?subject=Mesečni%20paket%20Oglasni%20Radar&body=Pozdravljeni%2C%20zanima%20me%20mesečni%20paket." class="btn-primary justify-center w-full mb-8">Začni zdaj</a>
+          <div class="border-t border-ink/8 pt-5">
+            <p class="text-[12px] font-semibold text-ink uppercase tracking-wider mb-3">VKLJUČENO</p>
+            <ul class="space-y-2.5 text-[13px] text-ink-muted">
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg><span class="text-ink font-medium">Vsi portali (5)</span></li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Neomejene ključne besede</li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Telegram obvestila 24/7</li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Zaznavanje duplikatov</li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Prednostna podpora</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- YEARLY -->
+        <div class="pricing-card bg-white border border-ink/8 rounded-2xl p-7 flex flex-col" style="box-shadow: 0 4px 16px -6px rgba(31,26,20,0.08);">
+          <div class="mb-6">
+            <h3 class="font-display text-lg text-ink mb-1" style="font-variation-settings: 'opsz' 144, 'wght' 600;">Letni</h3>
+            <p class="text-[13px] text-ink-faint">Prihranite z letno naročnino</p>
+          </div>
+          <div class="mb-6">
+            <span class="font-display text-[48px] text-ink leading-none" style="font-variation-settings: 'opsz' 144, 'wght' 700; letter-spacing: -0.03em;">€25</span>
+            <span class="text-ink-muted text-sm ml-1">/ mesec</span>
+          </div>
+          <div class="text-[12px] text-forest font-medium mb-3">€300 / leto · prihranite 29%</div>
+          <a href="mailto:toby.jan@gmail.com?subject=Letni%20paket%20Oglasni%20Radar&body=Pozdravljeni%2C%20zanima%20me%20letni%20paket." class="btn-ghost justify-center w-full mb-8">Začni zdaj</a>
+          <div class="border-t border-ink/8 pt-5">
+            <p class="text-[12px] font-semibold text-ink uppercase tracking-wider mb-3">VKLJUČENO</p>
+            <ul class="space-y-2.5 text-[13px] text-ink-muted">
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg><span class="text-ink font-medium">Vsi portali (5)</span></li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Neomejene ključne besede</li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Telegram obvestila 24/7</li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Zaznavanje duplikatov</li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Prednostna podpora</li>
+              <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-forest" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l3 3 7-7"/></svg>Prilagojeni filtri</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
-  <section id="kontakt" class="py-24 lg:py-32 relative">
+  <section id="kontakt" class="py-24 lg:py-32 relative" style="z-index: 50;">
     <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(200,92,60,0.12), transparent 65%);"></div>
     <div class="max-w-3xl mx-auto px-6 text-center relative">
       <div class="eyebrow mb-8 justify-center" style="display: inline-flex;">Pripravljeni za lov</div>
@@ -592,7 +700,7 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="hair-top py-14 lg:py-16">
+  <footer class="hair-top py-14 lg:py-16 relative" style="z-index: 50;">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-[12px] text-ink-faint">
         <div class="flex items-center gap-3">
@@ -609,6 +717,40 @@
        GSAP — Cinematic Scroll (progressive enhancement)
        ========================================================== -->
   <script>
+    // ── Mobile menu toggle ──
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const hamTop = document.getElementById("ham-top");
+    const hamMid = document.getElementById("ham-mid");
+    const hamBot = document.getElementById("ham-bot");
+    let menuOpen = false;
+
+    menuToggle.addEventListener("click", () => {
+      menuOpen = !menuOpen;
+      if (menuOpen) {
+        mobileMenu.style.visibility = "visible";
+        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + "px";
+        hamTop.style.transform = "translateY(7px) rotate(45deg)";
+        hamMid.style.opacity = "0";
+        hamBot.style.transform = "translateY(-7px) rotate(-45deg)";
+      } else {
+        mobileMenu.style.maxHeight = "0";
+        hamTop.style.transform = "";
+        hamMid.style.opacity = "";
+        hamBot.style.transform = "";
+        setTimeout(() => { mobileMenu.style.visibility = "hidden"; }, 400);
+      }
+    });
+
+    function closeMobileMenu() {
+      menuOpen = false;
+      mobileMenu.style.maxHeight = "0";
+      hamTop.style.transform = "";
+      hamMid.style.opacity = "";
+      hamBot.style.transform = "";
+      setTimeout(() => { mobileMenu.style.visibility = "hidden"; }, 400);
+    }
+
     if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
       gsap.registerPlugin(ScrollTrigger);
 
