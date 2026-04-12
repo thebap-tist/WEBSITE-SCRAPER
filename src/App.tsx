@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState, FormEvent, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CheckCheck, Signal, Wifi, Battery, Check, X } from 'lucide-react';
@@ -52,9 +52,57 @@ const MessageCard = ({ platform, title, price, location, time, color, emoji, lin
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
+  const [isTosModalOpen, setIsTosModalOpen] = useState(false);
+  const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  
   const containerRef = useRef<HTMLDivElement>(null);
   const feedRef = useRef<HTMLDivElement>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen || isTrialModalOpen || isTosModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isModalOpen, isTrialModalOpen, isTosModalOpen]);
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>, formType: 'contact' | 'trial') => {
+    e.preventDefault();
+    setFormStatus('loading');
+
+    const formData = new FormData(e.currentTarget);
+    // Add Web3Forms Access Key
+    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // Replace with your actual access key from web3forms.com
+    formData.append("subject", `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`);
+    formData.append("from_name", "Oglasni Radar");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setFormStatus('success');
+        e.currentTarget.reset();
+        setTimeout(() => {
+          setIsModalOpen(false);
+          setIsTrialModalOpen(false);
+          setFormStatus('idle');
+        }, 3000);
+      } else {
+        setFormStatus('error');
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setFormStatus('error');
+    }
+  };
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -394,7 +442,10 @@ export default function App() {
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> VSI portali po izbiri</li>
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Telegram obvestila</li>
               </ul>
-              <button className="mt-auto w-full rounded-xl bg-green-500 py-3 font-bold text-white transition-transform hover:scale-[1.02] active:scale-[0.98]">
+              <button 
+                onClick={() => setIsTrialModalOpen(true)}
+                className="mt-auto w-full rounded-xl bg-green-500 py-3 font-bold text-white transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              >
                 Preizkusi brezplačno
               </button>
             </div>
@@ -500,8 +551,18 @@ export default function App() {
         </div>
       </section>
 
-      <footer className="border-t border-white/5 py-10 text-center text-sm text-gray-600">
-        <p>© 2026 Oglasni Radar. Vse pravice pridržane.</p>
+      <footer className="border-t border-white/5 py-12 px-6">
+        <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-500">
+          <p>© 2026 Oglasni Radar. Vse pravice pridržane.</p>
+          <div className="flex gap-8">
+            <button 
+              onClick={() => setIsTosModalOpen(true)}
+              className="hover:text-white transition-colors"
+            >
+              Pogoji poslovanja
+            </button>
+          </div>
+        </div>
       </footer>
 
       {/* Modal Form */}
@@ -534,47 +595,264 @@ export default function App() {
               <h3 className="mb-8 text-2xl font-bold">Pošljite povpraševanje</h3>
               
               <form 
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  alert("Sporočilo uspešno poslano!");
-                  setIsModalOpen(false);
-                }}
+                onSubmit={(e) => handleFormSubmit(e, 'contact')}
                 className="space-y-6"
               >
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-400">Ime</label>
-                  <input 
-                    type="text" 
-                    required
-                    className="w-full rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
-                    placeholder="Vaše ime"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-400">E-pošta</label>
-                  <input 
-                    type="email" 
-                    required
-                    className="w-full rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
-                    placeholder="vas@email.com"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-400">Sporočilo</label>
-                  <textarea 
-                    required
-                    rows={4}
-                    className="w-full resize-none rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
-                    placeholder="Npr. Iščem Woom 4 kolo na Bolhi do 200 €..."
-                  />
-                </div>
-                <button 
-                  type="submit"
-                  className="w-full rounded-xl bg-[#4ade80] py-4 font-bold text-black transition-all hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  Pošlji sporočilo
-                </button>
+                {formStatus === 'success' ? (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-xl bg-green-500/10 p-6 text-center text-green-500 ring-1 ring-green-500/20"
+                  >
+                    <CheckCheck size={32} className="mx-auto mb-3" />
+                    <p className="font-bold">Sporočilo je bilo uspešno poslano!</p>
+                    <p className="mt-1 text-sm opacity-80">Odgovorili vam bomo v najkrajšem možnem času.</p>
+                  </motion.div>
+                ) : (
+                  <>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-400">Ime</label>
+                      <input 
+                        name="name"
+                        type="text" 
+                        required
+                        className="w-full rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        placeholder="Vaše ime"
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-400">E-pošta</label>
+                      <input 
+                        name="email"
+                        type="email" 
+                        required
+                        className="w-full rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        placeholder="vas@email.com"
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-400">Sporočilo</label>
+                      <textarea 
+                        name="message"
+                        required
+                        rows={4}
+                        className="w-full resize-none rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        placeholder="Npr. Iščem Woom 4 kolo na Bolhi do 200 €..."
+                      />
+                    </div>
+                    {formStatus === 'error' && (
+                      <p className="text-sm text-red-500 text-center">Prišlo je do napake. Prosimo, poskusite znova.</p>
+                    )}
+                    <button 
+                      type="submit"
+                      disabled={formStatus === 'loading'}
+                      className="w-full rounded-xl bg-[#4ade80] py-4 font-bold text-black transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {formStatus === 'loading' ? 'Pošiljanje...' : 'Pošlji sporočilo'}
+                    </button>
+                  </>
+                )}
               </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Free Trial Modal */}
+      <AnimatePresence>
+        {isTrialModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsTrialModalOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-[#1e1e1e] p-8 shadow-2xl ring-1 ring-white/10"
+            >
+              <button 
+                onClick={() => setIsTrialModalOpen(false)}
+                className="absolute top-6 right-6 text-gray-500 transition-colors hover:text-white"
+              >
+                <X size={24} />
+              </button>
+
+              <h3 className="mb-2 text-2xl font-bold">Brezplačni preizkus</h3>
+              <p className="mb-8 text-sm text-gray-400">Izpolnite obrazec in začnite loviti oglase še danes.</p>
+              
+              <form 
+                onSubmit={(e) => handleFormSubmit(e, 'trial')}
+                className="space-y-5"
+              >
+                {formStatus === 'success' ? (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-xl bg-green-500/10 p-6 text-center text-green-500 ring-1 ring-green-500/20"
+                  >
+                    <CheckCheck size={32} className="mx-auto mb-3" />
+                    <p className="font-bold">Sporočilo je bilo uspešno poslano!</p>
+                    <p className="mt-1 text-sm opacity-80">Vaš preizkus bo aktiviran v kratkem.</p>
+                  </motion.div>
+                ) : (
+                  <>
+                    <div>
+                      <label className="mb-1.5 block text-sm font-medium text-gray-400">Ime in priimek</label>
+                      <input 
+                        name="full_name"
+                        type="text" 
+                        required
+                        className="w-full rounded-xl bg-white/5 p-3.5 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        placeholder="Janez Novak"
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-1.5 block text-sm font-medium text-gray-400">E-pošta</label>
+                      <input 
+                        name="email"
+                        type="email" 
+                        required
+                        className="w-full rounded-xl bg-white/5 p-3.5 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        placeholder="janez@email.com"
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-1.5 block text-sm font-medium text-gray-400">Telefonska številka (opcijsko)</label>
+                      <input 
+                        name="phone"
+                        type="tel" 
+                        className="w-full rounded-xl bg-white/5 p-3.5 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        placeholder="041 123 456"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="mb-3 block text-sm font-medium text-gray-400">Kateri portali vas zanimajo?</label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {['Bolha', 'Nepremičnine.net', 'Avto.net', 'Willhaben'].map((portal) => (
+                          <label key={portal} className="flex items-center gap-2 cursor-pointer group">
+                            <input 
+                              type="checkbox" 
+                              name="portals" 
+                              value={portal} 
+                              className="h-5 w-5 rounded border-white/10 bg-white/5 text-green-500 focus:ring-green-500 focus:ring-offset-0"
+                            />
+                            <span className="text-sm text-gray-300 group-hover:text-white transition-colors">{portal}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {formStatus === 'error' && (
+                      <p className="text-sm text-red-500 text-center">Prišlo je do napake. Prosimo, poskusite znova.</p>
+                    )}
+                    
+                    <button 
+                      type="submit"
+                      disabled={formStatus === 'loading'}
+                      className="w-full rounded-xl bg-[#4ade80] py-4 font-bold text-black transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {formStatus === 'loading' ? 'Pošiljanje...' : 'Začni brezplačni preizkus'}
+                    </button>
+                  </>
+                )}
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Terms of Service Modal */}
+      <AnimatePresence>
+        {isTosModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsTosModalOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-3xl max-h-[85vh] overflow-hidden rounded-3xl bg-[#1e1e1e] shadow-2xl ring-1 ring-white/10 flex flex-col"
+            >
+              {/* Sticky Header */}
+              <div className="flex items-center justify-between p-8 border-b border-white/5 bg-[#1e1e1e] z-10">
+                <h3 className="text-2xl font-bold">Pogoji poslovanja</h3>
+                <button 
+                  onClick={() => setIsTosModalOpen(false)}
+                  className="text-gray-500 transition-colors hover:text-white"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Scrollable Content */}
+              <div className="p-8 overflow-y-auto custom-scrollbar text-gray-400 space-y-8 leading-relaxed">
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">1. Splošne določbe</h4>
+                  <p>
+                    Dobrodošli na spletni strani Oglasni Radar. Ti pogoji poslovanja določajo pravila in predpise za uporabo naše storitve obveščanja o oglasih. Z dostopom do te spletne strani in uporabo naših storitev potrjujete, da ste prebrali, razumeli in se strinjate s temi pogoji.
+                  </p>
+                </section>
+
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">2. Opis storitve in neodvisnost</h4>
+                  <p>
+                    Oglasni Radar je neodvisno orodje za spremljanje javno dostopnih oglasov na različnih spletnih portalih (kot so Bolha, Avto.net, Willhaben itd.). 
+                  </p>
+                  <ul className="list-disc pl-5 mt-4 space-y-2">
+                    <li>Nismo povezani, pooblaščeni ali kakorkoli uradno povezani z nobenim od zunanjih portalov, ki jih spremljamo.</li>
+                    <li>Vse blagovne znamke in imena portalov so last njihovih lastnikov.</li>
+                    <li>Storitev deluje kot posrednik informacij, ki uporabniku olajša iskanje s pošiljanjem obvestil v realnem času.</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">3. Omejitev odgovornosti</h4>
+                  <p>
+                    Čeprav se trudimo zagotavljati čim hitrejša in natančnejša obvestila, ne moremo jamčiti za:
+                  </p>
+                  <ul className="list-disc pl-5 mt-4 space-y-2">
+                    <li>100% razpoložljivost storitve v vsakem trenutku.</li>
+                    <li>Točnost podatkov v oglasih (za vsebino oglasa je odgovoren prodajalec na izvornem portalu).</li>
+                    <li>Morebitne zamude pri obvestilih zaradi tehničnih težav na strani tretjih ponudnikov (npr. Telegram, spletni oglasniki).</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">4. Politika vračila denarja</h4>
+                  <p>
+                    Pri Oglasnem Radarju želimo, da ste s storitvijo popolnoma zadovoljni, zato ponujamo:
+                  </p>
+                  <ul className="list-disc pl-5 mt-4 space-y-2">
+                    <li><span className="text-white font-medium">Brezplačni preizkus:</span> Vsak nov uporabnik ima možnost 10-dnevnega brezplačnega preizkusa, da se prepriča o delovanju sistema.</li>
+                    <li><span className="text-white font-medium">Vračila:</span> Zaradi narave storitve in razpoložljivosti brezplačnega preizkusa, vračil denarja za že plačana obdobja ne nudimo.</li>
+                    <li><span className="text-white font-medium">Preklic:</span> Naročnino lahko prekličete kadarkoli. Po preklicu bo vaša storitev ostala aktivna do konca trenutno plačanega obdobja.</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">5. Varovanje podatkov</h4>
+                  <p>
+                    Vaše podatke (ime, e-pošta) uporabljamo izključno za namene zagotavljanja storitve in komunikacije z vami. Podatkov ne delimo s tretjimi osebami.
+                  </p>
+                </section>
+
+                <div className="pt-8 border-t border-white/5 text-sm italic">
+                  Zadnja posodobitev: 12. april 2026
+                </div>
+              </div>
             </motion.div>
           </div>
         )}
