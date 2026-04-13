@@ -555,6 +555,14 @@ export default function App() {
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-500">
           <p>© 2026 Oglasni Radar. Vse pravice pridržane.</p>
           <div className="flex gap-8">
+            <a 
+              href="https://billing.stripe.com/p/login/test_7sYeVe7uJ3Yk89I7j6gQE00" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              Upravljanje naročnine
+            </a>
             <button 
               onClick={() => setIsTosModalOpen(true)}
               className="hover:text-white transition-colors"
