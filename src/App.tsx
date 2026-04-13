@@ -74,8 +74,8 @@ export default function App() {
     setFormStatus('loading');
 
     const formData = new FormData(e.currentTarget);
-    // Add Web3Forms Access Key
-    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // Replace with your actual access key from web3forms.com
+    // Web3Forms access key — read from .env.local at build time (VITE_WEB3FORMS_KEY).
+    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_KEY);
     formData.append("subject", `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`);
     formData.append("from_name", "Oglasni Radar");
 
@@ -470,9 +470,9 @@ export default function App() {
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> 1 portal po izbiri</li>
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Telegram obvestila</li>
               </ul>
-              <button className="mt-auto w-full rounded-xl bg-white/5 py-3 font-bold text-white ring-1 ring-white/10 transition-colors hover:bg-white/10">
+              <a href="https://buy.stripe.com/test_7sYeVe7uJ3Yk89I7j6gQE00" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-white/5 py-3 text-center font-bold text-white ring-1 ring-white/10 transition-colors hover:bg-white/10">
                 Izberi paket
-              </button>
+              </a>
             </div>
 
             {/* Card 2: Raziskovalec */}
@@ -487,9 +487,9 @@ export default function App() {
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> VSI portali</li>
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Telegram obvestila</li>
               </ul>
-              <button className="mt-auto w-full rounded-xl bg-white/5 py-3 font-bold text-white ring-1 ring-white/10 transition-colors hover:bg-white/10">
+              <a href="https://buy.stripe.com/test_cNi14oaGV0M861AbzmgQE01" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-white/5 py-3 text-center font-bold text-white ring-1 ring-white/10 transition-colors hover:bg-white/10">
                 Izberi paket
-              </button>
+              </a>
             </div>
 
             {/* Card 3: Pro (Highlighted) */}
@@ -507,9 +507,9 @@ export default function App() {
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> 1 portal po izbiri</li>
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Telegram obvestila</li>
               </ul>
-              <button className="mt-auto w-full rounded-xl bg-green-500 py-3 font-bold text-black transition-transform hover:scale-[1.02] active:scale-[0.98]">
+              <a href="https://buy.stripe.com/test_14A9AU4ix9iE0Hg0UIgQE02" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-green-500 py-3 text-center font-bold text-black transition-transform hover:scale-[1.02] active:scale-[0.98]">
                 Izberi paket
-              </button>
+              </a>
             </div>
 
             {/* Card 4: VIP / Agencija */}
@@ -525,9 +525,9 @@ export default function App() {
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Telegram obvestila</li>
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Prednostna podpora</li>
               </ul>
-              <button className="mt-auto w-full rounded-xl bg-white/5 py-3 font-bold text-white ring-1 ring-white/10 transition-colors hover:bg-white/10">
+              <a href="https://buy.stripe.com/test_14A5kE2ap3Yk0HgdHugQE03" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-white/5 py-3 text-center font-bold text-white ring-1 ring-white/10 transition-colors hover:bg-white/10">
                 Izberi paket
-              </button>
+              </a>
             </div>
           </div>
         </div>
