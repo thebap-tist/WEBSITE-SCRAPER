@@ -92,7 +92,7 @@ export default function App() {
     // ... ostali appendi ...
     formData.set("subject", `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`);
     formData.set("from_name", "Oglasni Radar");
-    
+
     if (formType === 'trial') {
       const selectedPortals = formData.getAll('portals');
       formData.delete('portals');
@@ -118,7 +118,7 @@ export default function App() {
         setIsModalOpen(false);
         setIsTrialModalOpen(false);
         setFormStatus('idle');
-      }, 3000);
+      }, 6000);
     } else {
       setFormStatus('error');
     }
