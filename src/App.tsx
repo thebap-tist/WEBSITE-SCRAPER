@@ -104,21 +104,32 @@ export default function App() {
 
     const data = await response.json();
 
-    if (data.success || data.message === "Form submitted successfully!") {
+    // UPORABI TOLE: Preverimo 'response.ok' (status 200) ALI 'data.success'. 
+    // To bo delovalo, tudi če Web3Forms pošlje sporočilo v kateremkoli jeziku.
+    if (response.ok || data.success === true || data.success === "true") {
       setFormStatus('success');
+      
+      // Resetiramo polja obrazca
       e.currentTarget.reset();
+      
+      // Resetiramo captcha žeton v state-u
       setCaptchaToken(null);
-      // Tukaj lahko dodaš še klic k resetiranju hCaptcha komponente, če želiš
+      
+      // Če uporabljaš hcaptchaRef, ga resetiraj tukaj (opcijsko):
+      // hcaptchaRef.current?.resetCaptcha();
+
       setTimeout(() => {
         setIsModalOpen(false);
         setIsTrialModalOpen(false);
         setFormStatus('idle');
       }, 3000);
     } else {
+      // Če pridemo sem, pomeni, da je strežnik dejansko vrnil napako (npr. 400 ali 500)
       console.error("Web3Forms error details:", data);
       setFormStatus('error');
     }
   } catch (error) {
+    // Če pridemo sem, je težava v povezavi (npr. nimaš interneta)
     console.error("Critical Fetch Error:", error);
     setFormStatus('error');
   }
