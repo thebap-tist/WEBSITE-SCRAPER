@@ -74,6 +74,9 @@ export default function App() {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>, formType: 'contact' | 'trial') => {
   e.preventDefault();
   
+  // 1. TAKOJ shrani referenco na obrazec
+  const form = e.currentTarget;
+
   if (!captchaToken) {
     alert("Prosimo, potrdite, da niste robot.");
     return;
@@ -82,55 +85,38 @@ export default function App() {
   setFormStatus('loading');
 
   try {
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form); // Uporabi 'form' namesto e.currentTarget
     
-    // .set() namesto .append() povozi morebitne podvojene vnose
     formData.set("access_key", import.meta.env.VITE_WEB3FORMS_KEY);
     formData.set("h-captcha-response", captchaToken);
-    
-    formData.set("subject", `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`);
-    formData.set("from_name", "Oglasni Radar");
-
-    if (formType === 'trial') {
-      const selectedPortals = formData.getAll('portals');
-      formData.delete('portals');
-      formData.set('portals', selectedPortals.join(', '));
-    }
+    // ... ostali appendi ...
 
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      body: formData // Pošljemo kot FormData
+      body: formData
     });
 
     const data = await response.json();
 
-    // UPORABI TOLE: Preverimo 'response.ok' (status 200) ALI 'data.success'. 
-    // To bo delovalo, tudi če Web3Forms pošlje sporočilo v kateremkoli jeziku.
-    if (response.ok || data.success === true || data.success === "true") {
+    if (response.ok || data.success) {
       setFormStatus('success');
       
-      // Resetiramo polja obrazca
-      e.currentTarget.reset();
+      // 2. UPORABI 'form' spremenljivko za reset
+      form.reset(); 
       
-      // Resetiramo captcha žeton v state-u
       setCaptchaToken(null);
       
-      // Če uporabljaš hcaptchaRef, ga resetiraj tukaj (opcijsko):
-      // hcaptchaRef.current?.resetCaptcha();
-
       setTimeout(() => {
         setIsModalOpen(false);
         setIsTrialModalOpen(false);
         setFormStatus('idle');
       }, 3000);
     } else {
-      // Če pridemo sem, pomeni, da je strežnik dejansko vrnil napako (npr. 400 ali 500)
-      console.error("Web3Forms error details:", data);
       setFormStatus('error');
     }
   } catch (error) {
-    // Če pridemo sem, je težava v povezavi (npr. nimaš interneta)
-    console.error("Critical Fetch Error:", error);
+    // Zdaj se ta del ne bo več sprožil zaradi "reset" napake!
+    console.error("Critical Error:", error);
     setFormStatus('error');
   }
 };
