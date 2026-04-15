@@ -73,16 +73,29 @@ export default function App() {
     e.preventDefault();
     setFormStatus('loading');
 
+    // 1. Get the form data
     const formData = new FormData(e.currentTarget);
-    // Web3Forms access key — read from .env.local at build time (VITE_WEB3FORMS_KEY).
-    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_KEY);
-    formData.append("subject", `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`);
-    formData.append("from_name", "Oglasni Radar");
+    
+    // 2. Convert it to a JSON object
+    const formObject = Object.fromEntries(formData.entries());
+    
+    // 3. Add our custom fields
+    formObject.subject = `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`;
+    formObject.from_name = "Oglasni Radar";
+    
+    // Fix for multiple checkboxes (portals) in the trial form
+    if (formType === 'trial') {
+      const portals = formData.getAll('portals');
+      formObject.portals = portals.join(', ');
+    }
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      // 4. HERE IS THE NEW FETCH CALL
+      // We removed the VITE_ access_key because it is now added securely in your backend
+      const response = await fetch("/api/submit", {
         method: "POST",
-        body: formData
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formObject)
       });
 
       const data = await response.json();
