@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CheckCheck, Signal, Wifi, Battery, Check, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,6 +57,7 @@ export default function App() {
   const [isTosModalOpen, setIsTosModalOpen] = useState(false);
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const feedRef = useRef<HTMLDivElement>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
@@ -71,16 +73,24 @@ export default function App() {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>, formType: 'contact' | 'trial') => {
     e.preventDefault();
+    
+    // NEW: Check if captcha is solved before continuing
+    if (!captchaToken) {
+      alert("Prosimo, potrdite, da niste robot (Captcha).");
+      return;
+    }
+
     setFormStatus('loading');
 
     const formData = new FormData(e.currentTarget);
     const formObject = Object.fromEntries(formData.entries());
     
-    // 1. Add the public access key back here using VITE_
     formObject.access_key = import.meta.env.VITE_WEB3FORMS_KEY;
-    
     formObject.subject = `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`;
     formObject.from_name = "Oglasni Radar";
+    
+    // NEW: Attach the captcha token to the payload
+    formObject['h-captcha-response'] = captchaToken;
     
     if (formType === 'trial') {
       const portals = formData.getAll('portals');
@@ -88,7 +98,6 @@ export default function App() {
     }
 
     try {
-      // 2. Send directly to Web3Forms again
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { 
@@ -103,6 +112,7 @@ export default function App() {
       if (data.success) {
         setFormStatus('success');
         e.currentTarget.reset();
+        setCaptchaToken(null); // Reset captcha on success
         setTimeout(() => {
           setIsModalOpen(false);
           setIsTrialModalOpen(false);
@@ -664,6 +674,17 @@ export default function App() {
                     {formStatus === 'error' && (
                       <p className="text-sm text-red-500 text-center">Prišlo je do napake. Prosimo, poskusite znova.</p>
                     )}
+
+                    {/* 1. hCaptcha komponenta za kontaktni obrazec */}
+                    <div className="flex justify-center mb-4">
+                      <HCaptcha 
+                        sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2" 
+                        reCaptchaCompat={false}
+                        onVerify={(token) => setCaptchaToken(token)}
+                        theme="dark"
+                      />
+                    </div>
+
                     <button 
                       type="submit"
                       disabled={formStatus === 'loading'}
@@ -774,6 +795,17 @@ export default function App() {
                       <p className="text-sm text-red-500 text-center">Prišlo je do napake. Prosimo, poskusite znova.</p>
                     )}
                     
+                    {/* 1. hCaptcha goes here, right before the button */}
+                    <div className="flex justify-center mb-4">
+                      <HCaptcha 
+                        sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2" 
+                        reCaptchaCompat={false}
+                        onVerify={(token) => setCaptchaToken(token)}
+                        theme="dark"
+                      />
+                    </div>
+                    
+                    {/* 2. Your Submit Button */}
                     <button 
                       type="submit"
                       disabled={formStatus === 'loading'}
