@@ -74,37 +74,37 @@ export default function App() {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>, formType: 'contact' | 'trial') => {
     e.preventDefault();
     
-    // NEW: Check if captcha is solved before continuing
+    // 1. Preveri, če je Captcha rešena
     if (!captchaToken) {
-      alert("Prosimo, potrdite, da niste robot (Captcha).");
+      alert("Prosimo, potrdite, da niste robot.");
       return;
     }
 
     setFormStatus('loading');
 
+    // 2. Namesto formObject uporabi direktno FormData (bolj zanesljivo za Web3Forms)
     const formData = new FormData(e.currentTarget);
-    const formObject = Object.fromEntries(formData.entries());
     
-    formObject.access_key = import.meta.env.VITE_WEB3FORMS_KEY;
-    formObject.subject = `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`;
-    formObject.from_name = "Oglasni Radar";
+    // 3. Dodaj vse potrebne ključe
+    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_KEY);
+    formData.append("subject", `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`);
+    formData.append("from_name", "Oglasni Radar");
     
-    // NEW: Attach the captcha token to the payload
-    formObject['h-captcha-response'] = captchaToken;
-    
+    // 4. NUJNO dodaj žeton Captcha pod tem imenom
+    formData.append("h-captcha-response", captchaToken);
+
+    // 5. Posebna logika za portale (če je trial)
     if (formType === 'trial') {
-      const portals = formData.getAll('portals');
-      formObject.portals = portals.join(', ');
+      const selectedPortals = formData.getAll('portals');
+      formData.delete('portals'); // Odstrani posamezne vnose
+      formData.append('portals', selectedPortals.join(', ')); // Dodaj združene
     }
 
     try {
+      // 6. Pošlji FormData namesto JSON stringa
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(formObject)
+        body: formData // Pošljemo direktno formData
       });
 
       const data = await response.json();
@@ -112,7 +112,7 @@ export default function App() {
       if (data.success) {
         setFormStatus('success');
         e.currentTarget.reset();
-        setCaptchaToken(null); // Reset captcha on success
+        setCaptchaToken(null); // Ponastavi Captcho
         setTimeout(() => {
           setIsModalOpen(false);
           setIsTrialModalOpen(false);
