@@ -104,7 +104,7 @@ export default function App() {
 
     const data = await response.json();
 
-    if (data.success) {
+    if (data.success || data.message === "Form submitted successfully!") {
       setFormStatus('success');
       e.currentTarget.reset();
       setCaptchaToken(null);
