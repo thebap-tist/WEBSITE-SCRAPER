@@ -90,6 +90,14 @@ export default function App() {
     formData.set("access_key", import.meta.env.VITE_WEB3FORMS_KEY);
     formData.set("h-captcha-response", captchaToken);
     // ... ostali appendi ...
+    formData.set("subject", `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`);
+    formData.set("from_name", "Oglasni Radar");
+    
+    if (formType === 'trial') {
+      const selectedPortals = formData.getAll('portals');
+      formData.delete('portals');
+      formData.set('portals', selectedPortals.join(', '));
+    }
 
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
