@@ -571,7 +571,7 @@ export default function App() {
             onClick={() => setIsModalOpen(true)}
             className="group inline-flex items-center gap-2 rounded-full bg-[#4ade80] px-10 py-4 text-lg font-bold text-black transition-all hover:scale-105 hover:shadow-[0_0_30px_-5px_rgba(74,222,128,0.5)] active:scale-95"
           >
-            Pišite mi <span className="transition-transform group-hover:translate-x-1">➔</span>
+            Pišite nam <span className="transition-transform group-hover:translate-x-1">➔</span>
           </button>
         </div>
       </section>
