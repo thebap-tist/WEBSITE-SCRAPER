@@ -72,60 +72,57 @@ export default function App() {
   }, [isModalOpen, isTrialModalOpen, isTosModalOpen]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>, formType: 'contact' | 'trial') => {
-    e.preventDefault();
-    
-    // 1. Preveri, če je Captcha rešena
-    if (!captchaToken) {
-      alert("Prosimo, potrdite, da niste robot.");
-      return;
-    }
+  e.preventDefault();
+  
+  if (!captchaToken) {
+    alert("Prosimo, potrdite, da niste robot.");
+    return;
+  }
 
-    setFormStatus('loading');
+  setFormStatus('loading');
 
-    // 2. Namesto formObject uporabi direktno FormData (bolj zanesljivo za Web3Forms)
+  try {
     const formData = new FormData(e.currentTarget);
     
-    // 3. Dodaj vse potrebne ključe
-    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_KEY);
-    formData.append("subject", `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`);
-    formData.append("from_name", "Oglasni Radar");
+    // .set() namesto .append() povozi morebitne podvojene vnose
+    formData.set("access_key", import.meta.env.VITE_WEB3FORMS_KEY);
+    formData.set("h-captcha-response", captchaToken);
     
-    // 4. NUJNO dodaj žeton Captcha pod tem imenom
-    formData.append("h-captcha-response", captchaToken);
+    formData.set("subject", `Novo povpraševanje: ${formType === 'contact' ? 'Kontakt' : 'Brezplačni preizkus'}`);
+    formData.set("from_name", "Oglasni Radar");
 
-    // 5. Posebna logika za portale (če je trial)
     if (formType === 'trial') {
       const selectedPortals = formData.getAll('portals');
-      formData.delete('portals'); // Odstrani posamezne vnose
-      formData.append('portals', selectedPortals.join(', ')); // Dodaj združene
+      formData.delete('portals');
+      formData.set('portals', selectedPortals.join(', '));
     }
 
-    try {
-      // 6. Pošlji FormData namesto JSON stringa
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData // Pošljemo direktno formData
-      });
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData // Pošljemo kot FormData
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (data.success) {
-        setFormStatus('success');
-        e.currentTarget.reset();
-        setCaptchaToken(null); // Ponastavi Captcho
-        setTimeout(() => {
-          setIsModalOpen(false);
-          setIsTrialModalOpen(false);
-          setFormStatus('idle');
-        }, 3000);
-      } else {
-        setFormStatus('error');
-      }
-    } catch (error) {
-      console.error("Form submission error:", error);
+    if (data.success) {
+      setFormStatus('success');
+      e.currentTarget.reset();
+      setCaptchaToken(null);
+      // Tukaj lahko dodaš še klic k resetiranju hCaptcha komponente, če želiš
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setIsTrialModalOpen(false);
+        setFormStatus('idle');
+      }, 3000);
+    } else {
+      console.error("Web3Forms error details:", data);
       setFormStatus('error');
     }
-  };
+  } catch (error) {
+    console.error("Critical Fetch Error:", error);
+    setFormStatus('error');
+  }
+};
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
