@@ -531,6 +531,7 @@ export default function App() {
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Osveževanje na 3 minute</li>
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> 1 portal po izbiri</li>
                 <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Telegram obvestila</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Prednostna podpora</li>
               </ul>
               <a href="https://buy.stripe.com/test_14A9AU4ix9iE0Hg0UIgQE02" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-green-500 py-3 text-center font-bold text-black transition-transform hover:scale-[1.02] active:scale-[0.98]">
                 Izberi paket
