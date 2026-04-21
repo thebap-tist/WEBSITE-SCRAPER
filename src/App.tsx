@@ -563,6 +563,16 @@ export default function App() {
               </a>
             </div>
           </div>
+          <div className="flex justify-center mt-10">
+            <a
+              href="https://billing.stripe.com/p/login/test_7sYeVe7uJ3Yk89I7j6gQE00"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-gray-400 hover:text-white transition-colors border border-white/10 rounded-xl px-5 py-2 hover:border-white/20"
+            >
+              Že naročnik? Upravljaj naročnino →
+            </a>
+          </div>
         </div>
       </section>
 
