@@ -1080,8 +1080,8 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <Analytics />
-      <SpeedInsights />
+      {cookieConsent === true && <Analytics />}
+      {cookieConsent === true && <SpeedInsights />}
     </div>
   );
 }
