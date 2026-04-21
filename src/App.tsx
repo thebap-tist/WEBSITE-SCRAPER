@@ -190,9 +190,9 @@ export default function App() {
       {/* Navbar */}
       <nav className={`fixed top-0 left-0 right-0 z-50 bg-[#0f1115]/80 backdrop-blur-md border-b border-white/5 transition-transform duration-1000 ${navVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="flex items-center justify-between px-6 py-4">
-          <span className="text-lg font-black tracking-tighter">
+          <a href="#" onClick={() => { navLinkClicked.current = true; }} className="text-lg font-black tracking-tighter hover:opacity-80 transition-opacity">
             Oglasni <span className="text-green-500">Radar</span>
-          </span>
+          </a>
           <div className="hidden md:flex items-center gap-8 text-sm text-gray-400">
             {[
               { href: '#kako-deluje', label: 'Kako deluje' },
