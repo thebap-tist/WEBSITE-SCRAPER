@@ -5,6 +5,7 @@ import { CheckCheck, Signal, Wifi, Battery, Check, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -915,6 +916,7 @@ export default function App() {
         )}
       </AnimatePresence>
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
