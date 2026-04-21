@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef, useState, FormEvent, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CheckCheck, Signal, Wifi, Battery, Check, X } from 'lucide-react';
+import { CheckCheck, Signal, Wifi, Battery, Check, X, Menu } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { Analytics } from '@vercel/analytics/react';
@@ -59,6 +59,7 @@ export default function App() {
   const [isTosModalOpen, setIsTosModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(() => {
     const stored = localStorage.getItem('cookie-consent');
     return stored === null ? null : stored === 'true';
@@ -150,7 +151,7 @@ export default function App() {
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top top",
+          start: "top 64px",
           end: "bottom bottom",
           scrub: 1,
         },
@@ -162,8 +163,66 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0f1115] text-white selection:bg-green-500/30">
+      {/* Navbar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0f1115]/80 backdrop-blur-md border-b border-white/5">
+        <div className="flex items-center justify-between px-6 py-4">
+          <span className="text-lg font-black tracking-tighter">
+            Oglasni <span className="text-green-500">Radar</span>
+          </span>
+          <div className="hidden md:flex items-center gap-8 text-sm text-gray-400">
+            <a href="#kako-deluje" className="hover:text-white transition-colors">Kako deluje</a>
+            <a href="#portali" className="hover:text-white transition-colors">Portali</a>
+            <a href="#preizkus" className="hover:text-white transition-colors">Preizkus</a>
+            <a href="#cenik" className="hover:text-white transition-colors">Cenik</a>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="rounded-full bg-green-500 px-5 py-2 text-sm font-bold text-black hover:bg-green-400 transition-colors"
+            >
+              Pišite nam
+            </button>
+            <button
+              onClick={() => setIsMobileMenuOpen(prev => !prev)}
+              className="md:hidden text-gray-400 hover:text-white transition-colors"
+            >
+              {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
+        </div>
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden overflow-hidden border-t border-white/5"
+            >
+              <div className="flex flex-col items-end px-6 py-4 gap-5 text-sm text-gray-400">
+                {[
+                  { href: '#kako-deluje', label: 'Kako deluje' },
+                  { href: '#portali', label: 'Portali' },
+                  { href: '#preizkus', label: 'Preizkus' },
+                  { href: '#cenik', label: 'Cenik' },
+                ].map(({ href, label }) => (
+                  <a
+                    key={href}
+                    href={href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="hover:text-white transition-colors"
+                  >
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+
       {/* Hero / Intro Section */}
-      <section className="flex h-[80vh] flex-col items-center justify-center px-6 text-center">
+      <section className="flex h-[80vh] flex-col items-center justify-center px-6 text-center pt-16">
         <h1 className="mb-6 text-5xl font-black tracking-tighter md:text-7xl">
           Oglasni <span className="text-green-500">Radar</span>
         </h1>
@@ -179,7 +238,7 @@ export default function App() {
       {/* Main Animation Section */}
       <section ref={containerRef} className="relative h-[250vh] w-full">
         {/* Sticky Container */}
-        <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
+        <div className="sticky top-16 flex h-[calc(100vh-4rem)] w-full items-center justify-center overflow-hidden">
           
           {/* Background Glows */}
           <div className="absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-500/10 blur-[120px]" />
@@ -313,7 +372,7 @@ export default function App() {
       </section>
 
       {/* Kako deluje Section */}
-      <section className="bg-[#0a0a0a] py-24 px-6">
+      <section id="kako-deluje" className="bg-[#0a0a0a] py-24 px-6">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl">Kako deluje</h2>
           <div className="grid gap-12 md:grid-cols-3">
@@ -345,49 +404,6 @@ export default function App() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Podprti portali Section */}
-      <section className="bg-[#0f1115] py-24 px-6 border-y border-white/5">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl">Podprti portali</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 md:gap-6">
-            {[
-              { name: 'Bolha.com', desc: 'Splošni oglasi', color: '#9b2c2c', initial: 'B', flag: '🇸🇮' },
-              { name: 'Facebook', desc: 'Marketplace', color: '#3b5998', initial: 'f', flag: '🇸🇮' },
-              { name: 'Nepremičnine', desc: 'Nepremičnine', color: '#b7791f', initial: 'N', flag: '🇸🇮' },
-              { name: 'Avto.net', desc: 'Vozila', color: '#2d3748', initial: 'A', flag: '🇸🇮' },
-              { name: 'Willhaben', desc: 'Avstrijski trg', color: '#2f6f4e', initial: 'W', flag: '🇦🇹' },
-              { name: 'Mercatino', desc: 'Italijanski trg', color: '#008C45', initial: 'M', flag: '🇮🇹' },
-            ].map((portal) => (
-              <div 
-                key={portal.name} 
-                className="group relative flex flex-col rounded-2xl bg-white/5 p-5 transition-all duration-300 hover:bg-white/10 hover:-translate-y-1 ring-1 ring-white/10 overflow-hidden"
-              >
-                <div className="mb-4 flex items-center justify-between">
-                  <div 
-                    className="flex h-12 w-12 items-center justify-center rounded-xl text-xl font-black text-white shadow-lg"
-                    style={{ backgroundColor: portal.color }}
-                  >
-                    {portal.initial}
-                  </div>
-                  <span className="text-xl grayscale group-hover:grayscale-0 transition-all">{portal.flag}</span>
-                </div>
-                <h3 className="text-lg font-bold text-white">{portal.name}</h3>
-                <p className="text-sm text-gray-500">{portal.desc}</p>
-                
-                {/* Bottom Accent Line */}
-                <div 
-                  className="absolute bottom-0 left-0 h-1 w-full opacity-50 transition-opacity group-hover:opacity-100"
-                  style={{ backgroundColor: portal.color }}
-                />
-              </div>
-            ))}
-          </div>
-          <p className="mt-16 text-center text-gray-500">
-            Iščete na drugem portalu? <span className="text-green-500 font-medium">Pišite nam</span> — sistem je razširljiv.
-          </p>
         </div>
       </section>
 
@@ -460,8 +476,49 @@ export default function App() {
         </div>
       </section>
 
+      {/* Podprti portali Section */}
+      <section id="portali" className="bg-[#0f1115] py-24 px-6 border-y border-white/5">
+        <div className="mx-auto max-w-7xl">
+          <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl">Podprti portali</h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 md:gap-6">
+            {[
+              { name: 'Bolha.com', desc: 'Splošni oglasi', color: '#9b2c2c', initial: 'B', flag: '🇸🇮' },
+              { name: 'Facebook', desc: 'Marketplace', color: '#3b5998', initial: 'f', flag: '🇸🇮' },
+              { name: 'Nepremičnine', desc: 'Nepremičnine', color: '#b7791f', initial: 'N', flag: '🇸🇮' },
+              { name: 'Avto.net', desc: 'Vozila', color: '#2d3748', initial: 'A', flag: '🇸🇮' },
+              { name: 'Willhaben', desc: 'Avstrijski trg', color: '#2f6f4e', initial: 'W', flag: '🇦🇹' },
+              { name: 'Mercatino', desc: 'Italijanski trg', color: '#008C45', initial: 'M', flag: '🇮🇹' },
+            ].map((portal) => (
+              <div
+                key={portal.name}
+                className="group relative flex flex-col rounded-2xl bg-white/5 p-5 transition-all duration-300 hover:bg-white/10 hover:-translate-y-1 ring-1 ring-white/10 overflow-hidden"
+              >
+                <div className="mb-4 flex items-center justify-between">
+                  <div
+                    className="flex h-12 w-12 items-center justify-center rounded-xl text-xl font-black text-white shadow-lg"
+                    style={{ backgroundColor: portal.color }}
+                  >
+                    {portal.initial}
+                  </div>
+                  <span className="text-xl grayscale group-hover:grayscale-0 transition-all">{portal.flag}</span>
+                </div>
+                <h3 className="text-lg font-bold text-white">{portal.name}</h3>
+                <p className="text-sm text-gray-500">{portal.desc}</p>
+                <div
+                  className="absolute bottom-0 left-0 h-1 w-full opacity-50 transition-opacity group-hover:opacity-100"
+                  style={{ backgroundColor: portal.color }}
+                />
+              </div>
+            ))}
+          </div>
+          <p className="mt-16 text-center text-gray-500">
+            Iščete na drugem portalu? <span className="text-green-500 font-medium">Pišite nam</span> — sistem je razširljiv.
+          </p>
+        </div>
+      </section>
+
       {/* Začni brezplačno Section */}
-      <section className="bg-[#0f1115] py-24 px-6">
+      <section id="preizkus" className="bg-[#0f1115] py-24 px-6">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl">Začni brezplačno</h2>
           <div className="flex justify-center">
@@ -488,7 +545,7 @@ export default function App() {
       </section>
 
       {/* Cenik Section */}
-      <section className="bg-[#0a0a0a] py-24 px-6">
+      <section id="cenik" className="bg-[#0a0a0a] py-24 px-6">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl">Cenik</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
