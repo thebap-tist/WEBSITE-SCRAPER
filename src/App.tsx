@@ -57,6 +57,11 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
   const [isTosModalOpen, setIsTosModalOpen] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [cookieConsent, setCookieConsent] = useState<boolean | null>(() => {
+    const stored = localStorage.getItem('cookie-consent');
+    return stored === null ? null : stored === 'true';
+  });
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -66,12 +71,12 @@ export default function App() {
 
   // Prevent body scroll when modal is open
   useEffect(() => {
-    if (isModalOpen || isTrialModalOpen || isTosModalOpen) {
+    if (isModalOpen || isTrialModalOpen || isTosModalOpen || isPrivacyModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [isModalOpen, isTrialModalOpen, isTosModalOpen]);
+  }, [isModalOpen, isTrialModalOpen, isTosModalOpen, isPrivacyModalOpen]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>, formType: 'contact' | 'trial') => {
   e.preventDefault();
@@ -591,11 +596,17 @@ export default function App() {
             >
               Upravljanje naročnine
             </a>
-            <button 
+            <button
               onClick={() => setIsTosModalOpen(true)}
               className="hover:text-white transition-colors"
             >
               Pogoji poslovanja
+            </button>
+            <button
+              onClick={() => setIsPrivacyModalOpen(true)}
+              className="hover:text-white transition-colors"
+            >
+              Politika zasebnosti
             </button>
           </div>
         </div>
@@ -915,6 +926,149 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
+      {/* Privacy Policy Modal */}
+      <AnimatePresence>
+        {isPrivacyModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsPrivacyModalOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-3xl max-h-[85vh] overflow-hidden rounded-3xl bg-[#1e1e1e] shadow-2xl ring-1 ring-white/10 flex flex-col"
+            >
+              <div className="flex items-center justify-between p-8 border-b border-white/5 bg-[#1e1e1e] z-10">
+                <h3 className="text-2xl font-bold">Politika zasebnosti</h3>
+                <button
+                  onClick={() => setIsPrivacyModalOpen(false)}
+                  className="text-gray-500 transition-colors hover:text-white"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              <div className="p-8 overflow-y-auto custom-scrollbar text-gray-400 space-y-8 leading-relaxed">
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">1. Upravljavec podatkov</h4>
+                  <p>
+                    Upravljavec osebnih podatkov je Oglasni Radar. Za vprašanja v zvezi z zasebnostjo nas kontaktirajte prek kontaktnega obrazca na spletni strani.
+                  </p>
+                </section>
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">2. Kateri podatki se zbirajo</h4>
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li><span className="text-white font-medium">Ime in e-poštni naslov</span> — ob izpolnitvi kontaktnega obrazca ali prijavi na brezplačni preizkus.</li>
+                    <li><span className="text-white font-medium">Podatki o uporabi</span> — anonimni podatki o obisku (strani, naprava, država) prek Vercel Analytics.</li>
+                    <li><span className="text-white font-medium">Podatki o zmogljivosti</span> — anonimni podatki o hitrosti nalaganja prek Vercel Speed Insights.</li>
+                  </ul>
+                </section>
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">3. Namen obdelave</h4>
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li>Zagotavljanje in izboljševanje storitve Oglasni Radar.</li>
+                    <li>Komunikacija z uporabniki (odgovori na povpraševanja, obvestila o storitvi).</li>
+                    <li>Analiza uporabe spletne strani za namen izboljšav (anonimizirano).</li>
+                  </ul>
+                </section>
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">4. Pravna podlaga (GDPR)</h4>
+                  <p>
+                    Obdelava podatkov temelji na vaši privolitvi (čl. 6(1)(a) GDPR) in na zakonitih interesih upravljavca za zagotavljanje storitve (čl. 6(1)(f) GDPR).
+                  </p>
+                </section>
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">5. Hramba podatkov</h4>
+                  <p>
+                    Osebne podatke hranimo le toliko časa, kolikor je potrebno za namen, za katerega so bili zbrani, oziroma dokler ne prekličete privolitve. Analitični podatki so anonimizirani in se ne vežejo na posameznika.
+                  </p>
+                </section>
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">6. Posredovanje podatkov tretjim osebam</h4>
+                  <p>Vaših osebnih podatkov ne prodajamo. Podatki se posredujejo izključno:</p>
+                  <ul className="list-disc pl-5 mt-4 space-y-2">
+                    <li><span className="text-white font-medium">Web3Forms</span> — za dostavo sporočil iz kontaktnih obrazcev.</li>
+                    <li><span className="text-white font-medium">Vercel</span> — za gostovanje spletne strani in anonimno analitiko.</li>
+                    <li><span className="text-white font-medium">Stripe</span> — za obdelavo plačil (samo ob nakupu naročnine).</li>
+                  </ul>
+                </section>
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">7. Vaše pravice</h4>
+                  <p>V skladu z GDPR imate pravico do:</p>
+                  <ul className="list-disc pl-5 mt-4 space-y-2">
+                    <li>dostopa do svojih osebnih podatkov,</li>
+                    <li>popravka netočnih podatkov,</li>
+                    <li>izbrisa podatkov ("pravica do pozabe"),</li>
+                    <li>omejitve obdelave,</li>
+                    <li>prenosljivosti podatkov,</li>
+                    <li>ugovora obdelavi.</li>
+                  </ul>
+                  <p className="mt-4">Za uveljavljanje pravic nas kontaktirajte prek kontaktnega obrazca.</p>
+                </section>
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">8. Piškotki</h4>
+                  <p>
+                    Spletna stran uporablja tehnične piškotke, potrebne za delovanje strani, ter analitične piškotke prek Vercel Analytics za anonimno merjenje obiska. Piškotki ne vsebujejo osebno določljivih podatkov.
+                  </p>
+                </section>
+                <div className="pt-8 border-t border-white/5 text-sm italic">
+                  Zadnja posodobitev: 17. april 2026
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Cookie Consent Banner */}
+      <AnimatePresence>
+        {cookieConsent === null && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ delay: 1 }}
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] w-full max-w-xl px-4"
+          >
+            <div className="bg-[#1e1e1e] ring-1 ring-white/10 rounded-2xl p-5 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <p className="text-sm text-gray-400 flex-1">
+                Uporabljamo analitične piškotke za izboljšanje storitve.{' '}
+                <button
+                  onClick={() => setIsPrivacyModalOpen(true)}
+                  className="text-green-400 hover:underline"
+                >
+                  Več info
+                </button>
+              </p>
+              <div className="flex gap-3 shrink-0">
+                <button
+                  onClick={() => {
+                    localStorage.setItem('cookie-consent', 'false');
+                    setCookieConsent(false);
+                  }}
+                  className="px-4 py-2 text-sm rounded-xl text-gray-400 hover:text-white ring-1 ring-white/10 hover:ring-white/20 transition-colors"
+                >
+                  Zavrni
+                </button>
+                <button
+                  onClick={() => {
+                    localStorage.setItem('cookie-consent', 'true');
+                    setCookieConsent(true);
+                  }}
+                  className="px-4 py-2 text-sm rounded-xl bg-green-500 hover:bg-green-400 text-black font-semibold transition-colors"
+                >
+                  Sprejmi
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <Analytics />
       <SpeedInsights />
     </div>
