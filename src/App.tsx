@@ -582,9 +582,10 @@ export default function App() {
           <h2 className="mb-6 text-4xl font-bold md:text-5xl leading-tight">
             Pripravljeni, da ujamete naslednji oglas pred vsemi?
           </h2>
-          <p className="mb-10 text-xl text-gray-400">
-            Povejte mi, kaj iščete, in skupaj bova nastavila vaš osebni radar. Odgovorim še isti dan!
-          </p>
+          <p className="mb-10 text-xl text-gray-400 text-center">
+  Povejte nam, kaj iščete, in skupaj bomo nastavili vaš osebni radar. <br />
+  Odgovorimo še isti dan!
+</p>
           <button 
             onClick={() => setIsModalOpen(true)}
             className="group inline-flex items-center gap-2 rounded-full bg-[#4ade80] px-10 py-4 text-lg font-bold text-black transition-all hover:scale-105 hover:shadow-[0_0_30px_-5px_rgba(74,222,128,0.5)] active:scale-95"
