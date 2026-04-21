@@ -39,7 +39,7 @@ const MessageCard = ({ platform, title, price, location, time, color, emoji, lin
       {/* Details */}
       <div className="space-y-1 text-[13px] text-white/90">
         <p><span className="font-bold">Naziv:</span> {title}</p>
-        <p><span className="text-green-400">💰</span> <span className="font-bold">Cena:</span> {price}</p>
+        <p><span className="text-[#c9843d]">💰</span> <span className="font-bold">Cena:</span> {price}</p>
         <p><span className="text-red-400">📍</span> {location}</p>
         <p><span className="text-blue-400">🔗</span> <span className="text-blue-400 underline decoration-blue-400/30 underline-offset-2">{link}</span></p>
       </div>
@@ -47,7 +47,7 @@ const MessageCard = ({ platform, title, price, location, time, color, emoji, lin
       {/* Footer */}
       <div className="mt-2 flex items-center justify-end gap-1 text-[10px] text-white/40">
         <span>{time}</span>
-        <CheckCheck size={12} className="text-green-500" />
+        <CheckCheck size={12} className="text-[#b87333]" />
       </div>
     </div>
   );
@@ -186,12 +186,13 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0f1115] text-white selection:bg-green-500/30">
+    <div className="min-h-screen bg-[#111113] text-white selection:bg-[#b87333]/30">
+
       {/* Navbar */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 bg-[#0f1115]/80 backdrop-blur-md border-b border-white/5 transition-transform duration-1000 ${navVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 bg-[#111113]/80 backdrop-blur-md border-b border-white/5 transition-transform duration-1000 ${navVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="flex items-center justify-between px-6 py-4">
           <a href="#" onClick={() => { navLinkClicked.current = true; }} className="text-lg font-black tracking-tighter hover:opacity-80 transition-opacity">
-            Oglasni <span className="text-green-500">Radar</span>
+            Oglasni <span className="text-[#b87333]">Radar</span>
           </a>
           <div className="hidden md:flex items-center gap-8 text-sm text-gray-400">
             {[
@@ -214,7 +215,7 @@ export default function App() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="rounded-full bg-green-500 px-5 py-2 text-sm font-bold text-black hover:bg-green-400 transition-colors"
+              className="rounded-full bg-[#b87333] px-5 py-2 text-sm font-bold text-black hover:bg-[#c9843d] transition-colors"
             >
               Pišite nam
             </button>
@@ -259,7 +260,7 @@ export default function App() {
       {/* Hero / Intro Section */}
       <section className="flex h-[80vh] flex-col items-center justify-center px-6 text-center pt-16">
         <h1 className="mb-6 text-5xl font-black tracking-tighter md:text-7xl">
-          Oglasni <span className="text-green-500">Radar</span>
+          Oglasni <span className="bg-gradient-to-r from-[#b87333] via-[#e8a85f] to-[#b87333] bg-clip-text text-transparent">Radar</span>
         </h1>
         <p className="max-w-xl text-lg text-gray-400 md:text-xl">
           Prejemajte obvestila o novih oglasih v realnem času neposredno v vaš Telegram. 
@@ -276,7 +277,7 @@ export default function App() {
         <div className="sticky top-16 flex h-[calc(100vh-4rem)] w-full items-center justify-center overflow-hidden">
           
           {/* Background Glows */}
-          <div className="absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-500/10 blur-[120px]" />
+          <div className="absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#b87333]/10 blur-[120px]" />
           <div className="absolute left-1/4 top-1/3 -z-10 h-[300px] w-[300px] rounded-full bg-blue-500/5 blur-[100px]" />
 
           {/* iPhone Mockup Wrapper for Scaling */}
@@ -284,7 +285,7 @@ export default function App() {
             {/* iPhone Mockup */}
             <div 
               ref={phoneRef}
-              className="relative h-[720px] w-[350px] rounded-[55px] border-[12px] border-[#1a1a1a] bg-[#0a0a0a] shadow-[0_0_0_2px_#2a2a2a,0_40px_100px_-20px_rgba(0,0,0,0.8)]"
+              className="relative h-[720px] w-[350px] rounded-[55px] border-[12px] border-[#1a1a1a] bg-[#111113] shadow-[0_0_0_2px_#2a2a2a,0_40px_100px_-20px_rgba(0,0,0,0.8)]"
             >
             {/* Dynamic Island */}
             <div className="absolute left-1/2 top-4 z-50 h-7 w-28 -translate-x-1/2 rounded-full bg-black" />
@@ -303,14 +304,14 @@ export default function App() {
             <div className="absolute inset-0 overflow-hidden rounded-[43px] bg-[#0e1621]">
               {/* App Header */}
               <div className="absolute left-0 top-0 z-40 flex w-full items-center gap-3 bg-[#17212b]/95 px-5 pb-3 pt-14 backdrop-blur-md">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500 text-[14px] font-bold text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#b87333] text-[14px] font-bold text-white">
                   OR
                 </div>
                 <div>
                   <h3 className="text-[15px] font-bold leading-tight">Oglasni Radar</h3>
                   <div className="flex items-center gap-1.5">
-                    <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                    <span className="text-[12px] text-green-500">v spletu</span>
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#b87333]" />
+                    <span className="text-[12px] text-[#b87333]">v spletu</span>
                   </div>
                 </div>
               </div>
@@ -393,7 +394,7 @@ export default function App() {
                 </div>
               </div>
               <div className="flex items-center gap-3 rounded-xl bg-white/5 p-4 ring-1 ring-white/10">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/20 text-green-500">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#b87333]/20 text-[#b87333]">
                   <CheckCheck size={20} />
                 </div>
                 <div>
@@ -406,22 +407,23 @@ export default function App() {
         </div>
       </section>
 
+      <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#b87333]/40 to-transparent" /></div>
       {/* Kako deluje Section */}
-      <section id="kako-deluje" className="bg-[#0a0a0a] py-24 px-6">
+      <section id="kako-deluje" className="bg-[#111113] py-24 px-6">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl">Kako deluje</h2>
           <div className="grid gap-12 md:grid-cols-3">
             <div className="group relative">
-              <span className="font-mono text-8xl font-black text-white/5 transition-colors group-hover:text-green-500/10">01</span>
+              <span className="font-mono text-8xl font-black text-white/5 transition-colors group-hover:text-[#b87333]/10">01</span>
               <div className="absolute top-12 left-0">
                 <h3 className="mb-3 text-xl font-bold">Povejte, kaj iščete</h3>
                 <p className="text-gray-400">
-                  Sporočite nam portal, ključne besede, lokacijo in cenovni razpon. Primer: <span className="italic text-green-500/80">"Woom kolo na Bolhi pod 250 €."</span>
+                  Sporočite nam portal, ključne besede, lokacijo in cenovni razpon. Primer: <span className="italic text-[#b87333]/80">"Woom kolo na Bolhi pod 250 €."</span>
                 </p>
               </div>
             </div>
             <div className="group relative">
-              <span className="font-mono text-8xl font-black text-white/5 transition-colors group-hover:text-green-500/10">02</span>
+              <span className="font-mono text-8xl font-black text-white/5 transition-colors group-hover:text-[#b87333]/10">02</span>
               <div className="absolute top-12 left-0">
                 <h3 className="mb-3 text-xl font-bold">Nastavimo vaš radar</h3>
                 <p className="text-gray-400">
@@ -430,7 +432,7 @@ export default function App() {
               </div>
             </div>
             <div className="group relative">
-              <span className="font-mono text-8xl font-black text-white/5 transition-colors group-hover:text-green-500/10">03</span>
+              <span className="font-mono text-8xl font-black text-white/5 transition-colors group-hover:text-[#b87333]/10">03</span>
               <div className="absolute top-12 left-0">
                 <h3 className="mb-3 text-xl font-bold">Prejmete obvestilo</h3>
                 <p className="text-gray-400">
@@ -442,12 +444,13 @@ export default function App() {
         </div>
       </section>
 
+      <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#b87333]/40 to-transparent" /></div>
       {/* Telegram obvestila Section */}
       <section className="py-24 px-6">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
             <div>
-              <h2 className="mb-2 text-green-500 font-bold uppercase tracking-wider">Telegram obvestila</h2>
+              <h2 className="mb-2 text-[#b87333] font-bold uppercase tracking-wider">Telegram obvestila</h2>
               <h3 className="mb-6 text-4xl font-bold md:text-5xl">Oglasi pridejo k vam.</h3>
               <p className="mb-10 text-xl text-gray-400">
                 Vsako obvestilo vsebuje fotografijo, naziv, ceno, lokacijo, čas objave in direktno povezavo.
@@ -460,7 +463,7 @@ export default function App() {
                   "Brez duplikatov — nikoli istega oglasa dvakrat"
                 ].map((feature, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500/20 text-green-500">
+                    <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#b87333]/20 text-[#b87333]">
                       <Check size={12} strokeWidth={3} />
                     </div>
                     <span className="text-gray-300">{feature}</span>
@@ -468,13 +471,10 @@ export default function App() {
                 ))}
               </ul>
             </div>
-            <div className="relative flex items-center justify-center rounded-3xl bg-gradient-to-br from-green-500/10 to-blue-500/10 p-4 sm:p-8 ring-1 ring-white/10">
-              <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                <div className="h-64 w-64 rounded-full bg-green-500/20 blur-[80px]" />
-              </div>
-              <div className="relative w-full max-w-[360px] rounded-2xl bg-[#17212b] p-4 sm:p-6 shadow-2xl ring-1 ring-white/10">
+            <div className="flex items-center justify-center">
+              <div className="w-full max-w-[360px] rounded-2xl bg-[#17212b] p-4 sm:p-6 shadow-2xl ring-1 ring-white/10">
                 <div className="mb-4 flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-green-500 flex items-center justify-center font-bold text-white shadow-lg shadow-green-500/20">OR</div>
+                  <div className="h-10 w-10 rounded-full bg-[#b87333] flex items-center justify-center font-bold text-white shadow-lg shadow-[#b87333]/20">OR</div>
                   <div>
                     <p className="text-[15px] font-bold leading-tight">Oglasni Radar</p>
                   </div>
@@ -492,7 +492,7 @@ export default function App() {
                     <p className="font-bold text-white mb-2">🔵🔵🔵 NOV AVTO.NET OGLAS! 🔵🔵🔵</p>
                     <div className="space-y-1 text-gray-200">
                       <p><span className="font-bold text-white">Naziv:</span> VW Golf 7 1.6 TDI, Highline</p>
-                      <p><span className="text-green-400">💰</span> <span className="font-bold text-white">Cena:</span> 11.500 €</p>
+                      <p><span className="text-[#c9843d]">💰</span> <span className="font-bold text-white">Cena:</span> 11.500 €</p>
                       <p><span className="text-red-400">📍</span> <span className="font-bold text-white">Lokacija:</span> Celje, Slovenija</p>
                       <p><span className="text-blue-400">🕒</span> <span className="font-bold text-white">Objavljeno:</span> 14:41 — 12.04.2026</p>
                       <p className="mt-2">
@@ -511,8 +511,9 @@ export default function App() {
         </div>
       </section>
 
+      <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#b87333]/40 to-transparent" /></div>
       {/* Podprti portali Section */}
-      <section id="portali" className="bg-[#0f1115] py-24 px-6 border-y border-white/5">
+      <section id="portali" className="bg-[#111113] py-24 px-6 border-y border-white/5">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl">Podprti portali</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 md:gap-6">
@@ -526,7 +527,7 @@ export default function App() {
             ].map((portal) => (
               <div
                 key={portal.name}
-                className="group relative flex flex-col rounded-2xl bg-white/5 p-5 transition-all duration-300 hover:bg-white/10 hover:-translate-y-1 ring-1 ring-white/10 overflow-hidden"
+                className="gradient-border group relative flex flex-col rounded-2xl bg-[#18181b] p-5 transition-all duration-300 hover:bg-white/5 hover:-translate-y-1 overflow-hidden"
               >
                 <div className="mb-4 flex items-center justify-between">
                   <div
@@ -547,30 +548,31 @@ export default function App() {
             ))}
           </div>
           <p className="mt-16 text-center text-gray-500">
-            Iščete na drugem portalu? <span className="text-green-500 font-medium">Pišite nam</span> — sistem je razširljiv.
+            Iščete na drugem portalu? <span className="text-[#b87333] font-medium">Pišite nam</span> — sistem je razširljiv.
           </p>
         </div>
       </section>
 
+      <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#b87333]/40 to-transparent" /></div>
       {/* Začni brezplačno Section */}
-      <section id="preizkus" className="bg-[#0f1115] py-24 px-6">
+      <section id="preizkus" className="bg-[#111113] py-24 px-6">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl">Začni brezplačno</h2>
           <div className="flex justify-center">
-            <div className="flex w-full max-w-sm flex-col rounded-3xl bg-[#151619] p-8 ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] hover:ring-white/20">
+            <div className="flex w-full max-w-sm flex-col rounded-3xl bg-[#18181b] p-8 ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] hover:ring-white/20">
               <h3 className="mb-2 text-xl font-bold">Preizkus (Free-trial)</h3>
               <div className="mb-6">
                 <span className="text-3xl font-bold">0 €</span>
                 <span className="text-gray-500 text-sm"> / 10 dni</span>
               </div>
               <ul className="mb-8 space-y-4 text-sm text-gray-400">
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Osveževanje na 3 minute</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> VSI portali po izbiri</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Telegram obvestila</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Osveževanje na 3 minute</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> VSI portali po izbiri</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Telegram obvestila</li>
               </ul>
               <button 
                 onClick={() => setIsTrialModalOpen(true)}
-                className="mt-auto w-full rounded-xl bg-green-500 py-3 font-bold text-white transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                className="mt-auto w-full rounded-xl bg-[#b87333] py-3 font-bold text-white transition-transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 Preizkusi brezplačno
               </button>
@@ -579,48 +581,49 @@ export default function App() {
         </div>
       </section>
 
+      <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#b87333]/40 to-transparent" /></div>
       {/* Cenik Section */}
-      <section id="cenik" className="bg-[#0a0a0a] py-24 px-6">
+      <section id="cenik" className="bg-[#111113] py-24 px-6">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl">Cenik</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {/* Card 1: Začetnik */}
-            <div className="flex flex-col rounded-3xl bg-[#151619] p-8 ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] hover:ring-white/20">
+            <div className="gradient-border flex flex-col rounded-3xl bg-[#18181b] p-8 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]">
               <h3 className="mb-2 text-xl font-bold">Začetnik</h3>
               <div className="mb-6">
                 <span className="text-3xl font-bold">10 €</span>
                 <span className="text-gray-500 text-sm"> / mesec</span>
               </div>
               <ul className="mb-8 space-y-4 text-sm text-gray-400">
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Osveževanje na 60 minut</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> 1 portal po izbiri</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Telegram obvestila</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Osveževanje na 60 minut</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> 1 portal po izbiri</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Telegram obvestila</li>
               </ul>
-              <a href="https://buy.stripe.com/test_7sYeVe7uJ3Yk89I7j6gQE00" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-white/5 py-3 text-center font-bold text-white ring-1 ring-white/10 transition-colors hover:bg-white/10">
+              <a href="https://buy.stripe.com/test_7sYeVe7uJ3Yk89I7j6gQE00" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-white/5 py-3 text-center font-bold text-white ring-1 ring-white/10 transition-all hover:scale-105 hover:bg-[#b87333]/20 hover:text-[#c9843d] hover:ring-[#b87333]/40 active:scale-95">
                 Izberi paket
               </a>
             </div>
 
             {/* Card 2: Raziskovalec */}
-            <div className="flex flex-col rounded-3xl bg-[#151619] p-8 ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] hover:ring-white/20">
+            <div className="gradient-border flex flex-col rounded-3xl bg-[#18181b] p-8 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]">
               <h3 className="mb-2 text-xl font-bold">Raziskovalec</h3>
               <div className="mb-6">
                 <span className="text-3xl font-bold">19 €</span>
                 <span className="text-gray-500 text-sm"> / mesec</span>
               </div>
               <ul className="mb-8 space-y-4 text-sm text-gray-400">
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Osveževanje na 60 minut</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> VSI portali</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Telegram obvestila</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Osveževanje na 60 minut</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> VSI portali</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Telegram obvestila</li>
               </ul>
-              <a href="https://buy.stripe.com/test_cNi14oaGV0M861AbzmgQE01" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-white/5 py-3 text-center font-bold text-white ring-1 ring-white/10 transition-colors hover:bg-white/10">
+              <a href="https://buy.stripe.com/test_cNi14oaGV0M861AbzmgQE01" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-white/5 py-3 text-center font-bold text-white ring-1 ring-white/10 transition-all hover:scale-105 hover:bg-[#b87333]/20 hover:text-[#c9843d] hover:ring-[#b87333]/40 active:scale-95">
                 Izberi paket
               </a>
             </div>
 
             {/* Card 3: Pro (Highlighted) */}
-            <div className="relative flex flex-col rounded-3xl bg-[#151619] p-8 ring-2 ring-green-500 shadow-[0_0_30px_-10px_rgba(34,197,94,0.3)] transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(34,197,94,0.4)]">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-green-500 px-4 py-1 text-xs font-bold uppercase text-black whitespace-nowrap">
+            <div className="gradient-border relative flex flex-col rounded-3xl bg-[#18181b] p-8 shadow-[0_0_30px_-10px_rgba(184,115,51,0.3)] transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(184,115,51,0.4)] [&::before]:bg-gradient-to-br [&::before]:from-[#b87333]/60 [&::before]:via-[#b87333]/20 [&::before]:to-[#b87333]/40">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[#b87333] px-4 py-1 text-xs font-bold uppercase text-black whitespace-nowrap">
                 Najboljša izbira
               </div>
               <h3 className="mb-2 text-xl font-bold">Pro</h3>
@@ -629,30 +632,30 @@ export default function App() {
                 <span className="text-gray-500 text-sm"> / mesec</span>
               </div>
               <ul className="mb-8 space-y-4 text-sm text-gray-400">
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Osveževanje na 3 minute</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> 1 portal po izbiri</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Telegram obvestila</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Prednostna podpora</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Osveževanje na 3 minute</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> 1 portal po izbiri</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Telegram obvestila</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Prednostna podpora</li>
               </ul>
-              <a href="https://buy.stripe.com/test_14A9AU4ix9iE0Hg0UIgQE02" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-green-500 py-3 text-center font-bold text-black transition-transform hover:scale-[1.02] active:scale-[0.98]">
+              <a href="https://buy.stripe.com/test_14A9AU4ix9iE0Hg0UIgQE02" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-[#b87333] py-3 text-center font-bold text-black transition-transform hover:scale-[1.02] active:scale-[0.98]">
                 Izberi paket
               </a>
             </div>
 
             {/* Card 4: VIP / Agencija */}
-            <div className="flex flex-col rounded-3xl bg-[#151619] p-8 ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] hover:ring-white/20">
+            <div className="gradient-border flex flex-col rounded-3xl bg-[#18181b] p-8 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]">
               <h3 className="mb-2 text-xl font-bold">VIP / Agencija</h3>
               <div className="mb-6">
                 <span className="text-3xl font-bold">49 €</span>
                 <span className="text-gray-500 text-sm"> / mesec</span>
               </div>
               <ul className="mb-8 space-y-4 text-sm text-gray-400">
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Osveževanje na 3 minute</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> VSI portali</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Telegram obvestila</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-green-500" /> Prednostna podpora</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Osveževanje na 3 minute</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> VSI portali</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Telegram obvestila</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#b87333]" /> Prednostna podpora</li>
               </ul>
-              <a href="https://buy.stripe.com/test_14A5kE2ap3Yk0HgdHugQE03" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-white/5 py-3 text-center font-bold text-white ring-1 ring-white/10 transition-colors hover:bg-white/10">
+              <a href="https://buy.stripe.com/test_14A5kE2ap3Yk0HgdHugQE03" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-white/5 py-3 text-center font-bold text-white ring-1 ring-white/10 transition-all hover:scale-105 hover:bg-[#b87333]/20 hover:text-[#c9843d] hover:ring-[#b87333]/40 active:scale-95">
                 Izberi paket
               </a>
             </div>
@@ -670,8 +673,9 @@ export default function App() {
         </div>
       </section>
 
+      <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#b87333]/40 to-transparent" /></div>
       {/* Final CTA Section */}
-      <section className="bg-[#0f1115] py-32 px-6 text-center">
+      <section className="bg-[#111113] py-32 px-6 text-center">
         <div className="mx-auto max-w-3xl">
           <h2 className="mb-6 text-4xl font-bold md:text-5xl leading-tight">
             Pripravljeni, da ujamete naslednji oglas pred vsemi?
@@ -682,13 +686,14 @@ export default function App() {
 </p>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="group inline-flex items-center gap-2 rounded-full bg-[#4ade80] px-10 py-4 text-lg font-bold text-black transition-all hover:scale-105 hover:shadow-[0_0_30px_-5px_rgba(74,222,128,0.5)] active:scale-95"
+            className="group inline-flex items-center gap-2 rounded-full bg-[#b87333] px-10 py-4 text-lg font-bold text-black transition-all hover:scale-105 hover:shadow-[0_0_30px_-5px_rgba(184,115,51,0.5)] active:scale-95"
           >
             Pišite nam <span className="transition-transform group-hover:translate-x-1">➔</span>
           </button>
         </div>
       </section>
 
+      <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#b87333]/40 to-transparent" /></div>
       <footer className="border-t border-white/5 py-12 px-6">
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-500">
           <p>© 2026 Oglasni Radar. Vse pravice pridržane.</p>
@@ -741,7 +746,7 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-[#1e1e1e] p-8 shadow-2xl ring-1 ring-white/10"
+              className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-[#27272a] p-8 shadow-2xl ring-1 ring-white/10"
             >
               <button 
                 onClick={() => setIsModalOpen(false)}
@@ -760,7 +765,7 @@ export default function App() {
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="rounded-xl bg-green-500/10 p-6 text-center text-green-500 ring-1 ring-green-500/20"
+                    className="rounded-xl bg-[#b87333]/10 p-6 text-center text-[#b87333] ring-1 ring-[#b87333]/20"
                   >
                     <CheckCheck size={32} className="mx-auto mb-3" />
                     <p className="font-bold">Sporočilo je bilo uspešno poslano!</p>
@@ -774,7 +779,7 @@ export default function App() {
                         name="name"
                         type="text" 
                         required
-                        className="w-full rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        className="w-full rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#b87333]"
                         placeholder="Vaše ime"
                       />
                     </div>
@@ -784,7 +789,7 @@ export default function App() {
                         name="email"
                         type="email" 
                         required
-                        className="w-full rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        className="w-full rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#b87333]"
                         placeholder="vas@email.com"
                       />
                     </div>
@@ -794,7 +799,7 @@ export default function App() {
                         name="message"
                         required
                         rows={4}
-                        className="w-full resize-none rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        className="w-full resize-none rounded-xl bg-white/5 p-4 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#b87333]"
                         placeholder="Npr. Iščem Woom 4 kolo na Bolhi do 200 €..."
                       />
                     </div>
@@ -815,7 +820,7 @@ export default function App() {
                     <button 
                       type="submit"
                       disabled={formStatus === 'loading'}
-                      className="w-full rounded-xl bg-[#4ade80] py-4 font-bold text-black transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full rounded-xl bg-[#b87333] py-4 font-bold text-black transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {formStatus === 'loading' ? 'Pošiljanje...' : 'Pošlji sporočilo'}
                     </button>
@@ -843,7 +848,7 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-[#1e1e1e] p-8 shadow-2xl ring-1 ring-white/10"
+              className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-[#27272a] p-8 shadow-2xl ring-1 ring-white/10"
             >
               <button 
                 onClick={() => setIsTrialModalOpen(false)}
@@ -863,7 +868,7 @@ export default function App() {
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="rounded-xl bg-green-500/10 p-6 text-center text-green-500 ring-1 ring-green-500/20"
+                    className="rounded-xl bg-[#b87333]/10 p-6 text-center text-[#b87333] ring-1 ring-[#b87333]/20"
                   >
                     <CheckCheck size={32} className="mx-auto mb-3" />
                     <p className="font-bold">Sporočilo je bilo uspešno poslano!</p>
@@ -877,7 +882,7 @@ export default function App() {
                         name="full_name"
                         type="text" 
                         required
-                        className="w-full rounded-xl bg-white/5 p-3.5 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        className="w-full rounded-xl bg-white/5 p-3.5 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#b87333]"
                         placeholder="Janez Novak"
                       />
                     </div>
@@ -887,7 +892,7 @@ export default function App() {
                         name="email"
                         type="email" 
                         required
-                        className="w-full rounded-xl bg-white/5 p-3.5 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        className="w-full rounded-xl bg-white/5 p-3.5 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#b87333]"
                         placeholder="janez@email.com"
                       />
                     </div>
@@ -896,7 +901,7 @@ export default function App() {
                       <input 
                         name="phone"
                         type="tel" 
-                        className="w-full rounded-xl bg-white/5 p-3.5 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#4ade80]"
+                        className="w-full rounded-xl bg-white/5 p-3.5 text-white ring-1 ring-white/10 transition-all focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#b87333]"
                         placeholder="041 123 456"
                       />
                     </div>
@@ -910,7 +915,7 @@ export default function App() {
                               type="checkbox" 
                               name="portals" 
                               value={portal} 
-                              className="h-5 w-5 rounded border-white/10 bg-white/5 text-green-500 focus:ring-green-500 focus:ring-offset-0"
+                              className="h-5 w-5 rounded border-white/10 bg-white/5 text-[#b87333] focus:ring-[#b87333] focus:ring-offset-0"
                             />
                             <span className="text-sm text-gray-300 group-hover:text-white transition-colors">{portal}</span>
                           </label>
@@ -936,7 +941,7 @@ export default function App() {
                     <button 
                       type="submit"
                       disabled={formStatus === 'loading'}
-                      className="w-full rounded-xl bg-[#4ade80] py-4 font-bold text-black transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full rounded-xl bg-[#b87333] py-4 font-bold text-black transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {formStatus === 'loading' ? 'Pošiljanje...' : 'Začni brezplačni preizkus'}
                     </button>
@@ -964,10 +969,10 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-3xl max-h-[85vh] overflow-hidden rounded-3xl bg-[#1e1e1e] shadow-2xl ring-1 ring-white/10 flex flex-col"
+              className="relative w-full max-w-3xl max-h-[85vh] overflow-hidden rounded-3xl bg-[#27272a] shadow-2xl ring-1 ring-white/10 flex flex-col"
             >
               {/* Sticky Header */}
-              <div className="flex items-center justify-between p-8 border-b border-white/5 bg-[#1e1e1e] z-10">
+              <div className="flex items-center justify-between p-8 border-b border-white/5 bg-[#27272a] z-10">
                 <h3 className="text-2xl font-bold">Pogoji poslovanja</h3>
                 <button 
                   onClick={() => setIsTosModalOpen(false)}
@@ -1052,7 +1057,7 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-md overflow-hidden rounded-3xl bg-[#1e1e1e] shadow-2xl ring-1 ring-white/10 flex flex-col"
+              className="relative w-full max-w-md overflow-hidden rounded-3xl bg-[#27272a] shadow-2xl ring-1 ring-white/10 flex flex-col"
             >
               <div className="flex items-center justify-between p-8 border-b border-white/5">
                 <h3 className="text-2xl font-bold">O nas</h3>
@@ -1092,9 +1097,9 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-3xl max-h-[85vh] overflow-hidden rounded-3xl bg-[#1e1e1e] shadow-2xl ring-1 ring-white/10 flex flex-col"
+              className="relative w-full max-w-3xl max-h-[85vh] overflow-hidden rounded-3xl bg-[#27272a] shadow-2xl ring-1 ring-white/10 flex flex-col"
             >
-              <div className="flex items-center justify-between p-8 border-b border-white/5 bg-[#1e1e1e] z-10">
+              <div className="flex items-center justify-between p-8 border-b border-white/5 bg-[#27272a] z-10">
                 <h3 className="text-2xl font-bold">Politika zasebnosti</h3>
                 <button
                   onClick={() => setIsPrivacyModalOpen(false)}
@@ -1185,12 +1190,12 @@ export default function App() {
             transition={{ delay: 1 }}
             className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] w-full max-w-xl px-4"
           >
-            <div className="bg-[#1e1e1e] ring-1 ring-white/10 rounded-2xl p-5 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="bg-[#27272a] ring-1 ring-white/10 rounded-2xl p-5 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <p className="text-sm text-gray-400 flex-1">
                 Uporabljamo analitične piškotke za izboljšanje storitve.{' '}
                 <button
                   onClick={() => setIsPrivacyModalOpen(true)}
-                  className="text-green-400 hover:underline"
+                  className="text-[#c9843d] hover:underline"
                 >
                   Več info
                 </button>
@@ -1210,7 +1215,7 @@ export default function App() {
                     localStorage.setItem('cookie-consent', 'true');
                     setCookieConsent(true);
                   }}
-                  className="px-4 py-2 text-sm rounded-xl bg-green-500 hover:bg-green-400 text-black font-semibold transition-colors"
+                  className="px-4 py-2 text-sm rounded-xl bg-[#b87333] hover:bg-[#c9843d] text-black font-semibold transition-colors"
                 >
                   Sprejmi
                 </button>
