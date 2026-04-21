@@ -351,13 +351,14 @@ export default function App() {
       <section className="bg-[#0f1115] py-24 px-6 border-y border-white/5">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl">Podprti portali</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 md:gap-6">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 md:gap-6">
             {[
               { name: 'Bolha.com', desc: 'Splošni oglasi', color: '#9b2c2c', initial: 'B', flag: '🇸🇮' },
               { name: 'Facebook', desc: 'Marketplace', color: '#3b5998', initial: 'f', flag: '🇸🇮' },
               { name: 'Nepremičnine', desc: 'Nepremičnine', color: '#b7791f', initial: 'N', flag: '🇸🇮' },
               { name: 'Avto.net', desc: 'Vozila', color: '#2d3748', initial: 'A', flag: '🇸🇮' },
               { name: 'Willhaben', desc: 'Avstrijski trg', color: '#2f6f4e', initial: 'W', flag: '🇦🇹' },
+              { name: 'Mercatino', desc: 'Italijanski trg', color: '#008C45', initial: 'M', flag: '🇮🇹' },
             ].map((portal) => (
               <div 
                 key={portal.name} 
