@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CheckCheck, Signal, Wifi, Battery, Check, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
+import { Analytics } from '@vercel/analytics/react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -913,6 +914,7 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
+      <Analytics />
     </div>
   );
 }
