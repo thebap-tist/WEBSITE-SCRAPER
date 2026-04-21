@@ -60,6 +60,9 @@ export default function App() {
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [navVisible, setNavVisible] = useState(true);
+  const lastScrollY = useRef(0);
+  const navLinkClicked = useRef(false);
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(() => {
     const stored = localStorage.getItem('cookie-consent');
     return stored === null ? null : stored === 'true';
@@ -70,6 +73,27 @@ export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
   const feedRef = useRef<HTMLDivElement>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let scrollEndTimer: ReturnType<typeof setTimeout>;
+    const handleScroll = () => {
+      if (navLinkClicked.current) {
+        lastScrollY.current = window.scrollY;
+        clearTimeout(scrollEndTimer);
+        scrollEndTimer = setTimeout(() => { navLinkClicked.current = false; }, 100);
+        return;
+      }
+      const currentY = window.scrollY;
+      if (currentY < 80) {
+        setNavVisible(true);
+      } else {
+        setNavVisible(currentY < lastScrollY.current);
+      }
+      lastScrollY.current = currentY;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => { window.removeEventListener('scroll', handleScroll); clearTimeout(scrollEndTimer); };
+  }, []);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -164,16 +188,27 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#0f1115] text-white selection:bg-green-500/30">
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0f1115]/80 backdrop-blur-md border-b border-white/5">
+      <nav className={`fixed top-0 left-0 right-0 z-50 bg-[#0f1115]/80 backdrop-blur-md border-b border-white/5 transition-transform duration-1000 ${navVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="flex items-center justify-between px-6 py-4">
           <span className="text-lg font-black tracking-tighter">
             Oglasni <span className="text-green-500">Radar</span>
           </span>
           <div className="hidden md:flex items-center gap-8 text-sm text-gray-400">
-            <a href="#kako-deluje" className="hover:text-white transition-colors">Kako deluje</a>
-            <a href="#portali" className="hover:text-white transition-colors">Portali</a>
-            <a href="#preizkus" className="hover:text-white transition-colors">Preizkus</a>
-            <a href="#cenik" className="hover:text-white transition-colors">Cenik</a>
+            {[
+              { href: '#kako-deluje', label: 'Kako deluje' },
+              { href: '#portali', label: 'Portali' },
+              { href: '#preizkus', label: 'Preizkus' },
+              { href: '#cenik', label: 'Cenik' },
+            ].map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                onClick={() => { navLinkClicked.current = true; }}
+                className="hover:text-white transition-colors"
+              >
+                {label}
+              </a>
+            ))}
           </div>
 
           <div className="flex items-center gap-3">
@@ -209,7 +244,7 @@ export default function App() {
                   <a
                     key={href}
                     href={href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => { setIsMobileMenuOpen(false); navLinkClicked.current = true; }}
                     className="hover:text-white transition-colors"
                   >
                     {label}
