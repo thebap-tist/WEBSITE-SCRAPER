@@ -58,6 +58,7 @@ export default function App() {
   const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
   const [isTosModalOpen, setIsTosModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(() => {
     const stored = localStorage.getItem('cookie-consent');
     return stored === null ? null : stored === 'true';
@@ -71,12 +72,12 @@ export default function App() {
 
   // Prevent body scroll when modal is open
   useEffect(() => {
-    if (isModalOpen || isTrialModalOpen || isTosModalOpen || isPrivacyModalOpen) {
+    if (isModalOpen || isTrialModalOpen || isTosModalOpen || isPrivacyModalOpen || isAboutModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [isModalOpen, isTrialModalOpen, isTosModalOpen, isPrivacyModalOpen]);
+  }, [isModalOpen, isTrialModalOpen, isTosModalOpen, isPrivacyModalOpen, isAboutModalOpen]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>, formType: 'contact' | 'trial') => {
   e.preventDefault();
@@ -620,6 +621,12 @@ export default function App() {
             >
               Politika zasebnosti
             </button>
+            <button
+              onClick={() => setIsAboutModalOpen(true)}
+              className="hover:text-white transition-colors"
+            >
+              O nas
+            </button>
           </div>
         </div>
       </footer>
@@ -938,6 +945,46 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
+      {/* O nas Modal */}
+      <AnimatePresence>
+        {isAboutModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsAboutModalOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-md overflow-hidden rounded-3xl bg-[#1e1e1e] shadow-2xl ring-1 ring-white/10 flex flex-col"
+            >
+              <div className="flex items-center justify-between p-8 border-b border-white/5">
+                <h3 className="text-2xl font-bold">O nas</h3>
+                <button onClick={() => setIsAboutModalOpen(false)} className="text-gray-500 hover:text-white transition-colors">
+                  <X size={24} />
+                </button>
+              </div>
+              <div className="p-8 text-gray-400 space-y-4 leading-relaxed">
+                <p>
+                  <span className="text-white font-semibold">Oglasni Radar</span> je storitev podjetja:
+                </p>
+                <div className="bg-white/5 rounded-2xl p-5 space-y-1 text-sm">
+                  <p className="text-white font-semibold">VALTOMAT, Jan Tobias s.p.</p>
+                  <p>Davčna številka: SI10665374</p>
+                </div>
+                <p className="text-sm">
+                  Za vprašanja nas kontaktirajte prek kontaktnega obrazca na spletni strani.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Privacy Policy Modal */}
       <AnimatePresence>
         {isPrivacyModalOpen && (
