@@ -412,7 +412,6 @@ export default function App() {
       <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#22c55e]/40 to-transparent" /></div>
       {/* Kako deluje Section */}
       <section id="kako-deluje" className="relative bg-[#0f1115] py-24 px-6 overflow-hidden">
-        <NetworkBg />
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl">Kako deluje</h2>
           <div className="grid gap-12 md:grid-cols-3">
@@ -450,7 +449,6 @@ export default function App() {
       <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#22c55e]/40 to-transparent" /></div>
       {/* Telegram obvestila Section */}
       <section className="relative py-24 px-6 overflow-hidden">
-        <NetworkBg />
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
             <div>
@@ -518,7 +516,6 @@ export default function App() {
       <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#22c55e]/40 to-transparent" /></div>
       {/* Podprti portali Section */}
       <section id="portali" className="relative bg-[#0f1115] py-24 px-6 border-y border-white/5 overflow-hidden">
-        <NetworkBg />
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl">Podprti portali</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 md:gap-6">
@@ -561,7 +558,6 @@ export default function App() {
       <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#22c55e]/40 to-transparent" /></div>
       {/* Začni brezplačno Section */}
       <section id="preizkus" className="relative bg-[#0f1115] py-24 px-6 overflow-hidden">
-        <NetworkBg />
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl">Začni brezplačno</h2>
           <div className="flex justify-center">
@@ -590,7 +586,6 @@ export default function App() {
       <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#22c55e]/40 to-transparent" /></div>
       {/* Cenik Section */}
       <section id="cenik" className="relative bg-[#0f1115] py-24 px-6 overflow-hidden">
-        <NetworkBg />
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl">Cenik</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -683,7 +678,6 @@ export default function App() {
       <div className="relative h-px"><div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#22c55e]/40 to-transparent" /></div>
       {/* Final CTA Section */}
       <section className="relative bg-[#0f1115] py-32 px-6 text-center overflow-hidden">
-        <NetworkBg />
         <div className="mx-auto max-w-3xl">
           <h2 className="mb-6 text-4xl font-bold md:text-5xl leading-tight">
             Pripravljeni, da ujamete naslednji oglas pred vsemi?
