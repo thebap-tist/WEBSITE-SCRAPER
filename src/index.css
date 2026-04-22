@@ -33,6 +33,57 @@
     clip-path: inset(0 0 0% 0 round 1.5rem);
   }
 
+  /* Pricing card shimmer sweep */
+  .card-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .card-shimmer::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 35%;
+    height: 200%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.55), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.65s ease;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .card-shimmer:hover::after { left: 130%; }
+
+  /* Dynamic Island badge */
+  .dynamic-island {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0d0d0d;
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 50px;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.08);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .dynamic-island::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+    flex-shrink: 0;
+  }
+
   /* Scrollbar for dark modals */
   .custom-scrollbar::-webkit-scrollbar { width: 6px; }
   .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }

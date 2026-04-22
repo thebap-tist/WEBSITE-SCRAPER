@@ -47,6 +47,78 @@ const MessageCard = ({ platform, title, price, location, time, color, emoji, lin
   );
 };
 
+/* ── Pricing card with shimmer + 3D tilt + Dynamic Island ── */
+interface PricingCardProps {
+  name: string;
+  price: string;
+  period: string;
+  features: string[];
+  isPro?: boolean;
+  stripeLink: string;
+}
+
+const PricingCard = ({ name, price, period, features, isPro, stripeLink }: PricingCardProps) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    el.style.transition = 'box-shadow 0.2s ease';
+    el.style.transform = `perspective(700px) rotateX(${-y * 10}deg) rotateY(${x * 10}deg) translateY(-6px) scale(1.02)`;
+  }
+
+  function onMouseLeave() {
+    const el = ref.current;
+    if (!el) return;
+    el.style.transition = 'transform 0.5s cubic-bezier(0.34,1.3,0.64,1), box-shadow 0.3s ease';
+    el.style.transform = 'perspective(700px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+  }
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      className={`card-shimmer animated-border flex flex-col rounded-3xl bg-white p-8 transition-shadow duration-300 cursor-default ${
+        isPro
+          ? 'border-2 border-[#0d0d0d] shadow-[0_8px_30px_-8px_rgba(0,0,0,0.18)]'
+          : 'border border-gray-200 shadow-sm hover:shadow-[0_24px_50px_-10px_rgba(0,0,0,0.14)] hover:outline hover:outline-[1.5px] hover:outline-[#0d0d0d]'
+      }`}
+      style={{ position: 'relative', willChange: 'transform' }}
+    >
+      {isPro && <div className="dynamic-island">Najboljša izbira</div>}
+
+      <h3 className={`mb-2 text-xl font-bold text-[#0d0d0d] ${isPro ? 'mt-4' : ''}`}>{name}</h3>
+      <div className="mb-6">
+        <span className="text-3xl font-bold text-[#0d0d0d]">{price} €</span>
+        <span className="text-gray-500 text-sm"> {period}</span>
+      </div>
+      <ul className="mb-8 space-y-4 text-sm text-gray-600 flex-1">
+        {features.map(f => (
+          <li key={f} className="flex items-center gap-2">
+            <Check size={14} className="text-[#22c55e] flex-shrink-0" /> {f}
+          </li>
+        ))}
+      </ul>
+      <a
+        href={stripeLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`block w-full rounded-xl py-3 text-center font-bold transition-all hover:scale-[1.02] active:scale-[0.98] ${
+          isPro
+            ? 'bg-[#22c55e] text-black hover:bg-[#16a34a]'
+            : 'bg-gray-100 text-[#0d0d0d] border border-gray-200 hover:bg-[#0d0d0d] hover:text-white hover:border-[#0d0d0d]'
+        }`}
+      >
+        Izberi paket
+      </a>
+    </div>
+  );
+};
+
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
@@ -446,67 +518,10 @@ export default function App() {
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Cenik</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-
-            {/* Začetnik */}
-            <div className="animated-border flex flex-col rounded-3xl bg-white border border-gray-200 p-8 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-lg">
-              <h3 className="mb-2 text-xl font-bold text-[#0d0d0d]">Začetnik</h3>
-              <div className="mb-6"><span className="text-3xl font-bold text-[#0d0d0d]">10 €</span><span className="text-gray-500 text-sm"> / mesec</span></div>
-              <ul className="mb-8 space-y-4 text-sm text-gray-600">
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Osveževanje na 60 minut</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> 1 portal po izbiri</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Telegram obvestila</li>
-              </ul>
-              <a href="https://buy.stripe.com/test_7sYeVe7uJ3Yk89I7j6gQE00" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-gray-100 py-3 text-center font-bold text-[#0d0d0d] border border-gray-200 transition-all hover:bg-[#22c55e]/10 hover:text-[#22c55e] hover:border-[#22c55e]/30">
-                Izberi paket
-              </a>
-            </div>
-
-            {/* Raziskovalec */}
-            <div className="animated-border flex flex-col rounded-3xl bg-white border border-gray-200 p-8 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-lg">
-              <h3 className="mb-2 text-xl font-bold text-[#0d0d0d]">Raziskovalec</h3>
-              <div className="mb-6"><span className="text-3xl font-bold text-[#0d0d0d]">19 €</span><span className="text-gray-500 text-sm"> / mesec</span></div>
-              <ul className="mb-8 space-y-4 text-sm text-gray-600">
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Osveževanje na 60 minut</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> VSI portali</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Telegram obvestila</li>
-              </ul>
-              <a href="https://buy.stripe.com/test_cNi14oaGV0M861AbzmgQE01" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-gray-100 py-3 text-center font-bold text-[#0d0d0d] border border-gray-200 transition-all hover:bg-[#22c55e]/10 hover:text-[#22c55e] hover:border-[#22c55e]/30">
-                Izberi paket
-              </a>
-            </div>
-
-            {/* Pro — highlighted */}
-            <div className="animated-border relative flex flex-col rounded-3xl bg-white border-2 border-[#22c55e] p-8 shadow-[0_0_40px_-10px_rgba(34,197,94,0.25)] transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_-10px_rgba(34,197,94,0.3)]">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[#22c55e] px-4 py-1 text-xs font-bold uppercase text-black whitespace-nowrap">
-                Najboljša izbira
-              </div>
-              <h3 className="mb-2 text-xl font-bold text-[#0d0d0d]">Pro</h3>
-              <div className="mb-6"><span className="text-3xl font-bold text-[#0d0d0d]">29 €</span><span className="text-gray-500 text-sm"> / mesec</span></div>
-              <ul className="mb-8 space-y-4 text-sm text-gray-600">
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Osveževanje na 3 minute</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> 1 portal po izbiri</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Telegram obvestila</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Prednostna podpora</li>
-              </ul>
-              <a href="https://buy.stripe.com/test_14A9AU4ix9iE0Hg0UIgQE02" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-[#22c55e] py-3 text-center font-bold text-black transition-transform hover:scale-[1.02] active:scale-[0.98]">
-                Izberi paket
-              </a>
-            </div>
-
-            {/* VIP */}
-            <div className="animated-border flex flex-col rounded-3xl bg-white border border-gray-200 p-8 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-lg">
-              <h3 className="mb-2 text-xl font-bold text-[#0d0d0d]">VIP / Agencija</h3>
-              <div className="mb-6"><span className="text-3xl font-bold text-[#0d0d0d]">49 €</span><span className="text-gray-500 text-sm"> / mesec</span></div>
-              <ul className="mb-8 space-y-4 text-sm text-gray-600">
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Osveževanje na 3 minute</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> VSI portali</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Telegram obvestila</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Prednostna podpora</li>
-              </ul>
-              <a href="https://buy.stripe.com/test_14A5kE2ap3Yk0HgdHugQE03" target="_blank" rel="noopener noreferrer" className="mt-auto block w-full rounded-xl bg-gray-100 py-3 text-center font-bold text-[#0d0d0d] border border-gray-200 transition-all hover:bg-[#22c55e]/10 hover:text-[#22c55e] hover:border-[#22c55e]/30">
-                Izberi paket
-              </a>
-            </div>
+            <PricingCard name="Začetnik" price="10" period="/ mesec" features={['Osveževanje na 60 minut', '1 portal po izbiri', 'Telegram obvestila']} stripeLink="https://buy.stripe.com/test_7sYeVe7uJ3Yk89I7j6gQE00" />
+            <PricingCard name="Raziskovalec" price="19" period="/ mesec" features={['Osveževanje na 60 minut', 'VSI portali', 'Telegram obvestila']} stripeLink="https://buy.stripe.com/test_cNi14oaGV0M861AbzmgQE01" />
+            <PricingCard name="Pro" price="29" period="/ mesec" features={['Osveževanje na 3 minute', '1 portal po izbiri', 'Telegram obvestila', 'Prednostna podpora']} isPro stripeLink="https://buy.stripe.com/test_14A9AU4ix9iE0Hg0UIgQE02" />
+            <PricingCard name="VIP / Agencija" price="49" period="/ mesec" features={['Osveževanje na 3 minute', 'VSI portali', 'Telegram obvestila', 'Prednostna podpora']} stripeLink="https://buy.stripe.com/test_14A5kE2ap3Yk0HgdHugQE03" />
           </div>
           <div className="flex justify-center mt-10">
             <a href="https://billing.stripe.com/p/login/test_7sYeVe7uJ3Yk89I7j6gQE00" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-[#0d0d0d] transition-colors border border-gray-200 rounded-xl px-5 py-2 hover:border-gray-300">
