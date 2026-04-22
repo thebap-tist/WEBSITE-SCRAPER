@@ -149,42 +149,42 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#f7f7f4] text-[#0d0d0d] selection:bg-[#22c55e]/30">
 
-      {/* ── Navbar (stays dark — anchors brand identity) ── */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 bg-[#0d0d0d]/95 backdrop-blur-md border-b border-white/5 transition-transform duration-1000 ${navVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+      {/* ── Navbar (light) ── */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 transition-transform duration-1000 ${navVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="flex items-center justify-between px-6 py-4">
-          <a href="#" onClick={() => { navLinkClicked.current = true; }} className="text-lg font-black tracking-tighter text-white hover:opacity-80 transition-opacity">
+          <a href="#" onClick={() => { navLinkClicked.current = true; }} className="text-lg font-black tracking-tighter text-[#0d0d0d] hover:opacity-70 transition-opacity">
             Oglasni <span className="text-[#22c55e]">Radar</span>
           </a>
-          <div className="hidden md:flex items-center gap-8 text-sm text-gray-400">
+          <div className="hidden md:flex items-center gap-8 text-sm text-gray-500">
             {[
               { href: '#kako-deluje', label: 'Kako deluje' },
               { href: '#portali', label: 'Portali' },
               { href: '#preizkus', label: 'Preizkus' },
               { href: '#cenik', label: 'Cenik' },
             ].map(({ href, label }) => (
-              <a key={href} href={href} onClick={() => { navLinkClicked.current = true; }} className="hover:text-white transition-colors">{label}</a>
+              <a key={href} href={href} onClick={() => { navLinkClicked.current = true; }} className="hover:text-[#0d0d0d] transition-colors">{label}</a>
             ))}
           </div>
           <div className="flex items-center gap-3">
             <button onClick={() => setIsModalOpen(true)} className="rounded-full bg-[#22c55e] px-5 py-2 text-sm font-bold text-black hover:bg-[#4ade80] transition-colors">
               Pišite nam
             </button>
-            <button onClick={() => setIsMobileMenuOpen(prev => !prev)} className="md:hidden text-gray-400 hover:text-white transition-colors">
+            <button onClick={() => setIsMobileMenuOpen(prev => !prev)} className="md:hidden text-gray-500 hover:text-[#0d0d0d] transition-colors">
               {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
         <AnimatePresence>
           {isMobileMenuOpen && (
-            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden overflow-hidden border-t border-white/5">
-              <div className="flex flex-col items-end px-6 py-4 gap-5 text-sm text-gray-400">
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden overflow-hidden border-t border-gray-200">
+              <div className="flex flex-col items-end px-6 py-4 gap-5 text-sm text-gray-500">
                 {[
                   { href: '#kako-deluje', label: 'Kako deluje' },
                   { href: '#portali', label: 'Portali' },
                   { href: '#preizkus', label: 'Preizkus' },
                   { href: '#cenik', label: 'Cenik' },
                 ].map(({ href, label }) => (
-                  <a key={href} href={href} onClick={() => { setIsMobileMenuOpen(false); navLinkClicked.current = true; }} className="hover:text-white transition-colors">{label}</a>
+                  <a key={href} href={href} onClick={() => { setIsMobileMenuOpen(false); navLinkClicked.current = true; }} className="hover:text-[#0d0d0d] transition-colors">{label}</a>
                 ))}
               </div>
             </motion.div>
@@ -192,18 +192,17 @@ export default function App() {
         </AnimatePresence>
       </nav>
 
-      {/* ── Hero (stays dark — dramatic opener) ── */}
-      <section className="relative flex h-[80vh] flex-col items-center justify-center px-6 text-center pt-16 overflow-hidden bg-[#0d0d0d]">
-        <NetworkBg />
-        <h1 className="mb-6 text-5xl font-black tracking-tighter md:text-7xl text-white">
-          Oglasni <span className="bg-gradient-to-r from-[#22c55e] via-[#86efac] to-[#22c55e] bg-clip-text text-transparent">Radar</span>
+      {/* ── Hero (light) ── */}
+      <section className="relative flex h-[80vh] flex-col items-center justify-center px-6 text-center pt-16 overflow-hidden bg-[#f7f7f4] dot-grid">
+        <h1 className="mb-6 text-5xl font-black tracking-tighter md:text-7xl text-[#0d0d0d]">
+          Oglasni <span className="text-[#22c55e]">Radar</span>
         </h1>
-        <p className="max-w-xl text-lg text-gray-400 md:text-xl">
+        <p className="max-w-xl text-lg text-gray-600 md:text-xl">
           Prejemajte obvestila o novih oglasih v realnem času neposredno v vaš Telegram.
           Nikoli več ne zamudite dobre priložnosti.
         </p>
         <div className="mt-10 animate-bounce">
-          <p className="text-sm font-medium uppercase tracking-widest text-gray-500">Pomaknite se navzdol</p>
+          <p className="text-sm font-medium uppercase tracking-widest text-gray-400">Pomaknite se navzdol</p>
         </div>
       </section>
 
@@ -519,17 +518,17 @@ export default function App() {
 
       <div className="h-px bg-gray-200" />
 
-      {/* ── Final CTA (stays dark — bookend contrast) ── */}
-      <section className="relative bg-[#0d0d0d] py-32 px-6 text-center overflow-hidden">
+      {/* ── Final CTA (light) ── */}
+      <section className="relative bg-[#f7f7f4] py-32 px-6 text-center overflow-hidden dot-grid">
         <div className="mx-auto max-w-3xl">
-          <h2 className="mb-6 text-4xl font-bold md:text-5xl leading-tight text-white">
+          <h2 className="mb-6 text-4xl font-bold md:text-5xl leading-tight text-[#0d0d0d]">
             Pripravljeni, da ujamete naslednji oglas pred vsemi?
           </h2>
-          <p className="mb-10 text-xl text-gray-400 text-center">
+          <p className="mb-10 text-xl text-gray-600 text-center">
             Povejte nam, kaj iščete, in skupaj bomo nastavili vaš osebni radar. <br />
             Odgovorimo še isti dan!
           </p>
-          <button onClick={() => setIsModalOpen(true)} className="group inline-flex items-center gap-2 rounded-full bg-[#22c55e] px-10 py-4 text-lg font-bold text-black transition-all hover:scale-105 hover:shadow-[0_0_30px_-5px_rgba(74,222,128,0.5)] active:scale-95">
+          <button onClick={() => setIsModalOpen(true)} className="group inline-flex items-center gap-2 rounded-full bg-[#22c55e] px-10 py-4 text-lg font-bold text-black transition-all hover:scale-105 hover:shadow-[0_8px_30px_-5px_rgba(34,197,94,0.4)] active:scale-95">
             Pišite nam <span className="transition-transform group-hover:translate-x-1">➔</span>
           </button>
         </div>
