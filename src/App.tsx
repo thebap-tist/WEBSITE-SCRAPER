@@ -54,12 +54,10 @@ interface PricingCardProps {
   period: string;
   features: string[];
   isPro?: boolean;
-  stripeLink?: string;
-  onClick?: () => void;
-  buttonText?: string;
+  stripeLink: string;
 }
 
-const PricingCard = ({ name, price, period, features, isPro, stripeLink, onClick, buttonText = "Izberi paket" }: PricingCardProps) => {
+const PricingCard = ({ name, price, period, features, isPro, stripeLink }: PricingCardProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
@@ -105,31 +103,18 @@ const PricingCard = ({ name, price, period, features, isPro, stripeLink, onClick
           </li>
         ))}
       </ul>
-      {stripeLink ? (
-        <a
-          href={stripeLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`block w-full rounded-xl py-3 text-center font-bold transition-all hover:scale-[1.02] active:scale-[0.98] ${
-            isPro
-              ? 'bg-[#22c55e] text-black hover:bg-[#16a34a]'
-              : 'bg-gray-100 text-[#0d0d0d] border border-gray-200 hover:bg-[#0d0d0d] hover:text-white hover:border-[#0d0d0d]'
-          }`}
-        >
-          {buttonText}
-        </a>
-      ) : (
-        <button
-          onClick={onClick}
-          className={`block w-full rounded-xl py-3 text-center font-bold transition-all hover:scale-[1.02] active:scale-[0.98] ${
-            isPro
-              ? 'bg-[#22c55e] text-black hover:bg-[#16a34a]'
-              : 'bg-gray-100 text-[#0d0d0d] border border-gray-200 hover:bg-[#0d0d0d] hover:text-white hover:border-[#0d0d0d]'
-          }`}
-        >
-          {buttonText}
-        </button>
-      )}
+      <a
+        href={stripeLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`block w-full rounded-xl py-3 text-center font-bold transition-all hover:scale-[1.02] active:scale-[0.98] ${
+          isPro
+            ? 'bg-[#22c55e] text-black hover:bg-[#16a34a]'
+            : 'bg-gray-100 text-[#0d0d0d] border border-gray-200 hover:bg-[#0d0d0d] hover:text-white hover:border-[#0d0d0d]'
+        }`}
+      >
+        Izberi paket
+      </a>
     </div>
   );
 };
@@ -468,36 +453,57 @@ export default function App() {
 
       <div className="h-px bg-gray-200" />
 
-      {/* ── Podprti portali ── */}
-      <section id="portali" className="relative bg-white py-24 px-6 overflow-hidden">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl text-[#0d0d0d]">Podprti portali</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 md:gap-6">
-            {[
-              { name: 'Bolha.com', desc: 'Splošni oglasi', color: '#9b2c2c', initial: 'B', flag: '🇸🇮' },
-              { name: 'Facebook', desc: 'Marketplace', color: '#3b5998', initial: 'f', flag: '🇸🇮' },
-              { name: 'Nepremičnine', desc: 'Nepremičnine', color: '#b7791f', initial: 'N', flag: '🇸🇮' },
-              { name: 'Avto.net', desc: 'Vozila', color: '#2d3748', initial: 'A', flag: '🇸🇮' },
-              { name: 'Willhaben', desc: 'Avstrijski trg', color: '#2f6f4e', initial: 'W', flag: '🇦🇹' },
-              { name: 'Mercatino', desc: 'Italijanski trg', color: '#008C45', initial: 'M', flag: '🇮🇹' },
-            ].map((portal) => (
-              <div key={portal.name} className="animated-border group relative flex flex-col rounded-2xl bg-white border border-gray-200 p-5 transition-all duration-300 hover:bg-gray-50 hover:-translate-y-1 hover:shadow-md overflow-hidden">
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl text-xl font-black text-white shadow-lg" style={{ backgroundColor: portal.color }}>
-                    {portal.initial}
-                  </div>
-                  <span className="text-xl grayscale group-hover:grayscale-0 transition-all">{portal.flag}</span>
+      {/* ── Podprti portali — marquee ── */}
+      <section id="portali" className="relative bg-white py-24 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-6 mb-8 text-center">
+          <h2 className="text-3xl font-bold md:text-4xl text-[#0d0d0d] mb-8">Podprti portali</h2>
+          {/* Stats */}
+          <div className="flex items-center justify-center gap-10 mb-10">
+            {[['6','Portalov'],['4','Države'],['∞','Razširljivo']].map(([n,l],i,a) => (
+              <React.Fragment key={l}>
+                <div className="text-center">
+                  <div className="text-3xl font-black text-[#0d0d0d] leading-none">{n}</div>
+                  <div className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mt-1">{l}</div>
                 </div>
-                <h3 className="text-lg font-bold text-[#0d0d0d]">{portal.name}</h3>
-                <p className="text-sm text-gray-500">{portal.desc}</p>
-                <div className="absolute bottom-0 left-0 h-1 w-full opacity-40 transition-opacity group-hover:opacity-80" style={{ backgroundColor: portal.color }} />
+                {i < a.length - 1 && <div className="w-px h-8 bg-gray-200"/>}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+
+        {/* Marquee */}
+        <div className="relative w-full overflow-hidden" style={{
+          maskImage: 'linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent)',
+        }}>
+          <div className="flex gap-3 w-max" style={{animation:'marquee 24s linear infinite'}}>
+            {[...Array(2)].flatMap(() => [
+              { name:'Bolha.com',    init:'B', flag:'🇸🇮', color:'#d9b0a8' },
+              { name:'Facebook',     init:'f', flag:'🇸🇮', color:'#b5c4dd' },
+              { name:'Nepremičnine', init:'N', flag:'🇸🇮', color:'#e2c49a' },
+              { name:'Avto.net',     init:'A', flag:'🇸🇮', color:'#b4bcc5' },
+              { name:'Willhaben',    init:'W', flag:'🇦🇹', color:'#a8ccb8' },
+              { name:'Mercatino',    init:'M', flag:'🇮🇹', color:'#9ed0b4' },
+              { name:'eBay',         init:'e', flag:'🇩🇪', color:'#d8d8d3', soon:true },
+              { name:'Njuškalo',     init:'N', flag:'🇭🇷', color:'#d8d8d3', soon:true },
+            ]).map((p, i) => (
+              <div key={i} className="flex items-center gap-2.5 border border-gray-200 rounded-full px-4 py-2.5 whitespace-nowrap select-none hover:bg-white hover:border-[#0d0d0d] hover:-translate-y-1 hover:shadow-md transition-all duration-200 cursor-default">
+                <div className="w-6 h-6 rounded-md flex items-center justify-center text-white text-[11px] font-black flex-shrink-0" style={{background:p.color}}>{p.init}</div>
+                <span className="text-[13px] font-semibold text-[#0d0d0d]">{p.name}</span>
+                <span className="text-[13px] opacity-60">{p.flag}</span>
+                {p.soon && <span className="text-[9px] font-bold uppercase tracking-wider bg-gray-100 text-gray-400 px-2 py-0.5 rounded-full">kmalu</span>}
               </div>
             ))}
           </div>
-          <p className="mt-16 text-center text-gray-500">
-            Iščete na drugem portalu? <span className="text-[#22c55e] font-medium cursor-pointer" onClick={() => setIsModalOpen(true)}>Pišite nam</span> — sistem je razširljiv.
-          </p>
         </div>
+
+        <style>{`@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
+
+        <p className="mt-10 text-center text-sm text-gray-400 px-6">
+          Iščete drug portal?{' '}
+          <button onClick={() => setIsModalOpen(true)} className="text-[#22c55e] font-semibold hover:underline">Pišite nam</button>
+          {' '}— sistem je razširljiv.
+        </p>
       </section>
 
       <div className="h-px bg-gray-200" />
@@ -507,15 +513,20 @@ export default function App() {
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Začni brezplačno</h2>
           <div className="flex justify-center">
-            <div className="w-full max-w-sm">
-              <PricingCard
-                name="Preizkus (Free-trial)"
-                price="0"
-                period="/ 10 dni"
-                features={['Osveževanje na 3 minute', 'VSI portali po izbiri', 'Telegram obvestila']}
-                buttonText="Preizkusi brezplačno"
-                onClick={() => setIsTrialModalOpen(true)}
-              />
+            <div className="animated-border flex w-full max-w-sm flex-col rounded-3xl bg-white border border-gray-200 shadow-sm p-8 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-lg">
+              <h3 className="mb-2 text-xl font-bold text-[#0d0d0d]">Preizkus (Free-trial)</h3>
+              <div className="mb-6">
+                <span className="text-3xl font-bold text-[#0d0d0d]">0 €</span>
+                <span className="text-gray-500 text-sm"> / 10 dni</span>
+              </div>
+              <ul className="mb-8 space-y-4 text-sm text-gray-600">
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Osveževanje na 3 minute</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> VSI portali po izbiri</li>
+                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Telegram obvestila</li>
+              </ul>
+              <button onClick={() => setIsTrialModalOpen(true)} className="mt-auto w-full rounded-xl bg-[#22c55e] py-3 font-bold text-white transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                Preizkusi brezplačno
+              </button>
             </div>
           </div>
         </div>
