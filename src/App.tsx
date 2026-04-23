@@ -54,10 +54,12 @@ interface PricingCardProps {
   period: string;
   features: string[];
   isPro?: boolean;
-  stripeLink: string;
+  stripeLink?: string;
+  onClick?: () => void;
+  buttonText?: string;
 }
 
-const PricingCard = ({ name, price, period, features, isPro, stripeLink }: PricingCardProps) => {
+const PricingCard = ({ name, price, period, features, isPro, stripeLink, onClick, buttonText = "Izberi paket" }: PricingCardProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
@@ -103,18 +105,31 @@ const PricingCard = ({ name, price, period, features, isPro, stripeLink }: Prici
           </li>
         ))}
       </ul>
-      <a
-        href={stripeLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`block w-full rounded-xl py-3 text-center font-bold transition-all hover:scale-[1.02] active:scale-[0.98] ${
-          isPro
-            ? 'bg-[#22c55e] text-black hover:bg-[#16a34a]'
-            : 'bg-gray-100 text-[#0d0d0d] border border-gray-200 hover:bg-[#0d0d0d] hover:text-white hover:border-[#0d0d0d]'
-        }`}
-      >
-        Izberi paket
-      </a>
+      {stripeLink ? (
+        <a
+          href={stripeLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`block w-full rounded-xl py-3 text-center font-bold transition-all hover:scale-[1.02] active:scale-[0.98] ${
+            isPro
+              ? 'bg-[#22c55e] text-black hover:bg-[#16a34a]'
+              : 'bg-gray-100 text-[#0d0d0d] border border-gray-200 hover:bg-[#0d0d0d] hover:text-white hover:border-[#0d0d0d]'
+          }`}
+        >
+          {buttonText}
+        </a>
+      ) : (
+        <button
+          onClick={onClick}
+          className={`block w-full rounded-xl py-3 text-center font-bold transition-all hover:scale-[1.02] active:scale-[0.98] ${
+            isPro
+              ? 'bg-[#22c55e] text-black hover:bg-[#16a34a]'
+              : 'bg-gray-100 text-[#0d0d0d] border border-gray-200 hover:bg-[#0d0d0d] hover:text-white hover:border-[#0d0d0d]'
+          }`}
+        >
+          {buttonText}
+        </button>
+      )}
     </div>
   );
 };
@@ -472,19 +487,18 @@ export default function App() {
         </div>
 
         {/* Marquee */}
-        <div className="relative w-full overflow-hidden" style={{
+        <div className="relative w-full overflow-hidden group py-4" style={{
           maskImage: 'linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent)',
           WebkitMaskImage: 'linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent)',
         }}>
-          <div className="flex gap-3 w-max" style={{animation:'marquee 24s linear infinite'}}>
-            {[...Array(2)].flatMap(() => [
+          <div className="flex gap-3 w-max marquee-container">
+            {[...Array(4)].flatMap(() => [
               { name:'Bolha.com',    init:'B', flag:'🇸🇮', color:'#d9b0a8' },
               { name:'Facebook',     init:'f', flag:'🇸🇮', color:'#b5c4dd' },
               { name:'Nepremičnine', init:'N', flag:'🇸🇮', color:'#e2c49a' },
               { name:'Avto.net',     init:'A', flag:'🇸🇮', color:'#b4bcc5' },
               { name:'Willhaben',    init:'W', flag:'🇦🇹', color:'#a8ccb8' },
               { name:'Mercatino',    init:'M', flag:'🇮🇹', color:'#9ed0b4' },
-              { name:'eBay',         init:'e', flag:'🇩🇪', color:'#d8d8d3', soon:true },
               { name:'Njuškalo',     init:'N', flag:'🇭🇷', color:'#d8d8d3', soon:true },
             ]).map((p, i) => (
               <div key={i} className="flex items-center gap-2.5 border border-gray-200 rounded-full px-4 py-2.5 whitespace-nowrap select-none hover:bg-white hover:border-[#0d0d0d] hover:-translate-y-1 hover:shadow-md transition-all duration-200 cursor-default">
@@ -497,7 +511,18 @@ export default function App() {
           </div>
         </div>
 
-        <style>{`@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
+        <style>{`
+          @keyframes marquee {
+            from { transform: translateX(0) }
+            to { transform: translateX(-50%) }
+          }
+          .marquee-container {
+            animation: marquee 24s linear infinite;
+          }
+          .group:hover .marquee-container {
+            animation-play-state: paused;
+          }
+        `}</style>
 
         <p className="mt-10 text-center text-sm text-gray-400 px-6">
           Iščete drug portal?{' '}
@@ -513,20 +538,15 @@ export default function App() {
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Začni brezplačno</h2>
           <div className="flex justify-center">
-            <div className="animated-border flex w-full max-w-sm flex-col rounded-3xl bg-white border border-gray-200 shadow-sm p-8 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-lg">
-              <h3 className="mb-2 text-xl font-bold text-[#0d0d0d]">Preizkus (Free-trial)</h3>
-              <div className="mb-6">
-                <span className="text-3xl font-bold text-[#0d0d0d]">0 €</span>
-                <span className="text-gray-500 text-sm"> / 10 dni</span>
-              </div>
-              <ul className="mb-8 space-y-4 text-sm text-gray-600">
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Osveževanje na 3 minute</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> VSI portali po izbiri</li>
-                <li className="flex items-center gap-2"><Check size={14} className="text-[#22c55e]" /> Telegram obvestila</li>
-              </ul>
-              <button onClick={() => setIsTrialModalOpen(true)} className="mt-auto w-full rounded-xl bg-[#22c55e] py-3 font-bold text-white transition-transform hover:scale-[1.02] active:scale-[0.98]">
-                Preizkusi brezplačno
-              </button>
+            <div className="w-full max-w-sm">
+              <PricingCard
+                name="Preizkus (Free-trial)"
+                price="0"
+                period="/ 10 dni"
+                features={['Osveževanje na 3 minute', 'VSI portali po izbiri', 'Telegram obvestila']}
+                buttonText="Preizkusi brezplačno"
+                onClick={() => setIsTrialModalOpen(true)}
+              />
             </div>
           </div>
         </div>
