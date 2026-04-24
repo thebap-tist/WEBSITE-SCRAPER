@@ -1,0 +1,236 @@
+/* ── Section wrapper: tall so ScrollTrigger has room to scrub ── */
+  .or-section {
+    height: 350vh;
+    position: relative;
+    font-family: inherit; /* inherits your page font */
+  }
+
+  /* ── Sticky stage: full-viewport, centred, 3D perspective ── */
+  .or-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    perspective: 1400px;
+    perspective-origin: 50% 50%;
+  }
+
+  /* ── Scene label (left side) ── */
+  .or-label {
+    position: absolute;
+    top: 50%;
+    left: 8%;
+    transform: translateY(-50%) translateX(-30px);
+    opacity: 0;
+    pointer-events: none;
+    max-width: 320px;
+  }
+  .or-label h2 {
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    color: inherit;
+  }
+  .or-label p {
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.6;
+  }
+
+  /* Hide label on mobile to prevent overlapping the 3D phone */
+  @media (max-width: 1024px) {
+    .or-label {
+      display: none !important;
+    }
+  }
+
+  /* ── Phone wrapper: preserve-3d so children can pop on Z ── */
+  .or-phone-wrapper {
+    position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  /* ── Phone frame ── */
+  .or-phone-frame {
+    width: 300px;
+    height: 620px;
+    background: #141820;
+    border-radius: 50px;
+    position: relative;
+    box-shadow:
+      0 0 0 2px #2A3348,
+      0 0 0 4px #1A2035,
+      0 40px 80px rgba(0,0,0,0.5),
+      inset 0 0 0 1px rgba(255,255,255,0.06);
+    transform-style: preserve-3d;
+  }
+
+  /* Side buttons */
+  .or-phone-frame::before {
+    content: '';
+    position: absolute;
+    right: -4px; top: 120px;
+    width: 4px; height: 60px;
+    background: #1A2035;
+    border-radius: 0 3px 3px 0;
+    box-shadow: 0 80px 0 #1A2035;
+  }
+  .or-phone-frame::after {
+    content: '';
+    position: absolute;
+    left: -4px; top: 100px;
+    width: 4px; height: 36px;
+    background: #1A2035;
+    border-radius: 3px 0 0 3px;
+    box-shadow: 0 50px 0 #1A2035, 0 95px 0 #1A2035;
+  }
+
+  /* Dynamic island */
+  .or-notch {
+    position: absolute;
+    top: 14px; left: 50%;
+    transform: translateX(-50%);
+    width: 110px; height: 32px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 10;
+  }
+  .or-notch::before {
+    content: '';
+    position: absolute;
+    right: 18px; top: 50%;
+    transform: translateY(-50%);
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #1a1a2e;
+    box-shadow: 0 0 0 2px #0d0d1a;
+  }
+
+  /* Screen */
+  .or-screen {
+    position: absolute;
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
+    border-radius: 44px;
+    background: #1A2030;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* App header */
+  .or-app-header {
+    padding: 56px 16px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+  }
+  .or-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #3A8A5C;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .or-app-name  { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.2; }
+  .or-app-status {
+    font-size: 11px; color: #4CAF78;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .or-app-status::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4CAF78;
+  }
+
+  /* Inner (ghost) cards — visible before pop */
+  .or-inner-cards {
+    flex: 1;
+    overflow: hidden;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .or-inner-card { background: #212838; border-radius: 16px; overflow: hidden; flex-shrink: 0; }
+  .or-inner-card-img {
+    height: 90px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.9);
+  }
+  .or-inner-card-body { padding: 10px 12px; }
+  .or-inner-card-label { font-size: 9px; font-weight: 700; color: #E07A3A; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+  .or-inner-card-title { font-size: 11px; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 4px; }
+  .or-inner-card-meta  { font-size: 10px; color: rgba(255,255,255,0.5); display: flex; gap: 8px; }
+
+  .or-msg-bar {
+    padding: 10px 16px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 0 0 44px 44px;
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    flex-shrink: 0;
+  }
+
+  /* ── Floating cards layer (outside screen, inside wrapper for 3D) ── */
+  .or-floating-cards {
+    position: absolute;
+    top: 0; left: 0;
+    width: 300px;
+    height: 620px;
+    pointer-events: none;
+    transform-style: preserve-3d;
+    z-index: 20;
+  }
+
+  .or-fcard {
+    position: absolute;
+    left: 16px;
+    width: calc(300px - 32px);
+    border-radius: 20px;
+    overflow: hidden;
+    background: #212838;
+    box-shadow:
+      0 20px 60px rgba(0,0,0,0.5),
+      0 0 0 1px rgba(255,255,255,0.07);
+    opacity: 0;
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+  }
+  .or-fcard-img {
+    height: 130px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 800; letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.92);
+    text-shadow: 0 3px 12px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  .or-fcard-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.3));
+  }
+  .or-fcard-body { padding: 14px 16px 16px; }
+  .or-fcard-label { font-size: 10px; font-weight: 700; color: #E07A3A; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+  .or-fcard-title { font-size: 14px; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 8px; }
+  .or-fcard-rows  { display: flex; flex-direction: column; gap: 4px; }
+  .or-fcard-row   { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.65); }
+  .or-fcard-row a { color: #6A9FD8; text-decoration: none; }
+  .or-fcard-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .or-fcard-time  { font-size: 10px; color: rgba(255,255,255,0.3); font-family: monospace; }
+  .or-fcard-check { font-size: 12px; color: #4CAF78; }
