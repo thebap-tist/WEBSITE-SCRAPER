@@ -414,7 +414,12 @@ export default function App() {
       <section className="relative bg-[#f7f7f4] py-24 px-6 overflow-hidden dot-grid">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: -350 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+            >
               <h2 className="mb-2 text-[#22c55e] font-bold uppercase tracking-wider text-sm">Telegram obvestila</h2>
               <h3 className="mb-6 text-4xl font-bold md:text-5xl text-[#0d0d0d]">Oglasi pridejo k vam.</h3>
               <p className="mb-10 text-xl text-gray-600">
@@ -435,9 +440,15 @@ export default function App() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
             <div className="flex items-center justify-center">
-              <div className="w-full max-w-[360px] rounded-2xl bg-[#17212b] p-4 sm:p-6 shadow-2xl ring-1 ring-black/8">
+              <motion.div
+                initial={{ opacity: 0, x: 350 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+                className="w-full max-w-[360px] rounded-2xl bg-[#17212b] p-4 sm:p-6 shadow-2xl ring-1 ring-black/8"
+              >
                 <div className="mb-4 flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-[#22c55e] flex items-center justify-center font-bold text-white shadow-lg shadow-[#22c55e]/20">OR</div>
                   <div>
@@ -460,7 +471,7 @@ export default function App() {
                     <div className="mt-2 flex justify-end text-[10px] text-white/30">14:42</div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
