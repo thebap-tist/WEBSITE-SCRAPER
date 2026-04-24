@@ -250,19 +250,19 @@ export default function App() {
       orTL.to('#or-inner-cards', { opacity: 0, duration: 0.1 }, 0.35);
 
       gsap.utils.toArray('.or-fcard').forEach((card: any, i) => {
-        const delay = 0.35 + i * 0.025;
+        const delay = 0.35 + i * 0.04;
         orTL.fromTo(card,
           { z: 0, opacity: 0, scale: 0.85 },
-          { z: 220, opacity: 1, scale: 1, duration: 0.15, ease: 'back.out(1.4)' },
+          { z: 220, opacity: 1, scale: 1, duration: 0.2, ease: 'back.out(1.4)' },
           delay
         );
       });
 
-      orTL.to('#or-floating-cards', { y: -900, duration: 0.45, ease: 'none' }, 0.55);
-      orTL.to('#or-phone-wrapper', { z: -120, rotateY: -18, duration: 0.45, ease: 'none' }, 0.55);
+      orTL.to('#or-floating-cards', { y: -900, duration: 0.45, ease: 'none' }, 0.45);
+      orTL.to('#or-phone-wrapper', { z: -120, rotateY: -18, duration: 0.45, ease: 'none' }, 0.45);
 
-      orTL.to('#or-label',   { opacity: 0, duration: 0.1 }, 0.88);
-      orTL.to('#or-phone-wrapper', { opacity: 0, scale: 0.9, duration: 0.12, ease: 'power2.in' }, 0.9);
+      orTL.to('#or-label',   { opacity: 0, duration: 0.15 }, 0.90);
+      orTL.to('#or-phone-wrapper', { opacity: 0, scale: 0.9, duration: 0.15, ease: 'none' }, 0.95);
     });
     return () => ctx.revert();
   }, []);
