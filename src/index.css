@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./phone-anim.css";
 
 @theme {
   --font-sans: "Outfit", sans-serif;

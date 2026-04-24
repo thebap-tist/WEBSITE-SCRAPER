@@ -215,21 +215,55 @@ export default function App() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      if (!feedRef.current || !containerRef.current) return;
-      const feedHeight = feedRef.current.scrollHeight;
-      const screenHeight = 500;
-      const scrollDistance = feedHeight - screenHeight + 40;
-      gsap.to(feedRef.current, {
-        y: -scrollDistance,
-        ease: "none",
+      const orTL = gsap.timeline({
         scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 64px",
-          end: "bottom bottom",
-          scrub: 1,
-        },
+          trigger: '#or-section',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 1.2,
+          pin: '#or-stage',
+        }
       });
-    }, containerRef);
+
+      orTL.fromTo('#or-phone-wrapper',
+        { scale: 0.88, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.15, ease: 'power2.out' },
+        0
+      );
+
+      orTL.to('#or-phone-wrapper', {
+        rotateY: -22,
+        rotateX: 8,
+        x: '20vw',
+        z: -60,
+        duration: 0.3,
+        ease: 'power2.inOut'
+      }, 0.1);
+
+      orTL.to('#or-label', {
+        opacity: 1,
+        x: 0,
+        duration: 0.2,
+        ease: 'power2.out'
+      }, 0.2);
+
+      orTL.to('#or-inner-cards', { opacity: 0, duration: 0.1 }, 0.35);
+
+      gsap.utils.toArray('.or-fcard').forEach((card: any, i) => {
+        const delay = 0.35 + i * 0.025;
+        orTL.fromTo(card,
+          { z: 0, opacity: 0, scale: 0.85 },
+          { z: 220, opacity: 1, scale: 1, duration: 0.15, ease: 'back.out(1.4)' },
+          delay
+        );
+      });
+
+      orTL.to('#or-floating-cards', { y: -900, duration: 0.45, ease: 'none' }, 0.55);
+      orTL.to('#or-phone-wrapper', { z: -120, rotateY: -18, duration: 0.45, ease: 'none' }, 0.55);
+
+      orTL.to('#or-label',   { opacity: 0, duration: 0.1 }, 0.88);
+      orTL.to('#or-phone-wrapper', { opacity: 0, scale: 0.9, duration: 0.12, ease: 'power2.in' }, 0.9);
+    });
     return () => ctx.revert();
   }, []);
 
@@ -293,84 +327,128 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── iPhone Mockup Section — LIGHT with dot grid ── */}
-      <section ref={containerRef} className="relative h-[250vh] w-full bg-[#f7f7f4] dot-grid">
-        <div className="sticky top-16 flex h-[calc(100vh-4rem)] w-full items-center justify-center overflow-hidden">
+      {/* ── 3D Scroll Phone Animation ── */}
+      <section className="or-section bg-[#f7f7f4] dot-grid text-[#0d0d0d]" id="or-section">
+        <div className="or-stage" id="or-stage">
 
-          {/* iPhone Mockup */}
-          <div className="scale-[0.7] sm:scale-[0.85] md:scale-100 flex items-center justify-center">
-            <div
-              ref={phoneRef}
-              className="relative h-[720px] w-[350px] rounded-[55px] border-[12px] border-[#1a1a1a] bg-[#0f1115]"
-              style={{ boxShadow: '0 70px 140px -20px rgba(0,0,0,0.35), 0 30px 60px -10px rgba(0,0,0,0.18), 0 0 0 2px rgba(0,0,0,0.06)' }}
-            >
-              {/* Dynamic Island */}
-              <div className="absolute left-1/2 top-4 z-50 h-7 w-28 -translate-x-1/2 rounded-full bg-black" />
+          {/* Left label */}
+          <div className="or-label" id="or-label">
+            <h2>Oglasi, ki skočijo ven.</h2>
+            <p>Relevantni zadetki prihajajo direktno do tebe – urejeni, jasni, takoj.</p>
+          </div>
 
-              {/* Status Bar */}
-              <div className="absolute left-0 top-0 flex w-full items-center justify-between px-8 pt-5 text-[12px] font-semibold text-white">
-                <span>14:41</span>
-                <div className="flex items-center gap-1.5">
-                  <Signal size={14} /><Wifi size={14} /><Battery size={16} />
-                </div>
-              </div>
+          {/* Phone */}
+          <div className="or-phone-wrapper" id="or-phone-wrapper">
+            <div className="or-phone-frame">
+              <div className="or-notch"></div>
+              <div className="or-screen">
 
-              {/* Screen */}
-              <div className="absolute inset-0 overflow-hidden rounded-[43px] bg-[#0e1621]">
-                {/* App Header */}
-                <div className="absolute left-0 top-0 z-40 flex w-full items-center gap-3 bg-[#17212b]/95 px-5 pb-3 pt-14 backdrop-blur-md">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#22c55e] text-[14px] font-bold text-white">OR</div>
+                <div className="or-app-header">
+                  <div className="or-avatar">OR</div>
                   <div>
-                    <h3 className="text-[15px] font-bold leading-tight text-white">Oglasni Radar</h3>
-                    <div className="flex items-center gap-1.5">
-                      <div className="h-1.5 w-1.5 rounded-full bg-[#22c55e]" />
-                      <span className="text-[12px] text-[#22c55e]">v spletu</span>
-                    </div>
+                    <div className="or-app-name">Oglasni Radar</div>
+                    <div className="or-app-status">v spletu</div>
                   </div>
                 </div>
 
-                {/* Message Feed */}
-                <div ref={feedRef} className="flex flex-col px-4 pt-32 pb-10">
-                  <MessageCard platform="Bolha" title={'Woom 4 otroški kolesar 20"'} price="189 €" location="Ljubljana" time="14:33" color="#9b2c2c" emoji="🔴" link="bolha.com/..." />
-                  <MessageCard platform="Willhaben" title="Woom 4 — top Zustand" price="329 €" location="Graz" time="14:37" color="#2f6f4e" emoji="🟢" link="willhaben.at/..." />
-                  <MessageCard platform="Nepremičnine" title="2-sobno stanovanje, Šiška" price="210.000 €" location="Ljubljana" time="14:39" color="#2c5282" emoji="🔵" link="nepremicnine.net/..." />
-                  <MessageCard platform="Avto.net" title="VW Golf 7 1.6 TDI" price="11.500 €" location="Celje" time="14:41" color="#c05621" emoji="🟠" link="avto.net/..." />
+                {/* Ghost cards */}
+                <div className="or-inner-cards" id="or-inner-cards">
+                  <div className="or-inner-card">
+                    <div className="or-inner-card-img" style={{ background: '#7A3A3A' }}>WOOM</div>
+                    <div className="or-inner-card-body">
+                      <div className="or-inner-card-label">Nov Bolha oglas!</div>
+                      <div className="or-inner-card-title">Woom 4 otroški kolo 20"</div>
+                      <div className="or-inner-card-meta"><span>💰 189 €</span><span>📍 Ljubljana</span></div>
+                    </div>
+                  </div>
+                  <div className="or-inner-card">
+                    <div className="or-inner-card-img" style={{ background: '#2D5A3D' }}>WOOM</div>
+                    <div className="or-inner-card-body">
+                      <div className="or-inner-card-label">Nov Bolha oglas!</div>
+                      <div className="or-inner-card-title">Woom 3 otroški kolo 16"</div>
+                      <div className="or-inner-card-meta"><span>💰 149 €</span><span>📍 Maribor</span></div>
+                    </div>
+                  </div>
+                  <div className="or-inner-card">
+                    <div className="or-inner-card-img" style={{ background: '#2A4A7A' }}>WOOM</div>
+                  </div>
                 </div>
 
-                {/* Input Bar */}
-                <div className="absolute bottom-0 left-0 flex w-full items-center bg-[#17212b] px-4 py-3 pb-8">
-                  <div className="h-9 w-full rounded-full bg-[#242f3d] px-4 py-2 text-[14px] text-gray-500">Sporočilo</div>
-                </div>
+                <div className="or-msg-bar">Sporočilo</div>
               </div>
             </div>
-          </div>
 
-          {/* Side Content */}
-          <div className="ml-20 hidden max-w-sm lg:block">
-            <h2 className="mb-4 text-4xl font-bold text-[#0d0d0d]">Hitrost je ključna.</h2>
-            <p className="text-gray-600 leading-relaxed">
-              Naš sistem pregleduje največje oglasnike vsakih nekaj sekund.
-              Bodite prvi, ki pokliče prodajalca in si zagotovite najboljšo ceno.
-            </p>
-            <div className="mt-8 flex flex-col gap-4">
-              <div className="flex items-center gap-3 rounded-xl bg-white p-4 border border-gray-200 shadow-sm">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#22c55e]/15 text-[#22c55e] flex-shrink-0">
-                  <CheckCheck size={20} />
-                </div>
-                <div>
-                  <p className="font-bold text-[#0d0d0d]">Takojšnja obvestila</p>
-                  <p className="text-sm text-gray-500">Brez zamika, direktno na telefon.</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 rounded-xl bg-white p-4 border border-gray-200 shadow-sm">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#22c55e]/15 text-[#22c55e] flex-shrink-0">
-                  <CheckCheck size={20} />
-                </div>
-                <div>
-                  <p className="font-bold text-[#0d0d0d]">Vsi oglasniki na enem mestu</p>
-                  <p className="text-sm text-gray-500">Bolha, Avto.net, Willhaben in več.</p>
+            {/* Floating cards */}
+            <div className="or-floating-cards" id="or-floating-cards">
+
+              <div className="or-fcard" style={{ top: '88px' }}>
+                <div className="or-fcard-img" style={{ background: 'linear-gradient(135deg,#7A3A3A,#A04848)' }}>WOOM</div>
+                <div className="or-fcard-body">
+                  <div className="or-fcard-label">Nov Bolha oglas!</div>
+                  <div className="or-fcard-title">Woom 4 otroški kolesar 20"</div>
+                  <div className="or-fcard-rows">
+                    <div className="or-fcard-row">💰 <strong style={{ color: '#fff' }}>Cena:</strong>&nbsp;189 €</div>
+                    <div className="or-fcard-row">📍 Ljubljana</div>
+                    <div className="or-fcard-row">🔗 <a href="#">bolha.com/...</a></div>
+                  </div>
+                  <div className="or-fcard-footer">
+                    <span className="or-fcard-time">14:33</span>
+                    <span className="or-fcard-check">✓✓</span>
+                  </div>
                 </div>
               </div>
+
+              <div className="or-fcard" style={{ top: '400px' }}>
+                <div className="or-fcard-img" style={{ background: 'linear-gradient(135deg,#2D5A3D,#3D7A52)' }}>WOOM</div>
+                <div className="or-fcard-body">
+                  <div className="or-fcard-label">Nov Bolha oglas!</div>
+                  <div className="or-fcard-title">Woom 3 otroški kolesar 16"</div>
+                  <div className="or-fcard-rows">
+                    <div className="or-fcard-row">💰 <strong style={{ color: '#fff' }}>Cena:</strong>&nbsp;149 €</div>
+                    <div className="or-fcard-row">📍 Maribor</div>
+                    <div className="or-fcard-row">🔗 <a href="#">bolha.com/...</a></div>
+                  </div>
+                  <div className="or-fcard-footer">
+                    <span className="or-fcard-time">14:35</span>
+                    <span className="or-fcard-check">✓✓</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="or-fcard" style={{ top: '720px' }}>
+                <div className="or-fcard-img" style={{ background: 'linear-gradient(135deg,#2A4A7A,#3A60A0)' }}>WOOM</div>
+                <div className="or-fcard-body">
+                  <div className="or-fcard-label">Nov Mimovrste oglas!</div>
+                  <div className="or-fcard-title">Woom 5 otroški kolesar 24"</div>
+                  <div className="or-fcard-rows">
+                    <div className="or-fcard-row">💰 <strong style={{ color: '#fff' }}>Cena:</strong>&nbsp;219 €</div>
+                    <div className="or-fcard-row">📍 Koper</div>
+                    <div className="or-fcard-row">🔗 <a href="#">mimovrste.com/...</a></div>
+                  </div>
+                  <div className="or-fcard-footer">
+                    <span className="or-fcard-time">14:41</span>
+                    <span className="or-fcard-check">✓</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="or-fcard" style={{ top: '1040px' }}>
+                <div className="or-fcard-img" style={{ background: 'linear-gradient(135deg,#5A3472,#7A4898)' }}>WOOM</div>
+                <div className="or-fcard-body">
+                  <div className="or-fcard-label">Nov Bolha oglas!</div>
+                  <div className="or-fcard-title">Woom 2 otroški kolesar 14"</div>
+                  <div className="or-fcard-rows">
+                    <div className="or-fcard-row">💰 <strong style={{ color: '#fff' }}>Cena:</strong>&nbsp;99 €</div>
+                    <div className="or-fcard-row">📍 Celje</div>
+                    <div className="or-fcard-row">🔗 <a href="#">bolha.com/...</a></div>
+                  </div>
+                  <div className="or-fcard-footer">
+                    <span className="or-fcard-time">14:48</span>
+                    <span className="or-fcard-check">✓✓</span>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -730,39 +808,58 @@ export default function App() {
               </div>
               <div className="p-8 overflow-y-auto custom-scrollbar text-gray-400 space-y-8 leading-relaxed">
                 <section>
-                  <h4 className="text-white font-bold text-lg mb-4">1. Splošne določbe</h4>
-                  <p>Dobrodošli na spletni strani Oglasni Radar. Ti pogoji poslovanja določajo pravila in predpise za uporabo naše storitve obveščanja o oglasih. Z dostopom do te spletne strani in uporabo naših storitev potrjujete, da ste prebrali, razumeli in se strinjate s temi pogoji.</p>
+                  <h4 className="text-white font-bold text-lg mb-4">1. Splošne določbe in sprejem pogojev</h4>
+                  <p>Ti splošni pogoji urejajo uporabo spletnega mesta in Telegram bota "Oglasni Radar" (v nadaljevanju: Storitev), ki ga upravlja VALTOMAT, Jan Tobias s.p., SI10665374 (v nadaljevanju: Ponudnik). Z uporabo Storitve se uporabnik v celoti strinja s temi pogoji. Če se s pogoji ne strinjate, Storitve ne smete uporabljati.</p>
                 </section>
                 <section>
                   <h4 className="text-white font-bold text-lg mb-4">2. Opis storitve in neodvisnost</h4>
-                  <p>Oglasni Radar je neodvisno orodje za spremljanje javno dostopnih oglasov na različnih spletnih portalih (kot so Bolha, Avto.net, Willhaben itd.).</p>
-                  <ul className="list-disc pl-5 mt-4 space-y-2">
-                    <li>Nismo povezani, pooblaščeni ali kakorkoli uradno povezani z nobenim od zunanjih portalov, ki jih spremljamo.</li>
-                    <li>Vse blagovne znamke in imena portalov so last njihovih lastnikov.</li>
-                    <li>Storitev deluje kot posrednik informacij, ki uporabniku olajša iskanje s pošiljanjem obvestil v realnem času.</li>
+                  <p className="mb-2">Oglasni Radar je analitično IT orodje, ki uporabnikom omogoča lažje in hitrejše spremljanje javno dostopnih informacij na spletu.</p>
+                  <p className="mb-2"><strong>Pomembno:</strong> Ponudnik ni v nobenem partnerskem, lastniškem ali poslovnem razmerju s spletnimi portali, katerih vsebina se prikazuje (npr. Bolha, Avto.net, Nepremičnine.net, Willhaben idr.). Storitev deluje izključno kot brskalnik/iskalnik po navodilih uporabnika in služi preusmerjanju prometa na izvorne spletne strani.</p>
+                  <p>Ponudnik si pridržuje pravico, da kadarkoli in brez predhodnega obvestila doda ali odstrani posamezne podprte portale (npr. zaradi tehničnih omejitev s strani izvornih strani).</p>
+                </section>
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">3. Omejitev odgovornosti (Zavrnitev garancije)</h4>
+                  <p className="mb-2">Storitev je na voljo po načelu "takšna kot je" (as is) in "kot je na voljo" (as available). Ponudnik si prizadeva za čim večjo zanesljivost bota, vendar ne prevzema nobene odgovornosti in ne daje nobenih garancij za:</p>
+                  <ul className="list-disc pl-5 mt-2 space-y-2 mb-4">
+                    <li>Pravilnost, točnost in ažurnost podatkov, ki so posredovani v Telegram obvestilih.</li>
+                    <li>Morebitne zamude pri obveščanju ali izpade delovanja Storitve (zaradi tehničnih napak, posodobitev izvornih portalov ali višje sile).</li>
+                    <li>Kakršnokoli neposredno ali posredno finančno škodo, izgubo dobička ali zamujene poslovne priložnosti, ki bi nastale zaradi zanašanja na Storitev, nepravočasnega obvestila ali nedelovanja Storitve.</li>
+                  </ul>
+                  <p className="mb-2"><strong>Odvisnost od platform:</strong> Storitev za dostavo obvestil uporablja platformo Telegram. Ponudnik ne prevzema odgovornosti v primeru izpada, spremembe pravil ali ukinitve storitev s strani platforme Telegram.</p>
+                  <p>Uporabnik prevzema polno odgovornost za vse odločitve in transakcije, ki jih sklene s tretjimi osebami na podlagi informacij, pridobljenih preko Storitve.</p>
+                </section>
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">4. Pravilna uporaba storitve</h4>
+                  <p className="mb-2">Uporabnik se zavezuje, da bo Storitev uporabljal izključno za osebne ali interne poslovne namene. Strogo je prepovedano:</p>
+                  <ul className="list-disc pl-5 mt-2 space-y-2">
+                    <li>Preprodajanje podatkov, pridobljenih preko Storitve.</li>
+                    <li>Zloraba Storitve za povzročanje škode tretjim osebam.</li>
+                    <li>Avtomatizirano poizvedovanje ali izvajanje obremenitvenih napadov na infrastrukturo Ponudnika.</li>
                   </ul>
                 </section>
                 <section>
-                  <h4 className="text-white font-bold text-lg mb-4">3. Omejitev odgovornosti</h4>
-                  <p>Čeprav se trudimo zagotavljati čim hitrejša in natančnejša obvestila, ne moremo jamčiti za:</p>
-                  <ul className="list-disc pl-5 mt-4 space-y-2">
-                    <li>100% razpoložljivost storitve v vsakem trenutku.</li>
-                    <li>Točnost podatkov v oglasih (za vsebino oglasa je odgovoren prodajalec na izvornem portalu).</li>
-                    <li>Morebitne zamude pri obvestilih zaradi tehničnih težav na strani tretjih ponudnikov (npr. Telegram, spletni oglasniki).</li>
+                  <h4 className="text-white font-bold text-lg mb-4">5. Plačila in naročnine</h4>
+                  <p>Za uporabo plačljivih paketov velja cenik, objavljen na spletni strani. Naročnina se obračunava mesečno. Ponudnik si pridržuje pravico do spremembe cen, o čemer bodo uporabniki predhodno obveščeni. V primeru tehničnega nedelovanja storitve, ki traja dlje kot 48 ur, je uporabnik upravičen do sorazmernega podaljšanja naročnine, ne pa do finančnega povračila (denarja ne vračamo).</p>
+                </section>
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">6. Prekinitev delovanja in ukinitev računa</h4>
+                  <p className="mb-2">Ponudnik si izrecno pridržuje pravico, da:</p>
+                  <ul className="list-disc pl-5 mt-2 space-y-2">
+                    <li>Kadarkoli in brez predhodnega opozorila trajno ali začasno ukine delovanje celotne Storitve (npr. v primeru tehničnih blokad s strani tretjih portalov ali višje sile). V tem primeru Ponudnik ne odgovarja za povračilo sorazmernega dela naročnine.</li>
+                    <li>Prekine dostop posameznemu uporabniku, če ugotovi, da ta krši te pogoje uporabe.</li>
                   </ul>
                 </section>
                 <section>
-                  <h4 className="text-white font-bold text-lg mb-4">4. Politika vračila denarja</h4>
-                  <p>Pri Oglasnem Radarju želimo, da ste s storitvijo popolnoma zadovoljni, zato ponujamo:</p>
-                  <ul className="list-disc pl-5 mt-4 space-y-2">
-                    <li><span className="text-white font-medium">Brezplačni preizkus:</span> Vsak nov uporabnik ima možnost 10-dnevnega brezplačnega preizkusa.</li>
-                    <li><span className="text-white font-medium">Vračila:</span> Zaradi narave storitve in razpoložljivosti brezplačnega preizkusa, vračil denarja za že plačana obdobja ne nudimo.</li>
-                    <li><span className="text-white font-medium">Preklic:</span> Naročnino lahko prekličete kadarkoli. Po preklicu bo vaša storitev ostala aktivna do konca trenutno plačanega obdobja.</li>
-                  </ul>
+                  <h4 className="text-white font-bold text-lg mb-4">7. Varstvo osebnih podatkov (Privacy Policy)</h4>
+                  <p>Ponudnik obdeluje le tiste osebne podatke, ki so nujno potrebni za izvajanje storitve (e-poštni naslov, Telegram ID, IP naslov za preprečevanje zlorab). Ponudnik teh podatkov ne bo nikoli posredoval ali prodal tretjim osebam. Storitev ne shranjuje osebnih podatkov oglasov s tretjih portalov (imen, telefonskih številk prodajalcev).</p>
                 </section>
                 <section>
-                  <h4 className="text-white font-bold text-lg mb-4">5. Varovanje podatkov</h4>
-                  <p>Vaše podatke (ime, e-pošta) uporabljamo izključno za namene zagotavljanja storitve in komunikacije z vami. Podatkov ne delimo s tretjimi osebami.</p>
+                  <h4 className="text-white font-bold text-lg mb-4">8. Končne določbe in pristojnost</h4>
+                  <p>Ponudnik si pridržuje pravico do spremembe teh pogojev. Za vse morebitne spore, ki bi izvirali iz uporabe te storitve, se uporablja pravo Republike Slovenije. Pristojno je sodišče po prebivališču izvajalca.</p>
+                </section>
+                <section>
+                  <h4 className="text-white font-bold text-lg mb-4">Politika vračila denarja in preklic naročnine</h4>
+                  <p>Ker je Oglasni Radar digitalna storitev in ponuja 10-dnevni brezplačni preizkus za testiranje delovanja, vplačanih sredstev za aktivne naročnine ne vračamo (ni "money-back" garancije). Uporabnik se strinja, da pred nakupom prevzema odgovornost za preizkus storitve. Naročnino je mogoče preklicati kadarkoli. Preklic pomeni, da se naročnina v naslednjem obračunskem obdobju ne bo več avtomatsko podaljšala. Dostop do plačanih funkcij ostane aktiven do izteka že vplačanega obdobja.</p>
                 </section>
                 <div className="pt-8 border-t border-white/5 text-sm italic">Zadnja posodobitev: 12. april 2026</div>
               </div>
