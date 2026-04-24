@@ -12,6 +12,5 @@ export default defineConfig({
   },
   server: {
     hmr: process.env.DISABLE_HMR !== 'true',
-    allowedHosts: true, // Whitelist secure tunnel forwarding domains
   },
 });
