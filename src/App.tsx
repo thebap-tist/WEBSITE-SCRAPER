@@ -493,7 +493,7 @@ export default function App() {
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
             <motion.div
-              initial={{ opacity: 0, x: -350 }}
+              initial={{ opacity: 0, x: "-20vw" }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1.2, ease: "easeOut" }}
@@ -521,7 +521,7 @@ export default function App() {
             </motion.div>
             <div className="flex items-center justify-center">
               <motion.div
-                initial={{ opacity: 0, x: 350 }}
+                initial={{ opacity: 0, x: "20vw" }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 1.2, ease: "easeOut" }}

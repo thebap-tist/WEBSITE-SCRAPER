@@ -1,6 +1,6 @@
 /* ── Section wrapper: tall so ScrollTrigger has room to scrub ── */
   .or-section {
-    height: 600vh;
+    height: 350vh;
     position: relative;
     font-family: inherit; /* inherits your page font */
   }
@@ -40,6 +40,13 @@
     font-size: 1rem;
     line-height: 1.6;
     opacity: 0.6;
+  }
+
+  /* Hide label on mobile to prevent overlapping the 3D phone */
+  @media (max-width: 1024px) {
+    .or-label {
+      display: none !important;
+    }
   }
 
   /* ── Phone wrapper: preserve-3d so children can pop on Z ── */
