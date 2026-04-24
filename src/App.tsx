@@ -61,8 +61,31 @@ interface PricingCardProps {
 
 const PricingCard = ({ name, price, period, features, isPro, stripeLink, onClick, buttonText = "Izberi paket" }: PricingCardProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
+  const [isMobileActive, setIsMobileActive] = useState(false);
+
+  // Setup Interaction Observer for mobile spotlight effect
+  useEffect(() => {
+    // Only run intersection observer on mobile bounds
+    if (window.innerWidth > 1024) return;
+    
+    // Create an intersection observer that perfectly fires when the card hits the center of screen
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        setIsMobileActive(entry.isIntersecting);
+      });
+    }, { 
+      threshold: 0.7 // activates when 70% of the card is visible on screen
+    });
+
+    if (ref.current) observer.observe(ref.current);
+    
+    return () => observer.disconnect();
+  }, []);
 
   function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    // Disable hover-driven 3d for small screen touches relying exclusively on scroll
+    if (window.innerWidth <= 1024) return; 
+    
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -73,6 +96,8 @@ const PricingCard = ({ name, price, period, features, isPro, stripeLink, onClick
   }
 
   function onMouseLeave() {
+    if (window.innerWidth <= 1024) return;
+    
     const el = ref.current;
     if (!el) return;
     el.style.transition = 'transform 0.5s cubic-bezier(0.34,1.3,0.64,1), box-shadow 0.3s ease';
@@ -84,11 +109,11 @@ const PricingCard = ({ name, price, period, features, isPro, stripeLink, onClick
       ref={ref}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      className={`card-shimmer animated-border flex flex-col rounded-3xl bg-white p-8 transition-shadow duration-300 cursor-default ${
+      className={`card-shimmer animated-border flex flex-col rounded-3xl bg-white p-8 transition-all duration-500 cursor-default ${
         isPro
           ? 'border-2 border-[#0d0d0d] shadow-[0_8px_30px_-8px_rgba(0,0,0,0.18)]'
           : 'border border-gray-200 shadow-sm hover:shadow-[0_24px_50px_-10px_rgba(0,0,0,0.14)] hover:outline hover:outline-[1.5px] hover:outline-[#0d0d0d]'
-      }`}
+      } ${isMobileActive ? 'mobile-active' : ''}`}
       style={{ position: 'relative', willChange: 'transform' }}
     >
       {isPro && <div className="dynamic-island">Najboljša izbira</div>}
@@ -114,7 +139,7 @@ const PricingCard = ({ name, price, period, features, isPro, stripeLink, onClick
             isPro
               ? 'bg-[#22c55e] text-black hover:bg-[#16a34a]'
               : 'bg-gray-100 text-[#0d0d0d] border border-gray-200 hover:bg-[#0d0d0d] hover:text-white hover:border-[#0d0d0d]'
-          }`}
+          } ${isMobileActive && isPro ? 'mobile-breathing' : ''}`}
         >
           {buttonText}
         </a>
@@ -125,7 +150,7 @@ const PricingCard = ({ name, price, period, features, isPro, stripeLink, onClick
             isPro
               ? 'bg-[#22c55e] text-black hover:bg-[#16a34a]'
               : 'bg-gray-100 text-[#0d0d0d] border border-gray-200 hover:bg-[#0d0d0d] hover:text-white hover:border-[#0d0d0d]'
-          }`}
+          } ${isMobileActive && isPro ? 'mobile-breathing' : ''}`}
         >
           {buttonText}
         </button>
