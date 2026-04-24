@@ -1,6 +1,6 @@
 /* ── Section wrapper: tall so ScrollTrigger has room to scrub ── */
   .or-section {
-    height: 350vh;
+    height: 600vh;
     position: relative;
     font-family: inherit; /* inherits your page font */
   }

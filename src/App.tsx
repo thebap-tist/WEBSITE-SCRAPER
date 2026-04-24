@@ -214,7 +214,14 @@ export default function App() {
   };
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
+    let mm = gsap.matchMedia();
+
+    mm.add({
+      isDesktop: "(min-width: 1025px)",
+      isMobile: "(max-width: 1024px)"
+    }, (context) => {
+      let { isDesktop } = context.conditions as { isDesktop: boolean };
+
       const orTL = gsap.timeline({
         scrollTrigger: {
           trigger: '#or-section',
@@ -232,9 +239,9 @@ export default function App() {
       );
 
       orTL.to('#or-phone-wrapper', {
-        rotateY: -22,
+        rotateY: isDesktop ? -22 : -15,   // less severe rotation sideways on mobile
         rotateX: 8,
-        x: '20vw',
+        x: isDesktop ? '20vw' : '8vw',    // shifted slightly right to leave room for cards jumping left
         z: -60,
         duration: 0.3,
         ease: 'power2.inOut'
@@ -250,21 +257,26 @@ export default function App() {
       orTL.to('#or-inner-cards', { opacity: 0, duration: 0.1 }, 0.35);
 
       gsap.utils.toArray('.or-fcard').forEach((card: any, i) => {
-        const delay = 0.35 + i * 0.025;
+        const delay = 0.35 + i * 0.04;
         orTL.fromTo(card,
           { z: 0, opacity: 0, scale: 0.85 },
-          { z: 220, opacity: 1, scale: 1, duration: 0.15, ease: 'back.out(1.4)' },
+          { z: isDesktop ? 220 : 130, opacity: 1, scale: 1, duration: 0.2, ease: 'back.out(1.4)' }, // cards jump out less distance on mobile so they don't break viewport width
           delay
         );
+        
+        // Fade individual cards progressively near the top to prevent browser 3d flattening glitches
+        // using the exact same card reference to ensure GSAP property chaining works properly!
+        orTL.to(card, { opacity: 0, duration: 0.15, ease: 'none' }, 0.70 + i * 0.05);
       });
 
-      orTL.to('#or-floating-cards', { y: -900, duration: 0.45, ease: 'none' }, 0.55);
-      orTL.to('#or-phone-wrapper', { z: -120, rotateY: -18, duration: 0.45, ease: 'none' }, 0.55);
+      orTL.to('#or-floating-cards', { y: -900, duration: 0.45, ease: 'none' }, 0.45);
+      orTL.to('#or-phone-wrapper', { z: -120, rotateY: isDesktop ? -18 : -10, duration: 0.45, ease: 'none' }, 0.45);
 
-      orTL.to('#or-label',   { opacity: 0, duration: 0.1 }, 0.88);
-      orTL.to('#or-phone-wrapper', { opacity: 0, scale: 0.9, duration: 0.12, ease: 'power2.in' }, 0.9);
+      orTL.to('#or-label',   { opacity: 0, duration: 0.15 }, 0.90);
+      orTL.to('#or-phone-wrapper', { opacity: 0, scale: 0.9, duration: 0.15, ease: 'none' }, 0.95);
     });
-    return () => ctx.revert();
+
+    return () => mm.revert();
   }, []);
 
   return (
