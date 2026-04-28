@@ -810,7 +810,7 @@ export default function App() {
                     <div>
                       <label className="mb-3 block text-sm font-medium text-gray-400">Kateri portali vas zanimajo?</label>
                       <div className="grid grid-cols-2 gap-3">
-                        {['Bolha', 'Nepremičnine.net', 'Avto.net', 'Willhaben'].map((portal) => (
+                        {['Bolha', 'Nepremičnine.net', 'Avto.net', 'Willhaben', 'Facebook', 'Mercatino'].map((portal) => (
                           <label key={portal} className="flex items-center gap-2 cursor-pointer group">
                             <input type="checkbox" name="portals" value={portal} className="h-5 w-5 rounded border-white/10 bg-white/5 text-[#22c55e] focus:ring-[#22c55e] focus:ring-offset-0" />
                             <span className="text-sm text-gray-300 group-hover:text-white transition-colors">{portal}</span>
