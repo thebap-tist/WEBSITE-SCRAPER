@@ -109,7 +109,7 @@ const PricingCard = ({ name, price, period, features, isPro, stripeLink, onClick
       ref={ref}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      className={`card-shimmer animated-border flex flex-col h-full rounded-3xl bg-white p-8 transition-all duration-500 cursor-default ${
+      className={`card-shimmer flex flex-col h-full rounded-3xl bg-white p-8 transition-all duration-500 cursor-default ${
         isPro
           ? 'border-2 border-[#0d0d0d] shadow-[0_8px_30px_-8px_rgba(0,0,0,0.18)]'
           : 'border border-gray-200 shadow-sm hover:shadow-[0_24px_50px_-10px_rgba(0,0,0,0.14)] hover:outline hover:outline-[1.5px] hover:outline-[#0d0d0d]'
