@@ -362,10 +362,10 @@ export default function App() {
 
       {/* ── Hero (light) ── */}
       <section className="relative flex h-[80vh] flex-col items-center justify-center px-6 text-center pt-16 overflow-hidden bg-[#ebebe6] dot-grid">
-        <h1 className="reveal-up mb-6 text-5xl font-black tracking-tighter md:text-7xl text-[#0d0d0d]">
+        <h1 className="reveal-up mb-6 text-5xl font-black tracking-tighter md:text-8xl lg:text-9xl text-[#0d0d0d]">
           Oglasni <span className="text-[#22c55e]">Radar</span>
         </h1>
-        <p className="reveal-up max-w-xl text-lg text-gray-600 md:text-xl">
+        <p className="reveal-up max-w-xl text-lg text-gray-600 md:max-w-2xl md:text-2xl lg:max-w-3xl lg:text-3xl leading-relaxed">
           Prejemajte obvestila o novih oglasih v realnem času neposredno v vaš Telegram.
           Nikoli več ne zamudite dobre priložnosti.
         </p>
