@@ -109,7 +109,7 @@ const PricingCard = ({ name, price, period, features, isPro, stripeLink, onClick
       ref={ref}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      className={`card-shimmer animated-border flex flex-col rounded-3xl bg-white p-8 transition-all duration-500 cursor-default ${
+      className={`card-shimmer animated-border flex flex-col h-full rounded-3xl bg-white p-8 transition-all duration-500 cursor-default ${
         isPro
           ? 'border-2 border-[#0d0d0d] shadow-[0_8px_30px_-8px_rgba(0,0,0,0.18)]'
           : 'border border-gray-200 shadow-sm hover:shadow-[0_24px_50px_-10px_rgba(0,0,0,0.14)] hover:outline hover:outline-[1.5px] hover:outline-[#0d0d0d]'
@@ -301,6 +301,16 @@ export default function App() {
       orTL.to('#or-phone-wrapper', { opacity: 0, scale: 0.9, duration: 0.15, ease: 'none' }, 0.95);
     });
 
+    // Initialize reveal elements to be hidden and slightly shifted down
+    gsap.set('.reveal-up', { opacity: 0, y: 40 });
+
+    // Batch animations for reveal-on-scroll with staggering
+    ScrollTrigger.batch('.reveal-up', {
+      start: 'top 85%',
+      once: true,
+      onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out' })
+    });
+
     return () => mm.revert();
   }, []);
 
@@ -352,14 +362,14 @@ export default function App() {
 
       {/* ── Hero (light) ── */}
       <section className="relative flex h-[80vh] flex-col items-center justify-center px-6 text-center pt-16 overflow-hidden bg-[#f7f7f4] dot-grid">
-        <h1 className="mb-6 text-5xl font-black tracking-tighter md:text-7xl text-[#0d0d0d]">
+        <h1 className="reveal-up mb-6 text-5xl font-black tracking-tighter md:text-7xl text-[#0d0d0d]">
           Oglasni <span className="text-[#22c55e]">Radar</span>
         </h1>
-        <p className="max-w-xl text-lg text-gray-600 md:text-xl">
+        <p className="reveal-up max-w-xl text-lg text-gray-600 md:text-xl">
           Prejemajte obvestila o novih oglasih v realnem času neposredno v vaš Telegram.
           Nikoli več ne zamudite dobre priložnosti.
         </p>
-        <div className="mt-10 animate-bounce">
+        <div className="reveal-up mt-10 animate-bounce">
           <p className="text-sm font-medium uppercase tracking-widest text-gray-400">Pomaknite se navzdol</p>
         </div>
       </section>
@@ -496,14 +506,14 @@ export default function App() {
       {/* ── Kako deluje ── */}
       <section id="kako-deluje" className="relative bg-white py-24 px-6 overflow-hidden">
         <div className="mx-auto max-w-7xl">
-          <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Kako deluje</h2>
+          <h2 className="reveal-up mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Kako deluje</h2>
           <div className="grid gap-12 md:grid-cols-3">
             {[
               { n: '01', title: 'Povejte, kaj iščete', desc: 'Sporočite nam portal, ključne besede, lokacijo in cenovni razpon. Primer: "Woom kolo na Bolhi pod 250 €."', hi: '"Woom kolo na Bolhi pod 250 €."' },
               { n: '02', title: 'Nastavimo vaš radar', desc: 'Konfiguriramo sistem po vaših kriterijih. Spremljanje se zažene v nekaj minutah.', hi: null },
               { n: '03', title: 'Prejmete obvestilo', desc: 'Ob novem zadetku pride Telegram sporočilo s fotografijo, ceno, lokacijo in direktno povezavo.', hi: null },
             ].map(({ n, title, desc, hi }) => (
-              <div key={n} className="group relative">
+              <div key={n} className="reveal-up group relative">
                 <span className="font-mono text-8xl font-black text-black/5 transition-colors group-hover:text-[#22c55e]/12">{n}</span>
                 <div className="absolute top-12 left-0">
                   <h3 className="mb-3 text-xl font-bold text-[#0d0d0d]">{title}</h3>
@@ -529,18 +539,13 @@ export default function App() {
       <section className="relative bg-[#f7f7f4] py-24 px-6 overflow-hidden dot-grid">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-            <motion.div
-              initial={{ opacity: 0, x: "-20vw" }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
-            >
-              <h2 className="mb-2 text-[#22c55e] font-bold uppercase tracking-wider text-sm">Telegram obvestila</h2>
-              <h3 className="mb-6 text-4xl font-bold md:text-5xl text-[#0d0d0d]">Oglasi pridejo k vam.</h3>
-              <p className="mb-10 text-xl text-gray-600">
+            <div>
+              <h2 className="reveal-up mb-2 text-[#22c55e] font-bold uppercase tracking-wider text-sm">Telegram obvestila</h2>
+              <h3 className="reveal-up mb-6 text-4xl font-bold md:text-5xl text-[#0d0d0d]">Oglasi pridejo k vam.</h3>
+              <p className="reveal-up mb-10 text-xl text-gray-600">
                 Vsako obvestilo vsebuje fotografijo, naziv, ceno, lokacijo, čas objave in direktno povezavo.
               </p>
-              <ul className="grid gap-4 sm:grid-cols-2">
+              <ul className="reveal-up grid gap-4 sm:grid-cols-2">
                 {[
                   "Fotografija, cena, lokacija v enem sporočilu",
                   "Direktna povezava do izvirnega oglasa",
@@ -555,14 +560,10 @@ export default function App() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
             <div className="flex items-center justify-center">
-              <motion.div
-                initial={{ opacity: 0, x: "20vw" }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1.2, ease: "easeOut" }}
-                className="w-full max-w-[360px] rounded-2xl bg-[#17212b] p-4 sm:p-6 shadow-2xl ring-1 ring-black/8"
+              <div
+                className="reveal-up w-full max-w-[360px] rounded-2xl bg-[#17212b] p-4 sm:p-6 shadow-2xl ring-1 ring-black/8"
               >
                 <div className="mb-4 flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-[#22c55e] flex items-center justify-center font-bold text-white shadow-lg shadow-[#22c55e]/20">OR</div>
@@ -586,7 +587,7 @@ export default function App() {
                     <div className="mt-2 flex justify-end text-[10px] text-white/30">14:42</div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
@@ -597,12 +598,12 @@ export default function App() {
       {/* ── Podprti portali — marquee ── */}
       <section id="portali" className="relative bg-white py-24 overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 mb-8 text-center">
-          <h2 className="text-3xl font-bold md:text-4xl text-[#0d0d0d] mb-8">Podprti portali</h2>
+          <h2 className="reveal-up text-3xl font-bold md:text-4xl text-[#0d0d0d] mb-8">Podprti portali</h2>
           {/* Stats */}
           <div className="flex items-center justify-center gap-10 mb-10">
             {[['6','Portalov'],['4','Države'],['∞','Razširljivo']].map(([n,l],i,a) => (
               <React.Fragment key={l}>
-                <div className="text-center">
+                <div className="reveal-up text-center">
                   <div className="text-3xl font-black text-[#0d0d0d] leading-none">{n}</div>
                   <div className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mt-1">{l}</div>
                 </div>
@@ -613,7 +614,7 @@ export default function App() {
         </div>
 
         {/* Marquee */}
-        <div className="relative w-full overflow-hidden group py-4" style={{
+        <div className="reveal-up relative w-full overflow-hidden group py-4" style={{
           maskImage: 'linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent)',
           WebkitMaskImage: 'linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent)',
         }}>
@@ -650,7 +651,7 @@ export default function App() {
           }
         `}</style>
 
-        <p className="mt-10 text-center text-sm text-gray-400 px-6">
+        <p className="reveal-up mt-10 text-center text-sm text-gray-400 px-6">
           Iščete drug portal?{' '}
           <button onClick={() => setIsModalOpen(true)} className="text-[#22c55e] font-semibold hover:underline">Pišite nam</button>
           {' '}— sistem je razširljiv.
@@ -662,9 +663,9 @@ export default function App() {
       {/* ── Začni brezplačno ── */}
       <section id="preizkus" className="relative bg-[#f7f7f4] py-24 px-6 overflow-hidden dot-grid">
         <div className="mx-auto max-w-7xl">
-          <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Začni brezplačno</h2>
+          <h2 className="reveal-up mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Začni brezplačno</h2>
           <div className="flex justify-center">
-            <div className="w-full max-w-sm">
+            <div className="reveal-up w-full max-w-sm">
               <PricingCard
                 name="Preizkus (Free-trial)"
                 price="0"
@@ -683,14 +684,14 @@ export default function App() {
       {/* ── Cenik ── */}
       <section id="cenik" className="relative bg-white py-24 px-6 overflow-hidden">
         <div className="mx-auto max-w-7xl">
-          <h2 className="mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Cenik</h2>
+          <h2 className="reveal-up mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Cenik</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            <PricingCard name="Začetnik" price="10" period="/ mesec" features={['Osveževanje na 60 minut', '1 portal po izbiri', 'Telegram obvestila']} stripeLink="https://buy.stripe.com/test_7sYeVe7uJ3Yk89I7j6gQE00" />
-            <PricingCard name="Raziskovalec" price="19" period="/ mesec" features={['Osveževanje na 60 minut', 'VSI portali', 'Telegram obvestila']} stripeLink="https://buy.stripe.com/test_cNi14oaGV0M861AbzmgQE01" />
-            <PricingCard name="Pro" price="29" period="/ mesec" features={['Osveževanje na 3 minute', '1 portal po izbiri', 'Telegram obvestila', 'Prednostna podpora']} isPro stripeLink="https://buy.stripe.com/test_14A9AU4ix9iE0Hg0UIgQE02" />
-            <PricingCard name="VIP / Agencija" price="49" period="/ mesec" features={['Osveževanje na 3 minute', 'VSI portali', 'Telegram obvestila', 'Prednostna podpora']} stripeLink="https://buy.stripe.com/test_14A5kE2ap3Yk0HgdHugQE03" />
+            <div className="reveal-up h-full"><PricingCard name="Začetnik" price="10" period="/ mesec" features={['Osveževanje na 60 minut', '1 portal po izbiri', 'Telegram obvestila']} stripeLink="https://buy.stripe.com/test_7sYeVe7uJ3Yk89I7j6gQE00" /></div>
+            <div className="reveal-up h-full"><PricingCard name="Raziskovalec" price="19" period="/ mesec" features={['Osveževanje na 60 minut', 'VSI portali', 'Telegram obvestila']} stripeLink="https://buy.stripe.com/test_cNi14oaGV0M861AbzmgQE01" /></div>
+            <div className="reveal-up h-full"><PricingCard name="Pro" price="29" period="/ mesec" features={['Osveževanje na 3 minute', '1 portal po izbiri', 'Telegram obvestila', 'Prednostna podpora']} isPro stripeLink="https://buy.stripe.com/test_14A9AU4ix9iE0Hg0UIgQE02" /></div>
+            <div className="reveal-up h-full"><PricingCard name="VIP / Agencija" price="49" period="/ mesec" features={['Osveževanje na 3 minute', 'VSI portali', 'Telegram obvestila', 'Prednostna podpora']} stripeLink="https://buy.stripe.com/test_14A5kE2ap3Yk0HgdHugQE03" /></div>
           </div>
-          <div className="flex justify-center mt-10">
+          <div className="reveal-up flex justify-center mt-10">
             <a href="https://billing.stripe.com/p/login/test_7sYeVe7uJ3Yk89I7j6gQE00" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-[#0d0d0d] transition-colors border border-gray-200 rounded-xl px-5 py-2 hover:border-gray-300">
               Že naročnik? Upravljaj naročnino →
             </a>
@@ -703,14 +704,14 @@ export default function App() {
       {/* ── Final CTA (light) ── */}
       <section className="relative bg-[#f7f7f4] py-32 px-6 text-center overflow-hidden dot-grid">
         <div className="mx-auto max-w-3xl">
-          <h2 className="mb-6 text-4xl font-bold md:text-5xl leading-tight text-[#0d0d0d]">
+          <h2 className="reveal-up mb-6 text-4xl font-bold md:text-5xl leading-tight text-[#0d0d0d]">
             Pripravljeni, da ujamete naslednji oglas pred vsemi?
           </h2>
-          <p className="mb-10 text-xl text-gray-600 text-center">
+          <p className="reveal-up mb-10 text-xl text-gray-600 text-center">
             Povejte nam, kaj iščete, in skupaj bomo nastavili vaš osebni radar. <br />
             Odgovorimo še isti dan!
           </p>
-          <button onClick={() => setIsModalOpen(true)} className="group inline-flex items-center gap-2 rounded-full bg-[#22c55e] px-10 py-4 text-lg font-bold text-black transition-all hover:scale-105 hover:shadow-[0_8px_30px_-5px_rgba(34,197,94,0.4)] active:scale-95">
+          <button onClick={() => setIsModalOpen(true)} className="reveal-up group inline-flex items-center gap-2 rounded-full bg-[#22c55e] px-10 py-4 text-lg font-bold text-black transition-all hover:scale-105 hover:shadow-[0_8px_30px_-5px_rgba(34,197,94,0.4)] active:scale-95">
             Pišite nam <span className="transition-transform group-hover:translate-x-1">➔</span>
           </button>
         </div>
