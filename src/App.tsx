@@ -109,7 +109,7 @@ const PricingCard = ({ name, price, period, features, isPro, stripeLink, onClick
       ref={ref}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      className={`card-shimmer flex flex-col h-full rounded-3xl bg-white p-8 transition-all duration-500 cursor-default ${
+      className={`card-shimmer flex flex-col h-full rounded-3xl bg-[#f7f7f4] p-8 transition-all duration-500 cursor-default ${
         isPro
           ? 'border-2 border-[#0d0d0d] shadow-[0_8px_30px_-8px_rgba(0,0,0,0.18)]'
           : 'border border-gray-200 shadow-sm hover:shadow-[0_24px_50px_-10px_rgba(0,0,0,0.14)] hover:outline hover:outline-[1.5px] hover:outline-[#0d0d0d]'
@@ -315,7 +315,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f7f7f4] text-[#0d0d0d] selection:bg-[#22c55e]/30">
+    <div className="min-h-screen bg-[#ebebe6] text-[#0d0d0d] selection:bg-[#22c55e]/30">
 
       {/* ── Navbar (light) ── */}
       <nav className={`fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 transition-transform duration-1000 ${navVisible ? 'translate-y-0' : '-translate-y-full'}`}>
@@ -361,7 +361,7 @@ export default function App() {
       </nav>
 
       {/* ── Hero (light) ── */}
-      <section className="relative flex h-[80vh] flex-col items-center justify-center px-6 text-center pt-16 overflow-hidden bg-[#f7f7f4] dot-grid">
+      <section className="relative flex h-[80vh] flex-col items-center justify-center px-6 text-center pt-16 overflow-hidden bg-[#ebebe6] dot-grid">
         <h1 className="reveal-up mb-6 text-5xl font-black tracking-tighter md:text-7xl text-[#0d0d0d]">
           Oglasni <span className="text-[#22c55e]">Radar</span>
         </h1>
@@ -375,7 +375,7 @@ export default function App() {
       </section>
 
       {/* ── 3D Scroll Phone Animation ── */}
-      <section className="or-section bg-[#f7f7f4] dot-grid text-[#0d0d0d]" id="or-section">
+      <section className="or-section bg-[#ebebe6] dot-grid text-[#0d0d0d]" id="or-section">
         <div className="or-stage" id="or-stage">
 
           {/* Left label */}
@@ -504,7 +504,7 @@ export default function App() {
       <div className="h-px bg-gray-200" />
 
       {/* ── Kako deluje ── */}
-      <section id="kako-deluje" className="relative bg-white py-24 px-6 overflow-hidden">
+      <section id="kako-deluje" className="relative bg-[#f7f7f4] py-24 px-6 overflow-hidden">
         <div className="mx-auto max-w-7xl">
           <h2 className="reveal-up mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Kako deluje</h2>
           <div className="grid gap-12 md:grid-cols-3">
@@ -536,7 +536,7 @@ export default function App() {
       <div className="h-px bg-gray-200" />
 
       {/* ── Telegram obvestila ── */}
-      <section className="relative bg-[#f7f7f4] py-24 px-6 overflow-hidden dot-grid">
+      <section className="relative bg-[#ebebe6] py-24 px-6 overflow-hidden dot-grid">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
             <div>
@@ -596,7 +596,7 @@ export default function App() {
       <div className="h-px bg-gray-200" />
 
       {/* ── Podprti portali — marquee ── */}
-      <section id="portali" className="relative bg-white py-24 overflow-hidden">
+      <section id="portali" className="relative bg-[#f7f7f4] py-24 overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 mb-8 text-center">
           <h2 className="reveal-up text-3xl font-bold md:text-4xl text-[#0d0d0d] mb-8">Podprti portali</h2>
           {/* Stats */}
@@ -628,7 +628,7 @@ export default function App() {
               { name:'Mercatino',    init:'M', flag:'🇮🇹', color:'#9ed0b4' },
               { name:'Njuškalo',     init:'N', flag:'🇭🇷', color:'#d8d8d3', soon:true },
             ]).map((p, i) => (
-              <div key={i} className="flex items-center gap-2.5 border border-gray-200 rounded-full px-4 py-2.5 whitespace-nowrap select-none hover:bg-white hover:border-[#0d0d0d] hover:-translate-y-1 hover:shadow-md transition-all duration-200 cursor-default">
+              <div key={i} className="flex items-center gap-2.5 border border-gray-200 rounded-full px-4 py-2.5 whitespace-nowrap select-none hover:bg-[#f7f7f4] hover:border-[#0d0d0d] hover:-translate-y-1 hover:shadow-md transition-all duration-200 cursor-default">
                 <div className="w-6 h-6 rounded-md flex items-center justify-center text-white text-[11px] font-black flex-shrink-0" style={{background:p.color}}>{p.init}</div>
                 <span className="text-[13px] font-semibold text-[#0d0d0d]">{p.name}</span>
                 <span className="text-[13px] opacity-60">{p.flag}</span>
@@ -661,7 +661,7 @@ export default function App() {
       <div className="h-px bg-gray-200" />
 
       {/* ── Začni brezplačno ── */}
-      <section id="preizkus" className="relative bg-[#f7f7f4] py-24 px-6 overflow-hidden dot-grid">
+      <section id="preizkus" className="relative bg-[#ebebe6] py-24 px-6 overflow-hidden dot-grid">
         <div className="mx-auto max-w-7xl">
           <h2 className="reveal-up mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Začni brezplačno</h2>
           <div className="flex justify-center">
@@ -682,7 +682,7 @@ export default function App() {
       <div className="h-px bg-gray-200" />
 
       {/* ── Cenik ── */}
-      <section id="cenik" className="relative bg-white py-24 px-6 overflow-hidden">
+      <section id="cenik" className="relative bg-[#f7f7f4] py-24 px-6 overflow-hidden">
         <div className="mx-auto max-w-7xl">
           <h2 className="reveal-up mb-16 text-center text-4xl font-bold md:text-5xl text-[#0d0d0d]">Cenik</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -702,7 +702,7 @@ export default function App() {
       <div className="h-px bg-gray-200" />
 
       {/* ── Final CTA (light) ── */}
-      <section className="relative bg-[#f7f7f4] py-32 px-6 text-center overflow-hidden dot-grid">
+      <section className="relative bg-[#ebebe6] py-32 px-6 text-center overflow-hidden dot-grid">
         <div className="mx-auto max-w-3xl">
           <h2 className="reveal-up mb-6 text-4xl font-bold md:text-5xl leading-tight text-[#0d0d0d]">
             Pripravljeni, da ujamete naslednji oglas pred vsemi?
@@ -718,7 +718,7 @@ export default function App() {
       </section>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-gray-200 bg-[#f7f7f4] py-12 px-6">
+      <footer className="border-t border-gray-200 bg-[#ebebe6] py-12 px-6">
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-500">
           <p>© 2026 Oglasni Radar. Vse pravice pridržane.</p>
           <div className="flex gap-8">
