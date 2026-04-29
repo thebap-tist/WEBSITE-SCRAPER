@@ -711,7 +711,7 @@ export default function App() {
             Povejte nam, kaj iščete, in skupaj bomo nastavili vaš osebni radar. <br />
             Odgovorimo še isti dan!
           </p>
-          <button onClick={() => setIsModalOpen(true)} className="reveal-up group inline-flex items-center gap-2 rounded-full bg-[#22c55e] px-10 py-4 text-lg font-bold text-black transition-all hover:scale-105 hover:shadow-[0_8px_30px_-5px_rgba(34,197,94,0.4)] active:scale-95">
+          <button onClick={() => setIsModalOpen(true)} className="reveal-up group inline-flex items-center gap-2 rounded-full bg-[#22c55e] px-10 py-4 text-lg font-bold text-black transition-all hover-pulse active:scale-95">
             Pišite nam <span className="transition-transform group-hover:translate-x-1">➔</span>
           </button>
         </div>
