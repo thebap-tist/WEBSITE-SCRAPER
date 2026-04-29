@@ -39,7 +39,7 @@
     position: relative;
     overflow: hidden;
   }
-  .card-shimmer::after {
+  .card-shimmer::before {
     content: '';
     position: absolute;
     top: -50%;
@@ -52,7 +52,7 @@
     pointer-events: none;
     z-index: 10;
   }
-  .card-shimmer:hover::after { left: 130%; }
+  .card-shimmer:hover::before { left: 130%; }
 
   /* Dynamic Island badge */
   .dynamic-island {
